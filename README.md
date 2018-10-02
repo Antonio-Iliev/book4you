@@ -3,6 +3,8 @@
 ## Team: Alex Niklev, Antonio Iliev, Nevena Nikolova
 GitLab URL: https://gitlab.com/Antonio.Iliev/book4you.git
 
+Trello URL: https://trello.com/b/i9XaBJnS/library-management-system
+
 Team Leader: Nevena Nikolova
 
 ## Project Features:
