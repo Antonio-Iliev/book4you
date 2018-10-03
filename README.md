@@ -5,6 +5,8 @@ GitLab URL: https://gitlab.com/Antonio.Iliev/book4you.git
 
 Trello URL: https://trello.com/b/i9XaBJnS/library-management-system
 
+Mind Map URL: https://gitlab.com/Antonio.Iliev/book4you/blob/master/Book_4_You.pdf
+
 Team Leader: Nevena Nikolova
 
 ## Project Features:
