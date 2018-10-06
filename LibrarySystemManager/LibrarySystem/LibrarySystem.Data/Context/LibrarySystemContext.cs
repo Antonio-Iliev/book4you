@@ -1,4 +1,5 @@
-﻿using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Contracts;
+using LibrarySystem.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace LibrarySystem.Data.Context
 {
-    public class LibrerySystemContext : DbContext
+    public class LibrarySystemContext : DbContext, ILibrarySystemContext
     {
 
         public DbSet<Book> Books { get; set; }

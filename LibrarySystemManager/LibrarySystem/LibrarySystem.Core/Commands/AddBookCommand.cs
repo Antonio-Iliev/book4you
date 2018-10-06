@@ -7,7 +7,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class AddBookCommand : ICommand
     {
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
             var bookTitle = "Pesho";
             return $"New book {bookTitle} was added.";

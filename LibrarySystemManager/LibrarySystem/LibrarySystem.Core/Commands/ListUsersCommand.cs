@@ -8,7 +8,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class ListUsersCommand : ICommand
     {
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
             throw new NotImplementedException();
         }

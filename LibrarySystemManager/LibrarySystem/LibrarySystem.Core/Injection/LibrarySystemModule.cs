@@ -1,20 +1,20 @@
 ﻿using Autofac;
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
-using System;
-using System.Collections.Generic;
+using LibrarySystem.ConsoleClient.Core.Providers;
+using LibrarySystem.Data.Context;
+using LibrarySystem.Data.Contracts;
 using System.Reflection;
-using System.Text;
+
 
 namespace LibrarySystem.ConsoleClient.Injection
 {
     public class LibrarySystemModule: Autofac.Module
     {
-
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-            //    .AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .AsImplementedInterfaces();
             this.RegisterCoreComponents(builder);
             this.RegisterCommands(builder);
             base.Load(builder);
@@ -22,6 +22,8 @@ namespace LibrarySystem.ConsoleClient.Injection
         public void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
+            builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>();
+            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         public void RegisterCommands(ContainerBuilder builder)
         {
