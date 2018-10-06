@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace LibrarySystem.Data.Models
@@ -8,11 +9,21 @@ namespace LibrarySystem.Data.Models
     {
         public Guid Id { get; set; }
 
+        [Required]
+        [MinLength(1)]
+        [MaxLength(20)]
         public string FirstName { get; set; }
 
+        [MinLength(1)]
+        [MaxLength(20)]
+        public string MiddleName { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(20)]
         public string LastName { get; set; }
 
-        public int PhoneNumber { get; set; }
+        public int? PhoneNumber { get; set; }
 
         public DateTime AddOnDate { get; set; }
 
