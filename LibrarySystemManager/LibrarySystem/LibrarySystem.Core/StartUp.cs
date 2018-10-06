@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using LibrarySystem.ConsoleClient.Core;
+using LibrarySystem.ConsoleClient.Core.Contracts;
 using System;
 using System.Reflection;
 
@@ -13,7 +14,7 @@ namespace LibrarySystem.ConsoleClient
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
             var container = builder.Build();
 
-            var engine = container.Resolve<Engine>();
+            var engine = container.Resolve<IEngine>();
             engine.Start();
 
         }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LibrarySystem.Data.Context
 {
-    public class LibrerySystemContext : DbContext
+    public class LibrerySystemContext : DbContext, ILibSysContext
     {
 
         public DbSet<Book> Books { get; set; }

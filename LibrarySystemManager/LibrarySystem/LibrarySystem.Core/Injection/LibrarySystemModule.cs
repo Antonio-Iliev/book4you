@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
+using LibrarySystem.ConsoleClient.Core.Providers;
 using System.Reflection;
 
 namespace LibrarySystem.ConsoleClient.Injection
@@ -32,6 +33,10 @@ namespace LibrarySystem.ConsoleClient.Injection
             builder.RegisterAssemblyTypes(Assembly.Load("LibrarySystem.Services"))
                 .Where(s => s.Namespace.Contains("Services"))
                 .AsImplementedInterfaces();
+        }
+        public void RegisterProviders(ContainerBuilder builder)
+        {
+            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         
     }
