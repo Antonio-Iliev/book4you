@@ -1,12 +1,21 @@
-﻿using System;
+﻿using Autofac;
+using LibrarySystem.ConsoleClient.Core;
+using System;
+using System.Reflection;
 
-namespace LibrarySystem.Core
+namespace LibrarySystem.ConsoleClient
 {
-    class StartUp
+    public class StartUp
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello World!");
+            var builder = new ContainerBuilder();
+            builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
+            var container = builder.Build();
+
+            var engine = container.Resolve<Engine>();
+            engine.Start();
+
         }
     }
 }
