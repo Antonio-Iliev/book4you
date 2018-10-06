@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibrarySystem.Data.Models
 {
@@ -7,6 +8,9 @@ namespace LibrarySystem.Data.Models
     {
         public Guid Id { get; set; }
 
+        [Required]
+        [MinLength(2)]
+        [MaxLength(50)]
         public string Title { get; set; }
         
         public bool IsAvailable { get; set; }

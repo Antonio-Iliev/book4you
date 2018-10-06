@@ -13,8 +13,8 @@ namespace LibrarySystem.ConsoleClient.Injection
 
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-            //    .AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .AsImplementedInterfaces();
             this.RegisterCoreComponents(builder);
             this.RegisterCommands(builder);
             base.Load(builder);
