@@ -2,10 +2,14 @@
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
+<<<<<<< HEAD
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
 using System.Reflection;
 
+=======
+using System.Reflection;
+>>>>>>> b60715f633c0c40ded833fa4201dc02cb3f3ad09
 
 namespace LibrarySystem.ConsoleClient.Injection
 {
@@ -17,6 +21,7 @@ namespace LibrarySystem.ConsoleClient.Injection
                 .AsImplementedInterfaces();
             this.RegisterCoreComponents(builder);
             this.RegisterCommands(builder);
+            this.RegisterServices(builder);
             base.Load(builder);
         }
         public void RegisterCoreComponents(ContainerBuilder builder)
@@ -30,6 +35,16 @@ namespace LibrarySystem.ConsoleClient.Injection
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(x => x.Namespace.Contains("Command"))
                 .AsImplementedInterfaces();
+        }
+        public void RegisterServices(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(Assembly.Load("LibrarySystem.Services"))
+                .Where(s => s.Namespace.Contains("Services"))
+                .AsImplementedInterfaces();
+        }
+        public void RegisterProviders(ContainerBuilder builder)
+        {
+            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         
     }
