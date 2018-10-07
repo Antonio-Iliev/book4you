@@ -6,6 +6,6 @@ namespace LibrarySystem.ConsoleClient.Commands.Contracts
 {
     public interface ICommand
     {
-        string Execute(IEnumerable<string> parameters);       
+        string Execute(IList<string> parameters);       
     }
 }

@@ -7,7 +7,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class ListBookByAuthor : ICommand
     {
-        public string Execute(IEnumerable<string> parameters)
+        public string Execute(IList<string> parameters)
         {
             throw new NotImplementedException();
         }

@@ -10,9 +10,6 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class AddBookCommand : ICommand
     {
-<<<<<<< HEAD
-        public string Execute(IEnumerable<string> parameters)
-=======
         private readonly IBooksServices booksServices;
 
         public AddBookCommand(IBooksServices booksServices)
@@ -21,7 +18,6 @@ namespace LibrarySystem.ConsoleClient.Commands
         }
 
         public string Execute(IList<string> parameters)
->>>>>>> b60715f633c0c40ded833fa4201dc02cb3f3ad09
         {
             parameters = parameters.Where(p => p != null && p != "").ToList();
 

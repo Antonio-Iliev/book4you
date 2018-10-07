@@ -2,14 +2,9 @@
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
-<<<<<<< HEAD
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
 using System.Reflection;
-
-=======
-using System.Reflection;
->>>>>>> b60715f633c0c40ded833fa4201dc02cb3f3ad09
 
 namespace LibrarySystem.ConsoleClient.Injection
 {
