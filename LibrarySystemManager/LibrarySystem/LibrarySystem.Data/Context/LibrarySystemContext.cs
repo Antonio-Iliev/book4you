@@ -1,4 +1,5 @@
-﻿using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Contracts;
+using LibrarySystem.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +9,11 @@ using System.Text;
 
 namespace LibrarySystem.Data.Context
 {
+<<<<<<< HEAD:LibrarySystemManager/LibrarySystem/LibrarySystem.Data/Context/LibrarySystemContext.cs
+    public class LibrarySystemContext : DbContext, ILibrarySystemContext
+=======
     public class LibrerySystemContext : DbContext, ILibSysContext
+>>>>>>> b60715f633c0c40ded833fa4201dc02cb3f3ad09:LibrarySystemManager/LibrarySystem/LibrarySystem.Data/Context/LibrerySystemContext.cs
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
