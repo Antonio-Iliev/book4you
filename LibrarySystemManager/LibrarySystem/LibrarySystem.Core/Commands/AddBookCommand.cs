@@ -17,16 +17,16 @@ namespace LibrarySystem.ConsoleClient.Commands
             this.booksServices = booksServices;
         }
 
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
-            parameters = parameters.Where(p => p != null && p != "").ToList();
+            var args = parameters.Where(p => p != null && p != "").ToList();
 
-            if (parameters.Count != 3)
+            if (args.Count != 3)
             {
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }
 
-            booksServices.AddBook(parameters[0], parameters[1], parameters[2]);
+            booksServices.AddBook(args[0], args[1], args[2]);
 
             //TODO add Title
             return $"New book TITLE was added.";

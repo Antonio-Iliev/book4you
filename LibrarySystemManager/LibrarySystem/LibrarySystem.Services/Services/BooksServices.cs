@@ -1,4 +1,4 @@
-﻿using LibrarySystem.Data.Context;
+﻿using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using System;
@@ -9,7 +9,7 @@ namespace LibrarySystem.Services
 {
     public class BooksServices : BaseServicesClass, IBooksServices
     {
-        public BooksServices(ILibSysContext context) : base(context)
+        public BooksServices(ILibrarySystemContext context) : base(context)
         {
         }
 

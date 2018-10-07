@@ -7,7 +7,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class GetBookCommand : ICommand
     {
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
             throw new NotImplementedException();
         }
