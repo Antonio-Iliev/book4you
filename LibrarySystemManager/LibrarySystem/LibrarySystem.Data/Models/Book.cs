@@ -18,7 +18,7 @@ namespace LibrarySystem.Data.Models
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
 
-        public Guid AuthorId { get; set; }
+        public int AuthorId { get; set; }
         public Author Author { get; set; }
         
         public virtual ICollection<UsersBooks> UsersBooks { get; set; }

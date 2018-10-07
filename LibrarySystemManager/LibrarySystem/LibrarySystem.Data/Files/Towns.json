@@ -1,0 +1,66 @@
+[
+  {
+    "Id": 1,
+    "TownName": "Westphalia"
+  },
+  {
+    "Id": 2,
+    "TownName": "Jardine"
+  },
+  {
+    "Id": 3,
+    "TownName": "Brambleton"
+  },
+  {
+    "Id": 4,
+    "TownName": "Coleville"
+  },
+  {
+    "Id": 5,
+    "TownName": "Cressey"
+  },
+  {
+    "Id": 6,
+    "TownName": "Kiskimere"
+  },
+  {
+    "Id": 7,
+    "TownName": "Williamson"
+  },
+  {
+    "Id": 8,
+    "TownName": "Foscoe"
+  },
+  {
+    "Id": 9,
+    "TownName": "Stockdale"
+  },
+  {
+    "Id": 10,
+    "TownName": "Kimmell"
+  },
+  {
+    "Id": 11,
+    "TownName": "Escondida"
+  },
+  {
+    "Id": 12,
+    "TownName": "Zeba"
+  },
+  {
+    "Id": 13,
+    "TownName": "Brutus"
+  },
+  {
+    "Id": 14,
+    "TownName": "Galesville"
+  },
+  {
+    "Id": 15,
+    "TownName": "Hatteras"
+  },
+  {
+    "Id": 16,
+    "TownName": "Dupnitsa"
+  }
+]

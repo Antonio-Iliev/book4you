@@ -7,7 +7,7 @@ namespace LibrarySystem.Data.Models
 {
     public class Author
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MinLength(2)]
