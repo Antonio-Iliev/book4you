@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrerySystemContext))]
-    [Migration("20181005234929_Initial")]
+    [Migration("20181007134939_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,9 @@ namespace LibrarySystem.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("StreetAddress");
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<int>("TownId");
 
@@ -40,14 +42,24 @@ namespace LibrarySystem.Data.Migrations
 
             modelBuilder.Entity("LibrarySystem.Data.Models.Author", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
+
+                    b.HasData(
+                        new { Id = 1, Name = "George R. R. Martin" },
+                        new { Id = 2, Name = "Jorge Bucay" },
+                        new { Id = 3, Name = "Paulo Coelho" },
+                        new { Id = 4, Name = "Dr Radeva" }
+                    );
                 });
 
             modelBuilder.Entity("LibrarySystem.Data.Models.Book", b =>
@@ -55,13 +67,15 @@ namespace LibrarySystem.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("AuthorId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<int>("GenreId");
 
                     b.Property<bool>("IsAvailable");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -70,6 +84,16 @@ namespace LibrarySystem.Data.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Books");
+
+                    b.HasData(
+                        new { Id = new Guid("73a1a1de-a54f-4578-a51f-6fe896f5c630"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Game of Thrones" },
+                        new { Id = new Guid("136c7bfc-c5b9-41a3-909f-b20fed4f188f"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Clash of Kings" },
+                        new { Id = new Guid("354690b9-d516-454e-9651-15d7d9e504e1"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Storm of Swords" },
+                        new { Id = new Guid("b01b4f03-20ea-4dd6-a0a2-3bab3db66cbf"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Feast for Crows" },
+                        new { Id = new Guid("e90de0c0-9666-46d2-a015-f1d25c6e7c20"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Dance with Dragons" },
+                        new { Id = new Guid("bd7fc284-bc29-43be-b9ac-93f313f9ccfb"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "The Winds of Winter" },
+                        new { Id = new Guid("41e3ccaa-144c-4f8f-9740-61d73da359fb"), AuthorId = 1, GenreId = 1, IsAvailable = true, Title = "A Dream of Spring" }
+                    );
                 });
 
             modelBuilder.Entity("LibrarySystem.Data.Models.Genre", b =>
@@ -78,11 +102,26 @@ namespace LibrarySystem.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("GenreName");
+                    b.Property<string>("GenreName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new { Id = 1, GenreName = "Fantasy" },
+                        new { Id = 2, GenreName = "Drama" },
+                        new { Id = 3, GenreName = "Action and Adventure" },
+                        new { Id = 4, GenreName = "Romance" },
+                        new { Id = 5, GenreName = "Mystery" },
+                        new { Id = 6, GenreName = "Horror" },
+                        new { Id = 7, GenreName = "Science" },
+                        new { Id = 8, GenreName = "History" },
+                        new { Id = 9, GenreName = "Math" },
+                        new { Id = 10, GenreName = "Comics" }
+                    );
                 });
 
             modelBuilder.Entity("LibrarySystem.Data.Models.Town", b =>
@@ -91,7 +130,9 @@ namespace LibrarySystem.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("TownName");
+                    b.Property<string>("TownName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -105,13 +146,20 @@ namespace LibrarySystem.Data.Migrations
 
                     b.Property<DateTime>("AddOnDate");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<int>("PhoneNumber");
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(20);
+
+                    b.Property<int?>("PhoneNumber");
 
                     b.HasKey("Id");
 
