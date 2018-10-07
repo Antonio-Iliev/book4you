@@ -2,6 +2,7 @@
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
+
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
 using System.Reflection;
@@ -23,7 +24,7 @@ namespace LibrarySystem.ConsoleClient.Injection
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
             builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>();
-            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
+           // builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         public void RegisterCommands(ContainerBuilder builder)
         {

@@ -11,5 +11,6 @@ namespace LibrarySystem.Services.Abstract
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
     }
 }
