@@ -26,10 +26,29 @@ namespace LibrarySystem.ConsoleClient.Commands
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }
 
-            booksServices.AddBook(parameters[0], parameters[1], parameters[2]);
+            string title = parameters[0];
+            string genre = parameters[1];
+            string author = parameters[2];
 
-            //TODO add Title
-            return $"New book TITLE was added.";
+            if (title.Length > CommandConstants.MaxBookTitleLength)
+            {
+                return $"The book title '{title}' is more then " +
+                    $"{CommandConstants.MaxBookTitleLength} symbols.";
+            }
+            if (genre.Length > CommandConstants.MaxGenreNameLength)
+            {
+                return $"The book genre '{genre}' is more then " +
+                    $"{CommandConstants.MaxGenreNameLength} symbols.";
+            }
+            if (author.Length > CommandConstants.MaxAuthorNameLength)
+            {
+                return $"The book author name '{author}' is more then " +
+                    $"{CommandConstants.MaxAuthorNameLength} symbols.";
+            }
+
+            booksServices.AddBook(title, genre, author);
+
+            return $"New book {title} was added.";
         }
     }
 }

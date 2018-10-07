@@ -2,6 +2,8 @@
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
+using LibrarySystem.Data.Context;
+using System;
 using System.Reflection;
 
 namespace LibrarySystem.ConsoleClient.Injection
@@ -16,8 +18,10 @@ namespace LibrarySystem.ConsoleClient.Injection
             this.RegisterCoreComponents(builder);
             this.RegisterCommands(builder);
             this.RegisterServices(builder);
+            this.RegisterDatabaseComponents(builder);
             base.Load(builder);
         }
+
         public void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
@@ -38,6 +42,9 @@ namespace LibrarySystem.ConsoleClient.Injection
         {
             builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
-        
+        private void RegisterDatabaseComponents(ContainerBuilder builder)
+        {
+            builder.RegisterType<LibrerySystemContext>().As<ILibSysContext>().SingleInstance();
+        }
     }
 }
