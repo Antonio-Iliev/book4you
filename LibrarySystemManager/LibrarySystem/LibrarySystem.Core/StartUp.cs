@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
-using System;
 using System.Reflection;
 
 namespace LibrarySystem.ConsoleClient
