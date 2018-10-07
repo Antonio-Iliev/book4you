@@ -1,15 +1,16 @@
 ﻿using System;
-using LibrarySystem.Data.Context;
+using LibrarySystem.Data.Contracts;
 
 namespace LibrarySystem.Services.Abstract
 {
     public abstract class BaseServicesClass
     {
-        protected ILibSysContext context;
+        protected ILibrarySystemContext context;
 
-        protected BaseServicesClass(ILibSysContext context)
+        protected BaseServicesClass(ILibrarySystemContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
     }
 }

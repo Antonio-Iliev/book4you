@@ -1,0 +1,42 @@
+[
+  {
+    "Id" : "1",
+    "GenreName": "Fantasy"
+  },
+  {
+    "Id": "2",
+    "GenreName": "Drama"
+  },
+  {
+    "Id": "3",
+    "GenreName": "Action and Adventure"
+  },
+  {
+    "Id": "4",
+    "GenreName": "Romance"
+  },
+  {
+    "Id": "5",
+    "GenreName": "Mystery"
+  },
+  {
+    "Id": "6",
+    "GenreName": "Horror"
+  },
+  {
+    "Id": "7",
+    "GenreName": "Science"
+  },
+  {
+    "Id": "8",
+    "GenreName": "History"
+  },
+  {
+    "Id": "9",
+    "GenreName": "Math"
+  },
+  {
+    "Id": "10",
+    "GenreName": "Comics"
+  }
+]

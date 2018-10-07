@@ -1,16 +1,19 @@
 ﻿using LibrarySystem.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace LibrarySystem.Data.Context
+namespace LibrarySystem.Data.Contracts
 {
-    public interface ILibSysContext
+    public interface ILibrarySystemContext
     {
-        DbSet<Address> Addresses { get; set; }
-        DbSet<Author> Authors { get; set; }
         DbSet<Book> Books { get; set; }
+        DbSet<Author> Authors { get; set; }
         DbSet<Genre> Genres { get; set; }
-        DbSet<Town> Towns { get; set; }
         DbSet<User> Users { get; set; }
+        DbSet<Address> Addresses { get; set; }
+        DbSet<Town> Towns { get; set; }
         DbSet<UsersAddresses> UsersAddresses { get; set; }
         DbSet<UsersBooks> UsersBooks { get; set; }
 

@@ -12,8 +12,9 @@ namespace LibrarySystem.Data.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +27,7 @@ namespace LibrarySystem.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GenreName = table.Column<string>(nullable: true)
+                    GenreName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,7 +40,7 @@ namespace LibrarySystem.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TownName = table.Column<string>(nullable: true)
+                    TownName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,9 +52,10 @@ namespace LibrarySystem.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 20, nullable: false),
+                    MiddleName = table.Column<string>(maxLength: 20, nullable: true),
+                    LastName = table.Column<string>(maxLength: 20, nullable: false),
+                    PhoneNumber = table.Column<int>(nullable: true),
                     AddOnDate = table.Column<DateTime>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false)
                 },
@@ -67,10 +69,10 @@ namespace LibrarySystem.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
                     IsAvailable = table.Column<bool>(nullable: false),
                     GenreId = table.Column<int>(nullable: false),
-                    AuthorId = table.Column<Guid>(nullable: false)
+                    AuthorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,7 +97,7 @@ namespace LibrarySystem.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    StreetAddress = table.Column<string>(nullable: true),
+                    StreetAddress = table.Column<string>(maxLength: 50, nullable: false),
                     TownId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -156,6 +158,48 @@ namespace LibrarySystem.Data.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Authors",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "George R. R. Martin" },
+                    { 2, "Jorge Bucay" },
+                    { 3, "Paulo Coelho" },
+                    { 4, "Dr Radeva" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "GenreName" },
+                values: new object[,]
+                {
+                    { 1, "Fantasy" },
+                    { 2, "Drama" },
+                    { 3, "Action and Adventure" },
+                    { 4, "Romance" },
+                    { 5, "Mystery" },
+                    { 6, "Horror" },
+                    { 7, "Science" },
+                    { 8, "History" },
+                    { 9, "Math" },
+                    { 10, "Comics" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Books",
+                columns: new[] { "Id", "AuthorId", "GenreId", "IsAvailable", "Title" },
+                values: new object[,]
+                {
+                    { new Guid("73a1a1de-a54f-4578-a51f-6fe896f5c630"), 1, 1, true, "A Game of Thrones" },
+                    { new Guid("136c7bfc-c5b9-41a3-909f-b20fed4f188f"), 1, 1, true, "A Clash of Kings" },
+                    { new Guid("354690b9-d516-454e-9651-15d7d9e504e1"), 1, 1, true, "A Storm of Swords" },
+                    { new Guid("b01b4f03-20ea-4dd6-a0a2-3bab3db66cbf"), 1, 1, true, "A Feast for Crows" },
+                    { new Guid("e90de0c0-9666-46d2-a015-f1d25c6e7c20"), 1, 1, true, "A Dance with Dragons" },
+                    { new Guid("bd7fc284-bc29-43be-b9ac-93f313f9ccfb"), 1, 1, true, "The Winds of Winter" },
+                    { new Guid("41e3ccaa-144c-4f8f-9740-61d73da359fb"), 1, 1, true, "A Dream of Spring" }
                 });
 
             migrationBuilder.CreateIndex(
