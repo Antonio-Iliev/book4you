@@ -5,8 +5,9 @@ using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class RemoveBookCommand : ICommand
+    public class ReturnBookCommand : ICommand
     {
+        // params user, book 
         public string Execute(IEnumerable<string> parameters)
         {
             throw new NotImplementedException();
