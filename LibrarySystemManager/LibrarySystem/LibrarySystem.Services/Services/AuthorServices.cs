@@ -30,6 +30,9 @@ namespace LibrarySystem.Services.Services
             return newAuthor;
         }
 
-
+        public Author GetAuthor(string authorName)
+        {
+            return context.Authors.FirstOrDefault(a => a.Name == authorName);
+        }
     }
 }

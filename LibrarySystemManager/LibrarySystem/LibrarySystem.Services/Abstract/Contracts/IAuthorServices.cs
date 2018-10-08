@@ -5,5 +5,7 @@ namespace LibrarySystem.Services.Services
     public interface IAuthorServices
     {
         Author AddAuthor(string authorName);
+
+        Author GetAuthor(string authorName);
     }
 }

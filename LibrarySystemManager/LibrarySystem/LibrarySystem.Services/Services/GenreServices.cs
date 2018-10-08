@@ -28,7 +28,11 @@ namespace LibrarySystem.Services.Services
             }
 
             return newGenre;
+        }
 
+        public Genre GetGenre(string genreName)
+        {
+            return context.Genres.FirstOrDefault(g => g.GenreName == genreName);
         }
     }
 }
