@@ -12,15 +12,17 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         internal const string UserDoesNotExist = "This user does not exist";
         internal const string BookDoesNotExist = "This user does not exist";
 
-        // Constrain
+        // Constraints
         internal const int MaxBookTitleLength = 50;
         internal const int MaxGenreNameLength = 50;
         internal const int MaxAuthorNameLength = 50;
         internal const int MinUserNameLength = 1;
         internal const int MaxUserNameLength = 20;
-
-        //
         internal const int InitialBookAmount = 10;
+
+        //Commands
+        //AddUserCommand, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Dupnitsa
+
 
     }
 }

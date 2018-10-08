@@ -15,7 +15,7 @@ namespace LibrarySystem.Services
         }
 
         // Address
-        public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted)
+        public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             var user = new User
             {
@@ -24,7 +24,8 @@ namespace LibrarySystem.Services
                 LastName = lastName,
                 PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
-                IsDeleted = false
+                IsDeleted = false,
+                Address = address
             };
 
             this.context.Users.Add(user);
@@ -63,7 +64,7 @@ namespace LibrarySystem.Services
             return result;
         }
 
-        public User UpdateUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, ICollection<UsersBooks> books)
+        public User UpdateUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address, ICollection<UsersBooks> usersBooks)
         {
             throw new NotImplementedException();
         }
