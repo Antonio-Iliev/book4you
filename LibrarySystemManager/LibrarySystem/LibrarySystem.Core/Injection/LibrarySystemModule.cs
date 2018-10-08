@@ -24,12 +24,12 @@ namespace LibrarySystem.ConsoleClient.Injection
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
             builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>();
-           // builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
+            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         public void RegisterCommands(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(x => x.Namespace.Contains("Command"))
+                .Where(x => x.Namespace.Contains("Commands"))
                 .AsImplementedInterfaces();
         }
         public void RegisterServices(ContainerBuilder builder)
@@ -37,11 +37,6 @@ namespace LibrarySystem.ConsoleClient.Injection
             builder.RegisterAssemblyTypes(Assembly.Load("LibrarySystem.Services"))
                 .Where(s => s.Namespace.Contains("Services"))
                 .AsImplementedInterfaces();
-        }
-        public void RegisterProviders(ContainerBuilder builder)
-        {
-            builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
-        }
-        
+        }      
     }
 }

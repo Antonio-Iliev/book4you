@@ -15,7 +15,7 @@ namespace LibrarySystem.Services
         }
 
         // Address
-        public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address, ICollection<UsersBooks> usersBooks)
+        public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             var user = new User
             {
@@ -25,8 +25,7 @@ namespace LibrarySystem.Services
                 PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
                 IsDeleted = false,
-                Address = address,
-                UsersBooks = usersBooks
+                Address = address
             };
 
             this.context.Users.Add(user);
