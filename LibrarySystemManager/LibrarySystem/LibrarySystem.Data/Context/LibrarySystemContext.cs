@@ -29,12 +29,10 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
-            var genres = JsonConvert.DeserializeObject<Genre[]>(File.ReadAllText("../LibrarySystem.Data/Files/Genres.json"));
-            var authors = JsonConvert.DeserializeObject<Author[]>(File.ReadAllText("../LibrarySystem.Data/Files/Authors.json"));
-            var books = JsonConvert.DeserializeObject<Book[]>(File.ReadAllText("../LibrarySystem.Data/Files/Books.json"));
-            var towns = JsonConvert.DeserializeObject<Town[]>(File.ReadAllText("../LibrarySystem.Data/Files/Towns.json"));
+            var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
+            var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
+            var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
+            var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
 
             modelBuilder.Entity<Town>().HasData(towns);
             modelBuilder.Entity<Genre>().HasData(genres);
@@ -45,6 +43,18 @@ namespace LibrarySystem.Data.Context
                 .HasKey(p => new { p.UserId, p.BookId });
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        private string ReadJsonFile(string fileName)
+        {
+            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            {
+                return File.ReadAllText("../LibrarySystem.Data/Files/" + fileName);
+            }
+            else
+            {
+                return File.ReadAllText("../../../../LibrarySystem.Data/Files/" + fileName);
+            }
         }
     }
 }

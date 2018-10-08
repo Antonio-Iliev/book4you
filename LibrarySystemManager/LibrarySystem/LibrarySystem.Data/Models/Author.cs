@@ -7,6 +7,7 @@ namespace LibrarySystem.Data.Models
 {
     public class Author
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
