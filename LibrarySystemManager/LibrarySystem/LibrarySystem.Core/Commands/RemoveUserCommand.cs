@@ -9,15 +9,16 @@ using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class RemoveUserCommand : BaseCommand
+    public class RemoveUserCommand : ICommand
     {
-        private IUsersServices usersServices;
-        public RemoveUserCommand(IUsersServices usersServices,ILibrarySystemContext libraryContext) : base(libraryContext)
+        private readonly IUsersServices usersServices;
+
+        public RemoveUserCommand(IUsersServices usersServices)
         {
             this.usersServices = usersServices;
         }
 
-        public override string Execute(IEnumerable<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
 

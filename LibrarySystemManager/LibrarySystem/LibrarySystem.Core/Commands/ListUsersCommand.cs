@@ -10,34 +10,36 @@ using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class ListUsersCommand : BaseCommand
+    public class ListUsersCommand : ICommand
     {
         private IUsersServices usersServices;
-        public ListUsersCommand(IUsersServices usersServices, ILibrarySystemContext libraryContext) : base(libraryContext)
+
+        public ListUsersCommand(IUsersServices usersServices)
         {
             this.usersServices = usersServices;
         }
 
-        public override string Execute(IEnumerable<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
-            var args = parameters.ToList();
-            int count = 0;
-           
-            if (args.Count == 0)
+            if (this.usersServices.ListUsers().Count() == 0)
             {
-                var users = this.usersServices.ListUsers(null, null, null);
-                count = users.Count();
-            }
-            else if (args.Count != 3)
-            {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                return "No users found";
             }
             else
             {
-                var users = this.usersServices.ListUsers(args[0], args[1], args[2]);
-                count = 1;
+                var users = this.usersServices.ListUsers();
+
+                var result = new StringBuilder();
+
+                foreach (var user in users)
+                {
+                    result.Append(user);
+                    result.Append('\n');
+                }
+
+                return result.ToString();
             }
-            return $"{count} user/s found";
+
         }
     }
 }

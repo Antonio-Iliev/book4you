@@ -7,6 +7,13 @@ namespace LibrarySystem.Data.Models
 {
     public class User
     {
+        //private ICollection<UsersBooks> usersBooks;
+
+        //public User()
+        //{
+        //    this.usersBooks = new HashSet<UsersBooks>();
+        //}
+
         public Guid Id { get; set; }
 
         [Required]
@@ -33,5 +40,9 @@ namespace LibrarySystem.Data.Models
         public Address Address { get; set; }
 
         public virtual ICollection<UsersBooks> UsersBooks { get; set; }
+        //{
+        //    get { return this.usersBooks; }
+        //    set { this.usersBooks = value; }
+        //}
     }
 }

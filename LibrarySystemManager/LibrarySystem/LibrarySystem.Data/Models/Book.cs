@@ -23,5 +23,8 @@ namespace LibrarySystem.Data.Models
         public Author Author { get; set; }
         
         public virtual ICollection<UsersBooks> UsersBooks { get; set; }
+
+        //public Guid UserId { get; set; }
+        //public virtual User User { get; set; }
     }
 }

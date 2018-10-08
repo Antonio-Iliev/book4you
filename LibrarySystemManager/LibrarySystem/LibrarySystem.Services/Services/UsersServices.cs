@@ -4,16 +4,14 @@ using System.Linq;
 using System.Text;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Services.Abstract;
 
 namespace LibrarySystem.Services
 {
-    public class UsersServices : IUsersServices
+    public class UsersServices : BaseServicesClass, IUsersServices
     {
-        private ILibrarySystemContext libraryContext;
-
-        public UsersServices(ILibrarySystemContext libraryContext)
+        public UsersServices(ILibrarySystemContext context) : base(context)
         {
-            this.libraryContext = libraryContext;
         }
 
         // Address
@@ -24,41 +22,43 @@ namespace LibrarySystem.Services
                 FirstName = firstName,
                 MiddleName = middleName,
                 LastName = lastName,
-                PhoneNumber=phoneNumber,
+                PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
                 IsDeleted = false
             };
 
-            this.libraryContext.Users.Add(user);
-            this.libraryContext.SaveChanges();
+            this.context.Users.Add(user);
+            this.context.SaveChanges();
 
             return user;
         }
-       
-        public IEnumerable<User> ListUsers(string firstName, string middleName, string lastName)
-        {
-            var usersQuery = this.libraryContext.Users.AsQueryable();
 
-            if (firstName != null && middleName!=null && lastName != null)
-            {
-                usersQuery = usersQuery.Where(p => p.FirstName == firstName 
-                && p.MiddleName==middleName
-                && p.LastName == lastName);
-            }
-            return usersQuery.ToList();
+        public User GetUser(string firstName, string middleName, string lastName)
+        {
+            var user = this.context.Users.
+            SingleOrDefault(p => p.FirstName == firstName
+            && p.MiddleName == middleName
+            && p.LastName == lastName);
+
+            return user;
+        }
+
+        public IEnumerable<User>ListUsers()
+        {
+            return this.context.Users.ToList();
         }
 
         public User RemoveUser(string firstName, string middleName, string lastName)
         {
-            var result = this.libraryContext.Users
-                .SingleOrDefault(u => u.FirstName == firstName 
-                && u.MiddleName==middleName 
+            var result = this.context.Users
+                .SingleOrDefault(u => u.FirstName == firstName
+                && u.MiddleName == middleName
                 && u.LastName == lastName);
 
             if (result != null)
             {
                 result.IsDeleted = true;
-                this.libraryContext.SaveChanges();
+                this.context.SaveChanges();
             }
             return result;
         }
