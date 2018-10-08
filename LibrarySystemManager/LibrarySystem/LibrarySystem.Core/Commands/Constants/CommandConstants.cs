@@ -11,6 +11,7 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         internal const string UserAlreadyExists = "This user already exists";
         internal const string UserDoesNotExist = "This user does not exist";
         internal const string BookDoesNotExist = "This user does not exist";
+        internal const string NoUsersFound= "No users found";
 
         // Constraints
         internal const int MaxBookTitleLength = 50;
