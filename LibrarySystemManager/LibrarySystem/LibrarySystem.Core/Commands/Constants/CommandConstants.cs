@@ -10,6 +10,7 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         internal const string InvalidNumbersOfParameters = "Invalid numbers of parameters";
         internal const string UserAlreadyExists = "This user already exists";
         internal const string UserDoesNotExist = "This user does not exist";
+        internal const string BookDoesNotExist = "This user does not exist";
 
         // Constrain
         internal const int MaxBookTitleLength = 50;
