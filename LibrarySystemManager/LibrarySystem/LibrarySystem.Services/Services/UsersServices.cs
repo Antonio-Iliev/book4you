@@ -24,10 +24,10 @@ namespace LibrarySystem.Services
                 PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
                 IsDeleted = false,
-                Address = address
+                AddressId = address.Id
             };
 
-            base.context.Users.Add(user);
+            user = base.context.Users.Add(user).Entity;
             base.context.SaveChanges();
 
             return user;

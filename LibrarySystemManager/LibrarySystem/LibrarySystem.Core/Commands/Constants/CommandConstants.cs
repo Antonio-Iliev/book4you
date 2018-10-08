@@ -22,14 +22,11 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         internal const int InitialBookAmount = 10;
 
         //Commands
-<<<<<<< HEAD
-        //AddUser, Pesho, Peshov, Peshov, 0889257125, ul.Dran dran, Dupnitsa
+        //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia
         //getuser, Gosho, Goshov, Goshov
-=======
         //AddUser, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Dupnitsa
         //AddBook, Ala Bala, Horror, Pesho
         //AddBook, A Clash, Drama, Dr Radeva
->>>>>>> eaee544d52f41fd4b3e435d0f520726909f5620a
 
 
     }

@@ -37,7 +37,7 @@ namespace LibrarySystem.ConsoleClient.Commands
                 return CommandConstants.UserDoesNotExist;
             }
             
-            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {street} {town}";
+            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {result.Address.StreetAddress} {result.Address.Town.TownName}";
         }
     }
 }
