@@ -5,6 +5,7 @@ namespace LibrarySystem.Data.Models
 {
     public class Town
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
