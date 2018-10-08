@@ -36,7 +36,7 @@ namespace LibrarySystem.Services.Services
 
         public IEnumerable<Address> GetAddress(string streetAddress)
         {
-            throw new Exception();
+            return context.Addresses.Where(a => a.StreetAddress == streetAddress);
         }
 
     }
