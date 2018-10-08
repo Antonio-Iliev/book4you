@@ -16,7 +16,14 @@ namespace LibrarySystem.Services
 
         public Book AddBook(string title, int genreId, int authorId, int bookInStore)
         {
-            var newBook = new Book
+            var newBook = this.context.Books.FirstOrDefault(b => b.Title == title);
+
+            if (newBook != null)
+            {
+                throw new ArgumentException("The book already exist.");
+            }
+
+            newBook = new Book
             {
                 Title = title,
                 GenreId = genreId,
@@ -26,13 +33,26 @@ namespace LibrarySystem.Services
 
             this.context.Books.Add(newBook);
             this.context.SaveChanges();
-
             return newBook;
         }
 
-        public Book GetBook(string bookName)
+        public string GetBook(string bookTitle)
         {
-            return context.Books.SingleOrDefault(b => b.Title == bookName);
+            var query = context.Books
+                .Select(b => new
+                {
+                    Title = b.Title,
+                    Author = b.Author.Name,
+                    Genre = b.Genre.GenreName
+                }).Where(b => b.Title == bookTitle).ToList();
+
+            if (!query.Any())
+            {
+                return "There is no such book in this the Library.";
+            }
+
+            var book = query[0];
+            return $"{book.Title}, {book.Author}, {book.Genre}";
         }
     }
 }

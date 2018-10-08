@@ -20,7 +20,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
         public string Execute(IEnumerable<string> parameters)
         {
-            IList<string> args = parameters.Where(p => p != null && p != "").ToList();
+            IList<string> args = parameters.ToList();
 
             if (args.Count != 1)
             {
@@ -32,12 +32,7 @@ namespace LibrarySystem.ConsoleClient.Commands
                 return CommandConstants.BookDoesNotExist;
             }
 
-            var thisBook = this.booksServices.GetBook(args[0]);
-
-            return $"Book Title: {thisBook.Title}, " +
-                $"Author: {thisBook.Author.Name}, " +
-                $"Genre: {thisBook.Genre.GenreName} " +
-                $"Available books {thisBook.BooksInStore}";
+            return this.booksServices.GetBook(args[0]);
         }
     }
 }

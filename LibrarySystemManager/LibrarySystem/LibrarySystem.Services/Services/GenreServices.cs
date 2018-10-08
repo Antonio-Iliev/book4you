@@ -20,11 +20,9 @@ namespace LibrarySystem.Services.Services
 
             if (newGenre == null)
             {
-                newGenre = new Genre
-                {
-                    GenreName = genreName
-                };
-                context.Genres.Add(newGenre);
+                this.context.Genres.Add(new Genre { GenreName = genreName });
+                this.context.SaveChanges();
+                newGenre = context.Genres.FirstOrDefault(g => g.GenreName == genreName);
             }
 
             return newGenre;
