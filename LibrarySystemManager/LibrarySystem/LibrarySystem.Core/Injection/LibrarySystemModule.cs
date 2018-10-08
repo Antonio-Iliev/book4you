@@ -1,10 +1,12 @@
 ﻿using Autofac;
+using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
 
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
+using System.Linq;
 using System.Reflection;
 
 namespace LibrarySystem.ConsoleClient.Injection
@@ -28,9 +30,19 @@ namespace LibrarySystem.ConsoleClient.Injection
         }
         public void RegisterCommands(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(x => x.Namespace.Contains("Commands"))
-                .AsImplementedInterfaces();
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
+
+            var commandTypes = currentAssembly.DefinedTypes
+                .Where(typeInfo =>
+                    typeInfo.ImplementedInterfaces.Contains(typeof(ICommand)))
+                .ToList();
+
+            foreach (var commandType in commandTypes)
+            {
+                builder.RegisterType(commandType.AsType())
+                  .Named<ICommand>(
+                    commandType.Name.ToLower().Replace("command", ""));
+            }
         }
         public void RegisterServices(ContainerBuilder builder)
         {

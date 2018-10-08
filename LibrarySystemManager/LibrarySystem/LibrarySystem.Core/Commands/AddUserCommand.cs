@@ -33,7 +33,7 @@ namespace LibrarySystem.ConsoleClient.Commands
         {
             var args = parameters.ToList();
 
-            if (args.Count != 8)
+            if (args.Count != 6)
             {
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }

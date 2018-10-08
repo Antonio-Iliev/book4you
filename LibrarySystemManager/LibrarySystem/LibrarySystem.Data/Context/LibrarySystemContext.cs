@@ -29,6 +29,8 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             var genres = JsonConvert.DeserializeObject<Genre[]>(File.ReadAllText("../LibrarySystem.Data/Files/Genres.json"));
             var authors = JsonConvert.DeserializeObject<Author[]>(File.ReadAllText("../LibrarySystem.Data/Files/Authors.json"));
             var books = JsonConvert.DeserializeObject<Book[]>(File.ReadAllText("../LibrarySystem.Data/Files/Books.json"));
