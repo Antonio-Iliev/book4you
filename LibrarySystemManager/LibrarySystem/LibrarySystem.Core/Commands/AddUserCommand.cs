@@ -38,6 +38,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             var addedOn = DateTime.Now;
             bool isDeleted = false;
 
+            //Address address=new Address(args[4], )
+
             if (firstName.Length < CommandConstants.MinUserNameLength 
                 || firstName.Length > CommandConstants.MaxUserNameLength)
             {

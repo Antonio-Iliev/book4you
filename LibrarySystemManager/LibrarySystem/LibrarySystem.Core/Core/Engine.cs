@@ -41,7 +41,7 @@ namespace LibrarySystem.ConsoleClient.Core
             var results = new List<string>();
             foreach (string commandLine in commands)
             {
-                var splittedCommand = commandLine.Trim().Split();
+                var splittedCommand = commandLine.Trim().Split(", ");
                 var commandName = splittedCommand[0].ToLower();
                 var commandParams = splittedCommand.Skip(1).ToList();
                 var command = this.autofacContext.ResolveNamed<ICommand>(commandName);

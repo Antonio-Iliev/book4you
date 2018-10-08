@@ -7,10 +7,10 @@ namespace LibrarySystem.Services
     public interface IUsersServices
     {
         User AddUser(string firstName, string middleName, string lastName,
-            int phoneNumber, DateTime addedOn, bool IsDeleted);
+            int phoneNumber, DateTime addedOn, bool IsDeleted, Address address, ICollection<UsersBooks> usersBooks);
 
         User UpdateUser(string firstName, string middleName, string lastName,
-            int phoneNumber, DateTime addedOn, bool IsDeleted, ICollection<UsersBooks> books);
+            int phoneNumber, DateTime addedOn, bool IsDeleted, Address address, ICollection<UsersBooks> books);
 
         User RemoveUser(string firstName, string middleName, string lastName);
 
