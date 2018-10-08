@@ -15,6 +15,6 @@ namespace LibrarySystem.Data.Models
         public int TownId { get; set; }
         public Town Town { get; set; }
 
-        public virtual ICollection<UsersAddresses> UsersAddresses { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

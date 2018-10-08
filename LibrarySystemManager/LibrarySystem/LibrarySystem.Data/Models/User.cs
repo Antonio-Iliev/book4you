@@ -29,7 +29,8 @@ namespace LibrarySystem.Data.Models
 
         public bool IsDeleted { get; set; }
 
-        public virtual ICollection<UsersAddresses> UserAddresses { get; set; }
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
 
         public virtual ICollection<UsersBooks> UsersBooks { get; set; }
     }

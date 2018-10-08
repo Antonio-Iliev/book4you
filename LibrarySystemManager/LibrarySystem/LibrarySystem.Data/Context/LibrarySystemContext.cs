@@ -17,7 +17,6 @@ namespace LibrarySystem.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Town> Towns { get; set; }
-        public DbSet<UsersAddresses> UsersAddresses { get; set; }
         public DbSet<UsersBooks> UsersBooks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -39,10 +38,7 @@ namespace LibrarySystem.Data.Context
             modelBuilder.Entity<Genre>().HasData(genres);
             modelBuilder.Entity<Author>().HasData(authors);
             modelBuilder.Entity<Book>().HasData(books);
-
-            modelBuilder.Entity<UsersAddresses>()
-                    .HasKey(p => new { p.UserId, p.AddressId });
-
+            
             modelBuilder.Entity<UsersBooks>()
                 .HasKey(p => new { p.UserId, p.BookId });
 
