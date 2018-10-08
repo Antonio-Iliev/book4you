@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrarySystemContext))]
-    [Migration("20181008075115_AddData")]
-    partial class AddData
+    [Migration("20181008122142_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,13 +193,11 @@ namespace LibrarySystem.Data.Migrations
                 {
                     b.Property<Guid>("UserId");
 
-                    b.Property<int>("BookId");
-
-                    b.Property<Guid?>("BookId1");
+                    b.Property<Guid>("BookId");
 
                     b.HasKey("UserId", "BookId");
 
-                    b.HasIndex("BookId1");
+                    b.HasIndex("BookId");
 
                     b.ToTable("UsersBooks");
                 });
@@ -237,7 +235,8 @@ namespace LibrarySystem.Data.Migrations
                 {
                     b.HasOne("LibrarySystem.Data.Models.Book", "Book")
                         .WithMany("UsersBooks")
-                        .HasForeignKey("BookId1");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LibrarySystem.Data.Models.User", "User")
                         .WithMany("UsersBooks")
