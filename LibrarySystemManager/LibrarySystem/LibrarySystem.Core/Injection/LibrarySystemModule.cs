@@ -30,7 +30,7 @@ namespace LibrarySystem.ConsoleClient.Injection
         {
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(x => x.Namespace.Contains("Commands"))
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces().PropertiesAutowired();
         }
         public void RegisterServices(ContainerBuilder builder)
         {
