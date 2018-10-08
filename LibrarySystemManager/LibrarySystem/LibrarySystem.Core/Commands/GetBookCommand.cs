@@ -20,7 +20,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
         public string Execute(IEnumerable<string> parameters)
         {
-            IList<string> args = parameters.Where(p => p != null && p != "").ToList();
+            IList<string> args = parameters.ToList();
 
             if (args.Count != 1)
             {
