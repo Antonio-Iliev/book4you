@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Constants;
 using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,14 @@ namespace LibrarySystem.ConsoleClient.Commands
     public class GetUserCommand : ICommand
     {
         private IUsersServices usersServices;
+        private readonly IAddressService addressService;
+        private readonly ITownService townService;
 
-        public GetUserCommand(IUsersServices usersServices)
+        public GetUserCommand(IUsersServices usersServices, IAddressService addressService, ITownService townService)
         {
             this.usersServices = usersServices;
+            this.addressService = addressService;
+            this.townService = townService;
         }
 
         public string Execute(IEnumerable<string> parameters)
@@ -31,9 +36,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             {
                 return CommandConstants.UserDoesNotExist;
             }
-
-            //TODO add addres
-            return $"User: {result.Id} {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} result.UserAddresses";
+            
+            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {street} {town}";
         }
     }
 }

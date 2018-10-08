@@ -27,7 +27,5 @@ namespace LibrarySystem.Data.Models
         
         public virtual ICollection<UsersBooks> UsersBooks { get; set; }
 
-        //public Guid UserId { get; set; }
-        //public virtual User User { get; set; }
     }
 }

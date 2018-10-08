@@ -26,8 +26,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
         public string Execute(IEnumerable<string> parameters)
         {
-            // TODO remove Where
-            IList<string> args = parameters.Where(p => p != null && p != "").ToList();
+            IList<string> args = parameters.ToList();
 
             if (args.Count != 3)
             {

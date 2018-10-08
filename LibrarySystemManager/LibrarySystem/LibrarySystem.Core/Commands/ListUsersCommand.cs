@@ -23,7 +23,7 @@ namespace LibrarySystem.ConsoleClient.Commands
         {
             if (this.usersServices.ListUsers().Count() == 0)
             {
-                return "No users found";
+                return CommandConstants.NoUsersFound;
             }
             else
             {
