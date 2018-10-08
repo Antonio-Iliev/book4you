@@ -21,7 +21,7 @@ namespace LibrarySystem.Services
                 Title = title,
                 GenreId = genreId,
                 AuthorId = authorId,
-                BookInStore = bookInStore
+              //  BookInStore = bookInStore
             };
 
             this.context.Books.Add(newBook);

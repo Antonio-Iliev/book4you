@@ -32,7 +32,8 @@ namespace LibrarySystem.ConsoleClient.Commands
                 return CommandConstants.UserDoesNotExist;
             }
 
-            return $"User: {result.Id} {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {result.UserAddresses}";
+            //TODO add addres
+            return $"User: {result.Id} {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} result.UserAddresses";
         }
     }
 }
