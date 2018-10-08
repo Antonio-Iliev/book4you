@@ -1,7 +1,6 @@
 ﻿using LibrarySystem.Data.Contracts;
 using LibrarySystem.Services.Abstract;
 using System.Linq;
-using System.Collections.Generic;
 using LibrarySystem.Data.Models;
 
 namespace LibrarySystem.Services.Services
@@ -15,7 +14,7 @@ namespace LibrarySystem.Services.Services
         {
             var town = new Town()
             {
-                TownName = townName
+                TownName = townName               
             };
 
             var dbTown = context.Towns.SingleOrDefault(t => t.TownName == townName);
@@ -25,7 +24,6 @@ namespace LibrarySystem.Services.Services
                 base.context.Towns.Add(town);
                 context.SaveChanges();
             }
-
             return town;
         }
 

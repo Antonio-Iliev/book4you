@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
@@ -28,8 +27,8 @@ namespace LibrarySystem.Services
                 Address = address
             };
 
-            this.context.Users.Add(user);
-            this.context.SaveChanges();
+            base.context.Users.Add(user);
+            base.context.SaveChanges();
 
             return user;
         }
@@ -40,6 +39,19 @@ namespace LibrarySystem.Services
             SingleOrDefault(p => p.FirstName == firstName
             && p.MiddleName == middleName
             && p.LastName == lastName);
+
+            //var query = this.context.Users
+            //    .Select(u => new
+            //    {
+            //        firstName=u.FirstName,
+            //        middleName=u.MiddleName,
+            //        lastName=u.LastName,
+            //        phone=u.PhoneNumber,
+            //        Address=u.Address.StreetAddress,
+            //        town=u.Address.Town.TownName
+            //    })
+            //    .Where(u=>u.firstName==firstName)
+            //    ;
 
             return user;
         }
@@ -64,9 +76,21 @@ namespace LibrarySystem.Services
             return result;
         }
 
-        public User UpdateUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address, ICollection<UsersBooks> usersBooks)
+        public User UpdateUser(string firstName, string middleName, string lastName, Address address)
         {
-            throw new NotImplementedException();
+            var result = this.context.Users
+                .SingleOrDefault(u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName);
+
+            if (result != null)
+            {
+                result.Address.StreetAddress = address.StreetAddress;
+                result.Address.Town = address.Town;
+
+                this.context.SaveChanges();
+            }
+            return result;
         }
     }
 }

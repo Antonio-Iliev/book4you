@@ -19,11 +19,12 @@ namespace LibrarySystem.Services.Services
             var address = new Address()
             {
                 StreetAddress = streetAddress,
+                Town=town,
                 TownId = town.Id
             };
 
             var dbAddress = context.Addresses
-                .FirstOrDefault((adr) => adr.StreetAddress == streetAddress && adr.Id == town.Id);
+                .SingleOrDefault((adr) => adr.StreetAddress == streetAddress && adr.Id == town.Id);
 
             if (dbAddress == null)
             {

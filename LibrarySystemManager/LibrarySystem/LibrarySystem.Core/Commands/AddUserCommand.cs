@@ -46,8 +46,6 @@ namespace LibrarySystem.ConsoleClient.Commands
             Town town = townService.AddTown(args[5]);
             Address address = addressService.AddAddress(args[4], town);
 
-            //Address address=new Address(args[4], )
-
             if (firstName.Length < CommandConstants.MinUserNameLength 
                 || firstName.Length > CommandConstants.MaxUserNameLength)
             {
