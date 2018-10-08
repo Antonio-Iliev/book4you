@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LibrarySystem.Services.Services
 {
-    public class AddressService : BaseServicesClass
+    public class AddressService : BaseServicesClass, IAddressService
     {
         public AddressService(ILibrarySystemContext context) : base(context)
         {
