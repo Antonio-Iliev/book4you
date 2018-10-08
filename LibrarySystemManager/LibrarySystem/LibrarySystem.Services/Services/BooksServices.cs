@@ -21,7 +21,7 @@ namespace LibrarySystem.Services
                 Title = title,
                 GenreId = genreId,
                 AuthorId = authorId,
-              //  BookInStore = bookInStore
+                BooksInStore = bookInStore
             };
 
             this.context.Books.Add(newBook);
@@ -32,9 +32,7 @@ namespace LibrarySystem.Services
 
         public Book GetBook(string bookName)
         {
-            Book theBook = context.Books.SingleOrDefault(b => b.Title == bookName);
-
-            return theBook;
+            return context.Books.SingleOrDefault(b => b.Title == bookName);
         }
     }
 }
