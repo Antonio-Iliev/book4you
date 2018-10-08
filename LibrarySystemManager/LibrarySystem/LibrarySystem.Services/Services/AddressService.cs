@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LibrarySystem.Services.Services
 {
-    public class AddressService : BaseServicesClass
+    public class AddressService : BaseServicesClass, IAddressService
     {
         public AddressService(ILibrarySystemContext context) : base(context)
         {
@@ -36,7 +36,7 @@ namespace LibrarySystem.Services.Services
 
         public IEnumerable<Address> GetAddress(string streetAddress)
         {
-            throw new Exception();
+            return context.Addresses.Where(a => a.StreetAddress == streetAddress);
         }
 
     }
