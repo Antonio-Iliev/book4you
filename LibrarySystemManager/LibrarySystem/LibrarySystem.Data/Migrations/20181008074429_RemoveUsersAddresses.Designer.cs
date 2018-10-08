@@ -4,14 +4,16 @@ using LibrarySystem.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrarySystemContext))]
-    partial class LibrerySystemContextModelSnapshot : ModelSnapshot
+    [Migration("20181008074429_RemoveUsersAddresses")]
+    partial class RemoveUsersAddresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,13 +86,13 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("Books");
 
                     b.HasData(
-                        new { Id = new Guid("73a1a1de-a54f-4578-a51f-6fe896f5c630"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Game of Thrones" },
-                        new { Id = new Guid("136c7bfc-c5b9-41a3-909f-b20fed4f188f"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Clash of Kings" },
-                        new { Id = new Guid("354690b9-d516-454e-9651-15d7d9e504e1"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Storm of Swords" },
-                        new { Id = new Guid("b01b4f03-20ea-4dd6-a0a2-3bab3db66cbf"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Feast for Crows" },
-                        new { Id = new Guid("e90de0c0-9666-46d2-a015-f1d25c6e7c20"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Dance with Dragons" },
-                        new { Id = new Guid("bd7fc284-bc29-43be-b9ac-93f313f9ccfb"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "The Winds of Winter" },
-                        new { Id = new Guid("41e3ccaa-144c-4f8f-9740-61d73da359fb"), AuthorId = 1, BooksInStore = 10, GenreId = 1, Title = "A Dream of Spring" }
+                        new { Id = new Guid("73a1a1de-a54f-4578-a51f-6fe896f5c630"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Game of Thrones" },
+                        new { Id = new Guid("136c7bfc-c5b9-41a3-909f-b20fed4f188f"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Clash of Kings" },
+                        new { Id = new Guid("354690b9-d516-454e-9651-15d7d9e504e1"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Storm of Swords" },
+                        new { Id = new Guid("b01b4f03-20ea-4dd6-a0a2-3bab3db66cbf"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Feast for Crows" },
+                        new { Id = new Guid("e90de0c0-9666-46d2-a015-f1d25c6e7c20"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Dance with Dragons" },
+                        new { Id = new Guid("bd7fc284-bc29-43be-b9ac-93f313f9ccfb"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "The Winds of Winter" },
+                        new { Id = new Guid("41e3ccaa-144c-4f8f-9740-61d73da359fb"), AuthorId = 1, BooksInStore = 0, GenreId = 1, Title = "A Dream of Spring" }
                     );
                 });
 
