@@ -14,7 +14,6 @@ namespace LibrarySystem.Data.Contracts
         DbSet<User> Users { get; set; }
         DbSet<Address> Addresses { get; set; }
         DbSet<Town> Towns { get; set; }
-        DbSet<UsersAddresses> UsersAddresses { get; set; }
         DbSet<UsersBooks> UsersBooks { get; set; }
 
         int SaveChanges();

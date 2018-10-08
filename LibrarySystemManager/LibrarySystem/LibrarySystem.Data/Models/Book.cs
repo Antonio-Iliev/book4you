@@ -13,7 +13,8 @@ namespace LibrarySystem.Data.Models
         [MaxLength(50)]
         public string Title { get; set; }
         
-        public bool IsAvailable { get; set; }
+        [Range(0,20)]
+        public int BooksInStore { get; set; }
 
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
