@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibrarySystem.Data.Migrations
 {
-    [DbContext(typeof(ILibrarySystemContext))]
+    [DbContext(typeof(LibrarySystemContext))]
     [Migration("20181007140628_AddTownData")]
     partial class AddTownData
     {

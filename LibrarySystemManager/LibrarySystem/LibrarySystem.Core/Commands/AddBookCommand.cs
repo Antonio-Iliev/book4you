@@ -17,18 +17,18 @@ namespace LibrarySystem.ConsoleClient.Commands
             this.booksServices = booksServices;
         }
 
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
-            parameters = parameters.Where(p => p != null && p != "").ToList();
+            var args = parameters.Where(p => p != null && p != "").ToList();
 
-            if (parameters.Count != 3)
+            if (args.Count != 3)
             {
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }
 
-            string title = parameters[0];
-            string genre = parameters[1];
-            string author = parameters[2];
+            string title = args[0];
+            string genre = args[1];
+            string author = args[2];
 
             if (title.Length > CommandConstants.MaxBookTitleLength)
             {

@@ -3,6 +3,7 @@ using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Services;
 using LibrarySystem.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -11,36 +12,54 @@ using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class AddUserCommand : BaseCommand
+    public class AddUserCommand : ICommand
     {
-        public AddUserCommand(ILibrarySystemContext libraryContext) : base(libraryContext)
+        private readonly IUsersServices usersServices;
+
+        public AddUserCommand(IUsersServices usersServices)
         {
+            this.usersServices = usersServices;
         }
+
         //addUser firstName, middleName, lastName, int phoneNumber, DateTime addedOn, bool IsDeleted
         // Address & books TO DO
-        public override string Execute(IEnumerable<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
-            if (this.LibraryContext.Users
-                .Any(u => u.FirstName == args[0]
-                && u.MiddleName == args[1]
-                && u.LastName == args[2]))
-            {
-                throw new ArgumentException(CommandConstants.UserAlreadyExists);
-            }
-            var user = new User
-            {
-                FirstName = args[0],
-                MiddleName = args[1],
-                LastName = args[2],
-                PhoneNumber = int.Parse(args[3]),
-                AddOnDate = DateTime.Now,
-                IsDeleted = false,
-            };
-            this.LibraryContext.Users.Add(user);
-            this.LibraryContext.SaveChanges();
 
-            return $"Created user with id {user.Id}";
+            if (args.Count != 8)
+            {
+                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+            }
+            var firstName = args[0];
+            var middleName = args[1];
+            var lastName = args[2];
+            var phone = int.Parse(args[3]);
+            var addedOn = DateTime.Now;
+            bool isDeleted = false;
+
+            if (firstName.Length < CommandConstants.MinUserNameLength 
+                || firstName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The first name {firstName} should be between " +
+                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
+            if (middleName.Length < CommandConstants.MinUserNameLength
+                || middleName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The middle name {middleName} should be between " +
+                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
+            if (lastName.Length < CommandConstants.MinUserNameLength
+                || lastName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The last name {lastName} should be between " +
+                     $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
+            
+            usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted);
+
+            return $"New user {firstName} {lastName} was added.";
         }
     }
 }

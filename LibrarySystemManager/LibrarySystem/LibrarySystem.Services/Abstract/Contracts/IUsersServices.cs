@@ -14,8 +14,9 @@ namespace LibrarySystem.Services
 
         User RemoveUser(string firstName, string middleName, string lastName);
 
-        //listUsers & getUser
-        IEnumerable<User> ListUsers(string firstName, string middleName, string lastName);
+        User GetUser(string firstName, string middleName, string lastName);
+        
+        IEnumerable<User> ListUsers();
 
     }
 }
