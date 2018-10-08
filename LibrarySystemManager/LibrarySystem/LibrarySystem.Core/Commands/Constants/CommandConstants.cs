@@ -14,5 +14,8 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         internal const int MaxBookTitleLength = 50;
         internal const int MaxGenreNameLength = 50;
         internal const int MaxAuthorNameLength = 50;
+
+        //
+        internal const int InitialBookAmount = 10;
     }
 }

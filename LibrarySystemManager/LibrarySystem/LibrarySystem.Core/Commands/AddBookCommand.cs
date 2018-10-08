@@ -1,7 +1,8 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Constants;
 using LibrarySystem.ConsoleClient.Commands.Contracts;
-using LibrarySystem.Data.Context;
+using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +12,30 @@ namespace LibrarySystem.ConsoleClient.Commands
     public class AddBookCommand : ICommand
     {
         private readonly IBooksServices booksServices;
+        private readonly IGenreServices genreServices;
+        private readonly IAuthorServices authorServices;
 
-        public AddBookCommand(IBooksServices booksServices)
+        public AddBookCommand(IBooksServices booksServices,
+            IGenreServices genreServices,
+            IAuthorServices authorServices)
         {
             this.booksServices = booksServices;
+            this.genreServices = genreServices;
+            this.authorServices = authorServices;
         }
 
-        public string Execute(IList<string> parameters)
+        public string Execute(IEnumerable<string> parameters)
         {
-            parameters = parameters.Where(p => p != null && p != "").ToList();
+            IList<string> args = parameters.Where(p => p != null && p != "").ToList();
 
-            if (parameters.Count != 3)
+            if (args.Count != 3)
             {
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }
 
-            string title = parameters[0];
-            string genre = parameters[1];
-            string author = parameters[2];
+            string title = args[0];
+            string genre = args[1];
+            string author = args[2];
 
             if (title.Length > CommandConstants.MaxBookTitleLength)
             {
@@ -46,7 +53,10 @@ namespace LibrarySystem.ConsoleClient.Commands
                     $"{CommandConstants.MaxAuthorNameLength} symbols.";
             }
 
-            booksServices.AddBook(title, genre, author);
+            Genre newGenre = genreServices.AddGenre(genre);
+            Author newAuthor = authorServices.AddAuthor(author);
+
+            booksServices.AddBook(title, newGenre.Id, newAuthor.Id, CommandConstants.InitialBookAmount);
 
             return $"New book {title} was added.";
         }
