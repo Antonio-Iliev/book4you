@@ -20,11 +20,9 @@ namespace LibrarySystem.Services.Services
 
             if (newAuthor == null)
             {
-                newAuthor = new Author
-                {
-                    Name = authorName
-                };
-                context.Authors.Add(newAuthor);
+                this.context.Authors.Add(new Author { Name = authorName });
+                this.context.SaveChanges();
+                newAuthor = context.Authors.FirstOrDefault(a => a.Name == authorName);
             }
 
             return newAuthor;
