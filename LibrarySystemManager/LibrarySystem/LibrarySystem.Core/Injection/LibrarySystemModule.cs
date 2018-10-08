@@ -30,6 +30,11 @@ namespace LibrarySystem.ConsoleClient.Injection
         }
         public void RegisterCommands(ContainerBuilder builder)
         {
+<<<<<<< HEAD
+            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
+                .Where(x => x.Namespace.Contains("Commands"))
+                .AsImplementedInterfaces().PropertiesAutowired();
+=======
             Assembly currentAssembly = Assembly.GetExecutingAssembly();
 
             var commandTypes = currentAssembly.DefinedTypes
@@ -43,6 +48,7 @@ namespace LibrarySystem.ConsoleClient.Injection
                   .Named<ICommand>(
                     commandType.Name.ToLower().Replace("command", ""));
             }
+>>>>>>> 018ed377596e6e14f7dec4f0068ff735528ae112
         }
         public void RegisterServices(ContainerBuilder builder)
         {
