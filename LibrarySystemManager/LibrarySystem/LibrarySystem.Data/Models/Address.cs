@@ -7,6 +7,7 @@ namespace LibrarySystem.Data.Models
     public class Address
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

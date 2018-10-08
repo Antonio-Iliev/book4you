@@ -32,11 +32,11 @@ namespace LibrarySystem.ConsoleClient.Commands
         public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
-
             if (args.Count != 6)
             {
                 throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
             }
+
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
@@ -45,9 +45,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             bool isDeleted = false;
             Town town = townService.AddTown(args[5]);
             Address address = addressService.AddAddress(args[4], town);
-
-            //Address address=new Address(args[4], )
-
+            
             if (firstName.Length < CommandConstants.MinUserNameLength 
                 || firstName.Length > CommandConstants.MaxUserNameLength)
             {

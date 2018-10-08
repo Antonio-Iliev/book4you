@@ -14,7 +14,6 @@ namespace LibrarySystem.Services
         {
         }
 
-        // Address
         public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             var user = new User
@@ -25,11 +24,11 @@ namespace LibrarySystem.Services
                 PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
                 IsDeleted = false,
-                Address = address
+                AddressId = address.Id
             };
 
-            this.context.Users.Add(user);
-            this.context.SaveChanges();
+            user = base.context.Users.Add(user).Entity;
+            base.context.SaveChanges();
 
             return user;
         }
@@ -61,6 +60,7 @@ namespace LibrarySystem.Services
                 result.IsDeleted = true;
                 this.context.SaveChanges();
             }
+
             return result;
         }
 

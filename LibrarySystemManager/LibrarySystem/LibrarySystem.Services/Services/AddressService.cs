@@ -13,21 +13,21 @@ namespace LibrarySystem.Services.Services
         public AddressService(ILibrarySystemContext context) : base(context)
         {
         }
-
+        
         public Address AddAddress(string streetAddress, Town town)
         {
-            var address = new Address()
-            {
-                StreetAddress = streetAddress,
-                TownId = town.Id
-            };
+            var address = base.context.Addresses
+                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
 
-            var dbAddress = context.Addresses
-                .FirstOrDefault((adr) => adr.StreetAddress == streetAddress && adr.Id == town.Id);
-
-            if (dbAddress == null)
+            if (address == null)
             {
-                base.context.Addresses.Add(address);
+                address = new Address()
+                {
+                    StreetAddress = streetAddress,
+                    TownId = town.Id
+                };
+
+                address = base.context.Addresses.Add(address).Entity;
                 base.context.SaveChanges();
             }
 

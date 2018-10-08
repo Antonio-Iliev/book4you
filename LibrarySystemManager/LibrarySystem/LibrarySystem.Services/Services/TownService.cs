@@ -11,19 +11,15 @@ namespace LibrarySystem.Services.Services
         public TownService(ILibrarySystemContext context) : base(context)
         {
         }
+
         public Town AddTown(string townName)
         {
-            var town = new Town()
-            {
-                TownName = townName
-            };
+            var town = base.context.Towns.FirstOrDefault(t => t.TownName == townName);
 
-            var dbTown = context.Towns.SingleOrDefault(t => t.TownName == townName);
-
-            if (dbTown == null)
+            if (town == null)
             {
-                base.context.Towns.Add(town);
-                context.SaveChanges();
+                town = base.context.Towns.Add(new Town() { TownName = townName }).Entity;
+                base.context.SaveChanges();
             }
 
             return town;
