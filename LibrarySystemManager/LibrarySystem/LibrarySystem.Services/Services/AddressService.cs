@@ -28,7 +28,7 @@ namespace LibrarySystem.Services.Services
             if (dbAddress == null)
             {
                 base.context.Addresses.Add(address);
-                context.SaveChanges();
+                base.context.SaveChanges();
             }
 
             return address;
