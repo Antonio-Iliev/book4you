@@ -1,8 +1,10 @@
 ﻿using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
+using LibrarySystem.Services.Constants;
 using LibrarySystem.Services.Exceptions;
 using LibrarySystem.Services.Exceptions.AddressServices;
+using LibrarySystem.Services.Exceptions.TownServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,10 @@ namespace LibrarySystem.Services.Services
         
         public Address AddAddress(string streetAddress, Town town)
         {
+            if (streetAddress == null) throw new AddAddressNullableExeption("Street Address can not be null!");
+            if (town == null) throw new AddAddressNullableExeption("Town can not be null!");
+            if (streetAddress.Length < 1) throw new InvalidAddressServiceParametersExeption($"Street Address is less then {ServicesConstants.MinAddressNameLength} symbol.");
+            if (streetAddress.Length > 50) throw new InvalidAddressServiceParametersExeption($"Street Address is more then {ServicesConstants.MaxAddressNameLength} symbols.");
             var address = base.context.Addresses
                 .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
 
@@ -35,11 +41,5 @@ namespace LibrarySystem.Services.Services
 
             return address;
         }
-
-        public IEnumerable<Address> GetAddress(string streetAddress)
-        {
-            return context.Addresses.Where(a => a.StreetAddress == streetAddress);
-        }
-
     }
 }

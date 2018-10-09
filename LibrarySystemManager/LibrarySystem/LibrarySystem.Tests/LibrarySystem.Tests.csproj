@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\AddressServiceTests\" />
     <Folder Include="Services\GenreServiceTests\" />
     <Folder Include="Services\BooksserviceTests\" />
     <Folder Include="Services\AuthorServiceTests\" />
