@@ -1,4 +1,4 @@
-﻿using LibrarySystem.ConsoleClient.Commands.Constants;
+﻿
 using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Services;
@@ -28,14 +28,9 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 3)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("InvalidNumbersOfParameters");
             }
-            var result = this.usersServices.GetUser(args[0], args[1], args[2]);
-
-            if (result==null || result.IsDeleted == true)
-            {
-                return CommandConstants.UserDoesNotExist;
-            }
+            var result = this.usersServices.GetUser(args[0], args[1], args[2]);           
             
             return $"User: {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {result.Address.StreetAddress} {result.Address.Town.TownName}";
         }

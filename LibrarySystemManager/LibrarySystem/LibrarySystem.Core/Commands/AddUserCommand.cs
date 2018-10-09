@@ -1,4 +1,4 @@
-﻿using LibrarySystem.ConsoleClient.Commands.Constants;
+﻿using LibrarySystem.Services.Constants;
 using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Contracts;
@@ -26,7 +26,6 @@ namespace LibrarySystem.ConsoleClient.Commands
             this.townService = townService;
 
         }
-
         //addUser firstName, middleName, lastName, int phoneNumber, DateTime addedOn, bool IsDeleted
         // Address & books TO DO
         public string Execute(IEnumerable<string> parameters)
@@ -34,9 +33,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             var args = parameters.ToList();
             if (args.Count != 6)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("InvalidNumbersOfParameters");
             }
-
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
@@ -44,27 +42,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             var addedOn = DateTime.Now;
             bool isDeleted = false;
             Town town = townService.AddTown(args[5]);
-            Address address = addressService.AddAddress(args[4], town);
-            
-            if (firstName.Length < CommandConstants.MinUserNameLength 
-                || firstName.Length > CommandConstants.MaxUserNameLength)
-            {
-                return $"The first name {firstName} should be between " +
-                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
-            }
-            if (middleName.Length < CommandConstants.MinUserNameLength
-                || middleName.Length > CommandConstants.MaxUserNameLength)
-            {
-                return $"The middle name {middleName} should be between " +
-                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
-            }
-            if (lastName.Length < CommandConstants.MinUserNameLength
-                || lastName.Length > CommandConstants.MaxUserNameLength)
-            {
-                return $"The last name {lastName} should be between " +
-                     $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
-            }
-            
+            Address address = addressService.AddAddress(args[4], town);           
+                     
             usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
 
             return $"New user {firstName} {lastName} was added.";

@@ -29,7 +29,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 5)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("InvalidNumbersOfParameters");
             }
             var firstName = args[0];
             var middleName = args[1];
