@@ -2,12 +2,14 @@
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using LibrarySystem.Services.Constants;
-using Microsoft.EntityFrameworkCore;
 using LibrarySystem.Services.ViewModels;
+using System.Collections.Generic;
+using LibrarySystem.Services.Exceptions.GenreServiceExeptions;
+using LibrarySystem.Services.Exceptions.BookServices;
+using LibrarySystem.Services.Exceptions.BookServiceExeptions;
+using LibrarySystem.Services.Exceptions.GenreServices;
+using LibrarySystem.Services.Exceptions.AuthorServices;
 
 namespace LibrarySystem.Services
 {
@@ -23,21 +25,22 @@ namespace LibrarySystem.Services
             if (title.Length > ServicesConstants.MaxBookTitleLength
                 || title.Length < ServicesConstants.MinBookTitleLength)
             {
-                throw new ArgumentException($"The book title '{title}' is more then " +
-                    $"{ServicesConstants.MaxBookTitleLength} symbols.");
+                throw new InvalidBookServiceParametersExeption($"The book title '{title}' is more then " +
+                    $"{ServicesConstants.MaxBookTitleLength} or " +
+                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
             }
 
             int numberOfBook;
             if (!int.TryParse(bookInStore, out numberOfBook))
             {
-                throw new ArgumentException("Invalid number");
+                throw new InvalidBookServiceParametersExeption("Invalid number");
             }
 
             var newBook = this.context.Books.FirstOrDefault(b => b.Title == title);
 
             if (newBook != null)
             {
-                throw new ArgumentException("The book already exist.");
+                throw new AddBookNullableExeption("The book already exist.");
             }
 
             newBook = new Book
@@ -56,24 +59,83 @@ namespace LibrarySystem.Services
         public BookViewModel GetBook(string bookTitle)
         {
 
-            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength)
+            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
+                || bookTitle.Length < ServicesConstants.MinBookTitleLength)
             {
-                throw new ArgumentException();
+                throw new InvalidGenreServiceParametersExeption(
+                   $"This book title can't be long then {ServicesConstants.MaxBookTitleLength} " +
+                   $"or less then {ServicesConstants.MinBookTitleLength}");
             }
 
-            var findBook = context.Books.Select(b => new BookViewModel
-            {
-                Title= b.Title,
-                Author = b.Author.Name,
-                Genre = b.Genre.GenreName
-            }).Where(b => b.Title == bookTitle).ToList();
+            var findBook = context.Books
+                .Select(b => new BookViewModel
+                {
+                    Title = b.Title,
+                    Author = b.Author.Name,
+                    Genre = b.Genre.GenreName
+                })
+                .Where(b => b.Title == bookTitle).ToList();
 
             if (!findBook.Any())
             {
-                throw new ArgumentException("There is no such book in this the Library.");
+                throw new AddBookNullableExeption("There is no such book in this Library.");
             }
 
             return findBook[0];
+        }
+
+        public IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre)
+        {
+            if (byGenre.Length > ServicesConstants.MaxGenreNameLength
+                || byGenre.Length < ServicesConstants.MinGenreNameLength)
+            {
+                throw new InvalidGenreServiceParametersExeption(
+                    $"Genre can't be long then {ServicesConstants.MaxGenreNameLength} " +
+                    $"or less then {ServicesConstants.MinGenreNameLength}");
+            }
+
+            var booksByGenre = context.Books
+                .Select(b => new BookViewModel
+                {
+                    Title = b.Title,
+                    Author = b.Author.Name,
+                    Genre = b.Genre.GenreName
+                })
+                .Where(g => g.Genre == byGenre).ToList();
+
+            if (!booksByGenre.Any())
+            {
+                throw new AddGenreNullableExeption("There is no such genre in this Library.");
+            }
+
+            return booksByGenre;
+        }
+
+        public IEnumerable<BookViewModel> ListOfBooksByAuthor(string byAuthor)
+        {
+            if (byAuthor.Length > ServicesConstants.MaxAuthorNameLength
+                || byAuthor.Length < ServicesConstants.MinAuthorNameLength)
+            {
+                throw new InvalidGenreServiceParametersExeption(
+                    $"Author can't be long then {ServicesConstants.MaxAuthorNameLength} " +
+                    $"or less then {ServicesConstants.MinAuthorNameLength}");
+            }
+
+            var booksByAuthor = context.Books
+                .Select(b => new BookViewModel
+                {
+                    Title = b.Title,
+                    Author = b.Author.Name,
+                    Genre = b.Genre.GenreName
+                })
+                .Where(g => g.Author == byAuthor).ToList();
+
+            if (!booksByAuthor.Any())
+            {
+                throw new AddAuthorNullableExeption("There is no such author in this Library.");
+            }
+
+            return booksByAuthor;
         }
     }
 }

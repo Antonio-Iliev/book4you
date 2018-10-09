@@ -3,14 +3,15 @@ using LibrarySystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class GetBookCommand : ICommand
+    public class ListBookByAuthorCommand : ICommand
     {
         private readonly IBooksServices booksServices;
 
-        public GetBookCommand(IBooksServices booksServices)
+        public ListBookByAuthorCommand(IBooksServices booksServices)
         {
             this.booksServices = booksServices;
         }
@@ -24,11 +25,18 @@ namespace LibrarySystem.ConsoleClient.Commands
                 throw new ArgumentException("Invalid parameters");
             }
 
-            string book = args[0];
+            string author = args[0];
 
-            var findedBook = this.booksServices.GetBook(book);
-           
-            return $" {findedBook.Title}, {findedBook.Author}, {findedBook.Genre}";
+            var listOfBooks = this.booksServices.ListOfBooksByAuthor(author);
+
+            StringBuilder str = new StringBuilder();
+
+            foreach (var book in listOfBooks)
+            {
+                str.AppendLine($"{book.Title}, {book.Author}, {book.Genre}");
+            }
+
+            return str.ToString().Trim();
         }
     }
 }

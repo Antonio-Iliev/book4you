@@ -24,7 +24,7 @@ namespace LibrarySystem.ConsoleClient.Core.Providers
             {
                 result.AppendLine(line);
             }
-            Console.WriteLine(result.ToString());
+            Console.WriteLine(result.ToString().Trim());
         }
     }
 }
