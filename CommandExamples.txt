@@ -1,0 +1,2 @@
+AddBook Title[0] Genre[1] Author[2] bookInStore[3]
+addbook, new book, horror, pesho, 10
