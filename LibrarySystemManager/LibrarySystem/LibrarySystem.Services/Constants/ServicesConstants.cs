@@ -12,7 +12,9 @@
         // Constraints
         internal const int MinBookTitleLength = 2;
         internal const int MaxBookTitleLength = 50;
+        internal const int MinGenreNameLength = 2;
         internal const int MaxGenreNameLength = 50;
+        internal const int MinAuthorNameLength = 2;
         internal const int MaxAuthorNameLength = 50;
         internal const int MinUserNameLength = 1;
         internal const int MaxUserNameLength = 20;

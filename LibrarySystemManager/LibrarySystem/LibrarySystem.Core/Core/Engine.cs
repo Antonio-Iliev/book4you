@@ -46,7 +46,7 @@ namespace LibrarySystem.ConsoleClient.Core
                 var commandParams = splittedCommand.Skip(1).ToList();
                 var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
                 
-                results.Add(command.Execute(commandParams));
+               results.Add(command.Execute(commandParams));
             }
             return results;
         }
