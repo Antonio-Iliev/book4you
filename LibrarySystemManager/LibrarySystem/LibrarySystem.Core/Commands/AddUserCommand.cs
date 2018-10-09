@@ -26,8 +26,6 @@ namespace LibrarySystem.ConsoleClient.Commands
             this.townService = townService;
 
         }
-        //addUser firstName, middleName, lastName, int phoneNumber, DateTime addedOn, bool IsDeleted
-        // Address & books TO DO
         public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
@@ -44,9 +42,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             Town town = townService.AddTown(args[5]);
             Address address = addressService.AddAddress(args[4], town);           
                      
-            usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
+            var user=usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
 
-            return $"New user {firstName} {lastName} was added.";
+            return $"New user {user.FirstName} {user.MiddleName} {user.LastName} was added successfully on {user.AddOnDate}.";
         }
     }
 }

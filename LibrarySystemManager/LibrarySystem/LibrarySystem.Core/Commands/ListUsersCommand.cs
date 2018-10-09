@@ -22,10 +22,13 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             foreach (var user in users)
             {
-                result.Append(user);
-                result.Append('\n');
+                result.AppendLine(
+                    $"Name: {user.FirstName} {user.MiddleName} {user.LastName} Phone: {user.PhoneNumber} " +
+                    $"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName} " +
+                    $"{string.Join(", ", user.UsersBooks)}."
+                    );
+                result.AppendLine();
             }
-
             return result.ToString();
         }
     }

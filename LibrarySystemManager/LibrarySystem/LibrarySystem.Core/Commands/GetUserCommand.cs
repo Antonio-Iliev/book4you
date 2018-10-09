@@ -32,7 +32,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             }
             var result = this.usersServices.GetUser(args[0], args[1], args[2]);           
             
-            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} {result.PhoneNumber} {result.Address.StreetAddress} {result.Address.Town.TownName}";
+            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} Phone: {result.PhoneNumber} " +
+                $"Added On: {result.AddOnDate} Address: {result.Address.StreetAddress} {result.Address.Town.TownName} " +
+                $"Books: {string.Join(", ", result.UsersBooks)}.";
         }
     }
 }

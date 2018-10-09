@@ -31,7 +31,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var user = this.usersServices.RemoveUser(firstName, middleName, lastName);
 
-            return $"User {firstName} {middleName} {lastName} successfully deleted";
+            return $"User {user.FirstName} {user.MiddleName} {user.LastName} was successfully deleted.";
         }
     }
 }

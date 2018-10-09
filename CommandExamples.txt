@@ -3,3 +3,10 @@ addbook, new book, horror, pesho, 10
 
 GetBook Title[0]
 getbook, A Dream of Spring
+
+Adduser, NePesho, Nepeshov, Peshov, 0882585356, ul."Dran dran2", Sofia
+Adduser, Ivan, Goshova, Georgieva, 0882585356, ul."Dran dran2", Dupnitsa
+Listusers
+GetUser, Gosho, Peshov, Goshov
+RemoveUser, Gosho, Peshov, Goshov
+Updateuser, NePesho, Nepeshov, Peshov, ul."New Dran Dran", Varna
