@@ -24,7 +24,7 @@ namespace LibrarySystem.ConsoleClient.Commands.Constants
         //Commands
         //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia
         //getuser, Gosho, Goshov, Goshov
-        //AddUser, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Dupnitsa
+        //AddUser, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Sofia
         //AddBook, Ala Bala, Horror, Pesho
         //AddBook, A Clash, Drama, Dr Radeva
 

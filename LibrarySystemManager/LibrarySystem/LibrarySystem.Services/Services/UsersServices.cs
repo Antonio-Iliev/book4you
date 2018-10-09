@@ -16,6 +16,34 @@ namespace LibrarySystem.Services
         // Address
         public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
+            var query = context.Users
+               .SingleOrDefault(u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName);
+
+            if (query != null)
+            {
+                throw new ArgumentException("User already exists!");
+            }
+
+            if (firstName.Length < CommandConstants.MinUserNameLength
+                || firstName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The first name {firstName} should be between " +
+                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
+            if (middleName.Length < CommandConstants.MinUserNameLength
+                || middleName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The middle name {middleName} should be between " +
+                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
+            if (lastName.Length < CommandConstants.MinUserNameLength
+                || lastName.Length > CommandConstants.MaxUserNameLength)
+            {
+                return $"The last name {lastName} should be between " +
+                     $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+            }
             var user = new User
             {
                 FirstName = firstName,
