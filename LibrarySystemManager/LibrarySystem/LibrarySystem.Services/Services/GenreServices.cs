@@ -20,9 +20,8 @@ namespace LibrarySystem.Services.Services
 
             if (newGenre == null)
             {
-                this.context.Genres.Add(new Genre { GenreName = genreName });
+                newGenre = this.context.Genres.Add(new Genre { GenreName = genreName }).Entity;
                 this.context.SaveChanges();
-                newGenre = context.Genres.FirstOrDefault(g => g.GenreName == genreName);
             }
 
             return newGenre;

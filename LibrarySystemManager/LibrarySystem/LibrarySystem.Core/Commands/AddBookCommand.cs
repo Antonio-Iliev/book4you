@@ -28,35 +28,20 @@ namespace LibrarySystem.ConsoleClient.Commands
         {
             IList<string> args = parameters.ToList();
 
-            if (args.Count != 3)
+            if (args.Count != 4)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("Invalid numbers of parameters");
             }
 
             string title = args[0];
             string genre = args[1];
             string author = args[2];
-
-            if (title.Length > CommandConstants.MaxBookTitleLength)
-            {
-                return $"The book title '{title}' is more then " +
-                    $"{CommandConstants.MaxBookTitleLength} symbols.";
-            }
-            if (genre.Length > CommandConstants.MaxGenreNameLength)
-            {
-                return $"The book genre '{genre}' is more then " +
-                    $"{CommandConstants.MaxGenreNameLength} symbols.";
-            }
-            if (author.Length > CommandConstants.MaxAuthorNameLength)
-            {
-                return $"The book author name '{author}' is more then " +
-                    $"{CommandConstants.MaxAuthorNameLength} symbols.";
-            }
+            string bookInStore = args[3];
 
             Genre newGenre = genreServices.AddGenre(genre);
             Author newAuthor = authorServices.AddAuthor(author);
 
-            booksServices.AddBook(title, newGenre.Id, newAuthor.Id, CommandConstants.InitialBookAmount);
+            booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
 
             return $"New book {title} was added.";
         }

@@ -4,7 +4,7 @@ namespace LibrarySystem.Services
 {
     public interface IBooksServices
     {
-        Book AddBook(string title, int genreId, int authorId, int bookInStore);
-        string GetBook(string bookTitel);
+        Book AddBook(string title, Genre genre, Author author, string bookInStore);
+        void GetBook(string bookTitel);
     }
 }

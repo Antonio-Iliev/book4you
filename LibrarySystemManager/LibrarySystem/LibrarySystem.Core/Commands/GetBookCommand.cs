@@ -24,15 +24,11 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 1)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("Invalid parameters");
             }
+            this.booksServices.GetBook(args[0]);
 
-            if (args[0].Length > CommandConstants.MaxBookTitleLength)
-            {
-                return CommandConstants.BookDoesNotExist;
-            }
-
-            return this.booksServices.GetBook(args[0]);
+            return "";
         }
     }
 }

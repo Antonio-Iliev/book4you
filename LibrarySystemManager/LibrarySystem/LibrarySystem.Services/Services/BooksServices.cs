@@ -5,6 +5,8 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LibrarySystem.Services.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
 {
@@ -14,8 +16,22 @@ namespace LibrarySystem.Services
         {
         }
 
-        public Book AddBook(string title, int genreId, int authorId, int bookInStore)
+        public Book AddBook(string title, Genre genre, Author author, string bookInStore)
         {
+
+            if (title.Length > ServicesConstants.MaxBookTitleLength
+                || title.Length < ServicesConstants.MinBookTitleLength)
+            {
+                throw new ArgumentException($"The book title '{title}' is more then " +
+                    $"{ServicesConstants.MaxBookTitleLength} symbols.");
+            }
+
+            int numberOfBook;
+            if (!int.TryParse(bookInStore, out numberOfBook))
+            {
+                throw new ArgumentException("Invalid number");
+            }
+
             var newBook = this.context.Books.FirstOrDefault(b => b.Title == title);
 
             if (newBook != null)
@@ -26,9 +42,9 @@ namespace LibrarySystem.Services
             newBook = new Book
             {
                 Title = title,
-                GenreId = genreId,
-                AuthorId = authorId,
-                BooksInStore = bookInStore
+                GenreId = genre.Id,
+                AuthorId = author.Id,
+                BooksInStore = numberOfBook
             };
 
             this.context.Books.Add(newBook);
@@ -36,23 +52,27 @@ namespace LibrarySystem.Services
             return newBook;
         }
 
-        public string GetBook(string bookTitle)
+        public void GetBook(string bookTitle)
         {
-            var query = context.Books
-                .Select(b => new
-                {
-                    Title = b.Title,
-                    Author = b.Author.Name,
-                    Genre = b.Genre.GenreName
-                }).Where(b => b.Title == bookTitle).ToList();
 
-            if (!query.Any())
+            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength)
             {
-                return "There is no such book in this the Library.";
+                throw new ArgumentException();
             }
 
-            var book = query[0];
-            return $"{book.Title}, {book.Author}, {book.Genre}";
+            var findBook = context.Books.Select(b => new
+            {
+                Title= b.Title,
+                Author = b.Author.Name,
+                Genre = b.Genre.GenreName
+            }).Where(b => b.Title == bookTitle);
+
+            if (findBook.Any())
+            {
+                throw new ArgumentException("There is no such book in this the Library.");
+            }
+
+            //return findBook;
         }
     }
 }
