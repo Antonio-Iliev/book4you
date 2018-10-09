@@ -23,9 +23,10 @@ namespace LibrarySystem.ConsoleClient.Commands
             {
                 throw new ArgumentException("Invalid parameters");
             }
-            this.booksServices.GetBook(args[0]);
 
-            return "";
+            var findedBook = this.booksServices.GetBook(args[0]);
+           
+            return $" {findedBook.Title}, {findedBook.Author}, {findedBook.Genre}";
         }
     }
 }

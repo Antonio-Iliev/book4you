@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using LibrarySystem.Services.Constants;
 using Microsoft.EntityFrameworkCore;
+using LibrarySystem.Services.ViewModels;
 
 namespace LibrarySystem.Services
 {
@@ -52,7 +53,7 @@ namespace LibrarySystem.Services
             return newBook;
         }
 
-        public void GetBook(string bookTitle)
+        public BookViewModel GetBook(string bookTitle)
         {
 
             if (bookTitle.Length > ServicesConstants.MaxBookTitleLength)
@@ -60,19 +61,19 @@ namespace LibrarySystem.Services
                 throw new ArgumentException();
             }
 
-            var findBook = context.Books.Select(b => new
+            var findBook = context.Books.Select(b => new BookViewModel
             {
                 Title= b.Title,
                 Author = b.Author.Name,
                 Genre = b.Genre.GenreName
-            }).Where(b => b.Title == bookTitle);
+            }).Where(b => b.Title == bookTitle).ToList();
 
-            if (findBook.Any())
+            if (!findBook.Any())
             {
                 throw new ArgumentException("There is no such book in this the Library.");
             }
 
-            //return findBook;
+            return findBook[0];
         }
     }
 }
