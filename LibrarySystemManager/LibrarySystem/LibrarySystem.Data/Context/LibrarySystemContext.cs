@@ -11,6 +11,15 @@ namespace LibrarySystem.Data.Context
 {
     public class LibrarySystemContext : DbContext, ILibrarySystemContext
     {
+        public LibrarySystemContext()
+        {
+        }
+
+        public LibrarySystemContext(DbContextOptions<LibrarySystemContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }

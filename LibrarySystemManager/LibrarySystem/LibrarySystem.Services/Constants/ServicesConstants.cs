@@ -21,7 +21,7 @@
         //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia
         //getuser, Gosho, Goshov, Goshov
         //AddUser, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Dupnitsa
-        //AddBook, Ala Bala, Horror, Pesho
-        //AddBook, A Clash, Drama, Dr Radeva
+        //AddBook, Ala Bala, Horror, Pesho 3
+        //AddBook, A Clash, Drama, Dr Radeva 5
     }
 }
