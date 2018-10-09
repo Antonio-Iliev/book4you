@@ -4,6 +4,7 @@ using System.Linq;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
+using LibrarySystem.Services.Constants;
 
 namespace LibrarySystem.Services
 {
@@ -26,23 +27,20 @@ namespace LibrarySystem.Services
                 throw new ArgumentException("User already exists!");
             }
 
-            if (firstName.Length < CommandConstants.MinUserNameLength
-                || firstName.Length > CommandConstants.MaxUserNameLength)
+            if (firstName.Length < ServicesConstants.MinUserNameLength
+                || firstName.Length > ServicesConstants.MaxUserNameLength)
             {
-                return $"The first name {firstName} should be between " +
-                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+                throw new Exception();
             }
-            if (middleName.Length < CommandConstants.MinUserNameLength
-                || middleName.Length > CommandConstants.MaxUserNameLength)
+            if (middleName.Length < ServicesConstants.MinUserNameLength
+                || middleName.Length > ServicesConstants.MaxUserNameLength)
             {
-                return $"The middle name {middleName} should be between " +
-                    $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+                throw new Exception();
             }
-            if (lastName.Length < CommandConstants.MinUserNameLength
-                || lastName.Length > CommandConstants.MaxUserNameLength)
+            if (lastName.Length < ServicesConstants.MinUserNameLength
+                || lastName.Length > ServicesConstants.MaxUserNameLength)
             {
-                return $"The last name {lastName} should be between " +
-                     $"{CommandConstants.MinUserNameLength} and {CommandConstants.MaxUserNameLength} symbols.";
+                throw new Exception();
             }
             var user = new User
             {
@@ -63,29 +61,37 @@ namespace LibrarySystem.Services
 
         public User GetUser(string firstName, string middleName, string lastName)
         {
-            var user = this.context.Users.
-            SingleOrDefault(p => p.FirstName == firstName
-            && p.MiddleName == middleName
-            && p.LastName == lastName);
+            var user = this.context.Users
+                .SingleOrDefault(u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName);
 
-            //var query = this.context.Users
+            if (user == null || user.IsDeleted == true)
+            {
+                throw new Exception();
+            }
+
+            //var result = this.context.Users
             //    .Select(u => new
             //    {
-            //        firstName=u.FirstName,
-            //        middleName=u.MiddleName,
-            //        lastName=u.LastName,
-            //        phone=u.PhoneNumber,
-            //        Address=u.Address.StreetAddress,
-            //        town=u.Address.Town.TownName
+            //        FirstName = firstName,
+            //        MiddleName = middleName,
+            //        LastName = lastName,
+            //        Phone = u.PhoneNumber,
+            //        AddedOn = u.AddOnDate,
+            //        IsDeleted = u.IsDeleted,
+            //        Address = u.Address.StreetAddress + ' ' + u.Address.Town
             //    })
-            //    .Where(u=>u.firstName==firstName)
-            //    ;
-
+            //    .ToList();
             return user;
         }
 
-        public IEnumerable<User>ListUsers()
+        public IEnumerable<User> ListUsers()
         {
+            if (this.context.Users.Count()==0)
+            {
+                throw new Exception("No users found");
+            }
             return this.context.Users.ToList();
         }
 

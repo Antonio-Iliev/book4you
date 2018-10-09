@@ -20,13 +20,7 @@ namespace LibrarySystem.ConsoleClient.Commands
         }
 
         public string Execute(IEnumerable<string> parameters)
-        {
-            if (this.usersServices.ListUsers().Count() == 0)
-            {
-                return CommandConstants.NoUsersFound;
-            }
-            else
-            {
+        {         
                 var users = this.usersServices.ListUsers();
 
                 var result = new StringBuilder();

@@ -1,5 +1,4 @@
-﻿using LibrarySystem.ConsoleClient.Commands.Constants;
-using LibrarySystem.ConsoleClient.Commands.Contracts;
+﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Services;
 using System;
@@ -24,7 +23,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 3)
             {
-                throw new ArgumentException(CommandConstants.InvalidNumbersOfParameters);
+                throw new ArgumentException("InvalidNumbersOfParameters");
             }
             var firstName = args[0];
             var middleName = args[1];
