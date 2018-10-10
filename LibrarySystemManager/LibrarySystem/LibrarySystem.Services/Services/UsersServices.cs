@@ -5,6 +5,7 @@ using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
 {
@@ -12,9 +13,8 @@ namespace LibrarySystem.Services
     {
         public UsersServices(ILibrarySystemContext context) : base(context)
         {
-        }
 
-        // Address
+        }
         public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             var query = context.Users
@@ -26,21 +26,20 @@ namespace LibrarySystem.Services
             {
                 throw new ArgumentException("User already exists!");
             }
-
             if (firstName.Length < ServicesConstants.MinUserNameLength
                 || firstName.Length > ServicesConstants.MaxUserNameLength)
             {
-                throw new Exception();
+                throw new ArgumentOutOfRangeException("First name should be between 1 and 20 symbols");
             }
             if (middleName.Length < ServicesConstants.MinUserNameLength
                 || middleName.Length > ServicesConstants.MaxUserNameLength)
             {
-                throw new Exception();
+                throw new ArgumentOutOfRangeException("Middle name should be between 1 and 20 symbols");
             }
             if (lastName.Length < ServicesConstants.MinUserNameLength
                 || lastName.Length > ServicesConstants.MaxUserNameLength)
             {
-                throw new Exception();
+               throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols");
             }
             var user = new User
             {
@@ -58,73 +57,77 @@ namespace LibrarySystem.Services
 
             return user;
         }
-
         public User GetUser(string firstName, string middleName, string lastName)
+        {        
+            var user = this.context.Users
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(
+                u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName
+                );
+
+            if (user == null || user.IsDeleted)
+            {
+                throw new ArgumentException("This user does not exists");
+            }
+            
+            return user;
+        }
+
+        public IEnumerable<User> ListUsers()
+        {            
+            var users = this.context.Users
+                .Include(u => u.Address)
+                  .ThenInclude(a=>a.Town)
+                .Include(u=>u.UsersBooks)
+                    .ThenInclude(ub=>ub.Book)
+                .Where(u => !u.IsDeleted)
+                .Take(10)
+                .ToList();
+
+            if (users.Count == 0)
+            {
+                throw new ArgumentException("No users were found");
+            }
+            return users;
+        }
+
+        public User RemoveUser(string firstName, string middleName, string lastName)
         {
             var user = this.context.Users
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
 
-            if (user == null || user.IsDeleted == true)
+            if (user != null)
             {
-                throw new Exception();
+                user.IsDeleted = true;
+                this.context.SaveChanges();
             }
-
-            //var result = this.context.Users
-            //    .Select(u => new
-            //    {
-            //        FirstName = firstName,
-            //        MiddleName = middleName,
-            //        LastName = lastName,
-            //        Phone = u.PhoneNumber,
-            //        AddedOn = u.AddOnDate,
-            //        IsDeleted = u.IsDeleted,
-            //        Address = u.Address.StreetAddress + ' ' + u.Address.Town
-            //    })
-            //    .ToList();
             return user;
         }
 
-        public IEnumerable<User> ListUsers()
-        {
-            if (this.context.Users.Count()==0)
-            {
-                throw new Exception("No users found");
-            }
-            return this.context.Users.ToList();
-        }
-
-        public User RemoveUser(string firstName, string middleName, string lastName)
-        {
-            var result = this.context.Users
-                .SingleOrDefault(u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName);
-
-            if (result != null)
-            {
-                result.IsDeleted = true;
-                this.context.SaveChanges();
-            }
-            return result;
-        }
-
         public User UpdateUser(string firstName, string middleName, string lastName, Address address)
-        {
-            var result = this.context.Users
+        {        
+            var user = this.context.Users
+                .Include(u=>u.Address)
+                  .ThenInclude(a => a.Town)
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
 
-            if (result != null)
+            if (user != null && !user.IsDeleted)
             {
-                result.Address.StreetAddress = address.StreetAddress;
-                result.Address.Town = address.Town;
+                user.Address.StreetAddress = address.StreetAddress;
+                user.Address.Town = address.Town;
 
                 this.context.SaveChanges();
             }
-            return result;
+            return user;
         }
     }
 }

@@ -18,6 +18,10 @@
         internal const int MaxAuthorNameLength = 50;
         internal const int MinUserNameLength = 1;
         internal const int MaxUserNameLength = 20;
+        internal const int MinTownNameLength = 1;
+        internal const int MaxTownNameLength = 50;
+        internal const int MinAddressNameLength = 1;
+        internal const int MaxAddressNameLength = 50;
 
         //Commands
         //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia
