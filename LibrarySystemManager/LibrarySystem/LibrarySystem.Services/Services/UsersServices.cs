@@ -4,6 +4,7 @@ using System.Linq;
 using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
+using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Constants;
 using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.BookServices;
@@ -14,13 +15,17 @@ namespace LibrarySystem.Services
 {
     public class UsersServices : BaseServicesClass, IUsersServices
     {
-        public UsersServices(ILibrarySystemContext context) : base(context)
+        public UsersServices(ILibrarySystemContext context, IValidations validations)
+            : base(context, validations)
         {
-
         }
 
         public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
+            this.validations.UserValidation(firstName, middleName, lastName);
+
+            //TODO validation on phone number
+
             var query = context.Users
                .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -30,21 +35,7 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("User already exists.");
             }
-            if (firstName.Length < ServicesConstants.MinUserNameLength
-                || firstName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException("First name should be between 1 and 20 symbols.");
-            }
-            if (middleName.Length < ServicesConstants.MinUserNameLength
-                || middleName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException("Middle name should be between 1 and 20 symbols.");
-            }
-            if (lastName.Length < ServicesConstants.MinUserNameLength
-                || lastName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols.");
-            }
+
             var user = new User
             {
                 FirstName = firstName,
@@ -64,6 +55,8 @@ namespace LibrarySystem.Services
 
         public User GetUser(string firstName, string middleName, string lastName)
         {
+            this.validations.UserValidation(firstName, middleName, lastName);
+
             var user = this.context.Users
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
@@ -102,6 +95,8 @@ namespace LibrarySystem.Services
 
         public User RemoveUser(string firstName, string middleName, string lastName)
         {
+            this.validations.UserValidation(firstName, middleName, lastName);
+
             var user = this.context.Users
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -117,6 +112,8 @@ namespace LibrarySystem.Services
         }
         public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
         {
+            this.validations.UserValidation(firstName, middleName, lastName);
+
             var user = this.context.Users
                 .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
@@ -138,6 +135,10 @@ namespace LibrarySystem.Services
 
         public User UpdateUserPhone(string firstName, string middleName, string lastName, int phone)
         {
+            this.validations.UserValidation(firstName, middleName, lastName);
+            
+            //TODO validation on phone number
+
             var user = this.context.Users
                 .SingleOrDefault(
                 u => u.FirstName == firstName
@@ -155,34 +156,8 @@ namespace LibrarySystem.Services
         }
         public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
-            if (firstName.Length < ServicesConstants.MinUserNameLength
-              || firstName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"First name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (middleName.Length < ServicesConstants.MinUserNameLength
-                || middleName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"Middle name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (lastName.Length < ServicesConstants.MinUserNameLength
-                || lastName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"Last name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
-               || bookTitle.Length < ServicesConstants.MinBookTitleLength)
-            {
-                throw new InvalidBookServiceParametersExeption($"The book title '{bookTitle}' is more then " +
-                    $"{ServicesConstants.MaxBookTitleLength} or " +
-                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
-            }
+            this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.BookTitleValidation(bookTitle);
 
             var currentUser = context.Users
                   .SingleOrDefault(u => u.FirstName == firstName
@@ -230,34 +205,8 @@ namespace LibrarySystem.Services
 
         public User ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
         {
-            if (firstName.Length < ServicesConstants.MinUserNameLength
-             || firstName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"First name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (middleName.Length < ServicesConstants.MinUserNameLength
-                || middleName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"Middle name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (lastName.Length < ServicesConstants.MinUserNameLength
-                || lastName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"Last name should be between {ServicesConstants.MinUserNameLength} " +
-                    $"and {ServicesConstants.MaxUserNameLength} symbols");
-            }
-            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
-               || bookTitle.Length < ServicesConstants.MinBookTitleLength)
-            {
-                throw new InvalidBookServiceParametersExeption($"The book title '{bookTitle}' is more then " +
-                    $"{ServicesConstants.MaxBookTitleLength} or " +
-                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
-            }
+            this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.BookTitleValidation(bookTitle);
 
             var currentUser = context.Users
                .SingleOrDefault(u => u.FirstName == firstName
@@ -276,7 +225,7 @@ namespace LibrarySystem.Services
                 throw new AddBookNullableExeption("There is no such book in this Library");
             }
 
-            bookToReturn.BooksInStore += 1;
+            bookToReturn.BooksInStore++;
             context.SaveChanges();
 
             return currentUser;

@@ -22,6 +22,8 @@
         internal const int MaxTownNameLength = 50;
         internal const int MinAddressNameLength = 1;
         internal const int MaxAddressNameLength = 50;
+        internal const int MinBookInStore = 1;
+        internal const int MaxBookInStore = 50;
 
         //Commands
         //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia

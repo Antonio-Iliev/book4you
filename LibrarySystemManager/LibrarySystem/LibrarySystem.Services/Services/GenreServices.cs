@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
+using LibrarySystem.Services.Abstract.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,15 @@ namespace LibrarySystem.Services.Services
 {
     public class GenreServices : BaseServicesClass, IGenreServices
     {
-        public GenreServices(ILibrarySystemContext context) : base(context)
+        public GenreServices(ILibrarySystemContext context, IValidations validations)
+            : base(context, validations)
         {
         }
 
         public Genre AddGenre(string genreName)
         {
+            this.validations.GenreValidation(genreName);
+
             Genre newGenre = context.Genres.FirstOrDefault(g => g.GenreName == genreName);
 
             if (newGenre == null)
@@ -29,6 +33,8 @@ namespace LibrarySystem.Services.Services
 
         public Genre GetGenre(string genreName)
         {
+            this.validations.GenreValidation(genreName);
+
             return context.Genres.FirstOrDefault(g => g.GenreName == genreName);
         }
     }

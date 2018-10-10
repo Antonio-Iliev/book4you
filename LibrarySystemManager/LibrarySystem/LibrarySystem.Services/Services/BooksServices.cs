@@ -12,31 +12,27 @@ using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Exceptions.UserServices;
 using System;
+using LibrarySystem.Services.Abstract.Contracts;
 
 namespace LibrarySystem.Services
 {
     public class BooksServices : BaseServicesClass, IBooksServices
     {
-        public BooksServices(ILibrarySystemContext context) : base(context)
+        public BooksServices(ILibrarySystemContext context, IValidations validations) : base(context, validations)
         {
         }
 
         public Book AddBook(string title, Genre genre, Author author, string bookInStore)
         {
-
-            if (title.Length > ServicesConstants.MaxBookTitleLength
-                || title.Length < ServicesConstants.MinBookTitleLength)
-            {
-                throw new InvalidBookServiceParametersExeption($"The book title '{title}' is more then " +
-                    $"{ServicesConstants.MaxBookTitleLength} or " +
-                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
-            }
+            this.validations.BookTitleValidation(title);
 
             int numberOfBook;
             if (!int.TryParse(bookInStore, out numberOfBook))
             {
                 throw new InvalidBookServiceParametersExeption("Invalid number");
             }
+
+            this.validations.BookInStoreValidation(numberOfBook);
 
             var newBook = this.context.Books.FirstOrDefault(b => b.Title == title);
 
@@ -60,14 +56,7 @@ namespace LibrarySystem.Services
 
         public BookViewModel GetBook(string bookTitle)
         {
-
-            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
-                || bookTitle.Length < ServicesConstants.MinBookTitleLength)
-            {
-                throw new InvalidGenreServiceParametersExeption(
-                   $"This book title can't be long then {ServicesConstants.MaxBookTitleLength} " +
-                   $"or less then {ServicesConstants.MinBookTitleLength}");
-            }
+            this.validations.BookTitleValidation(bookTitle);
 
             var findBook = context.Books
                 .Select(b => new BookViewModel
@@ -88,13 +77,7 @@ namespace LibrarySystem.Services
 
         public IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre)
         {
-            if (byGenre.Length > ServicesConstants.MaxGenreNameLength
-                || byGenre.Length < ServicesConstants.MinGenreNameLength)
-            {
-                throw new InvalidGenreServiceParametersExeption(
-                    $"Genre can't be long then {ServicesConstants.MaxGenreNameLength} " +
-                    $"or less then {ServicesConstants.MinGenreNameLength}");
-            }
+            this.validations.GenreValidation(byGenre);
 
             var booksByGenre = context.Books
                 .Select(b => new BookViewModel
@@ -115,13 +98,7 @@ namespace LibrarySystem.Services
 
         public IEnumerable<BookViewModel> ListOfBooksByAuthor(string byAuthor)
         {
-            if (byAuthor.Length > ServicesConstants.MaxAuthorNameLength
-                || byAuthor.Length < ServicesConstants.MinAuthorNameLength)
-            {
-                throw new InvalidGenreServiceParametersExeption(
-                    $"Author can't be long then {ServicesConstants.MaxAuthorNameLength} " +
-                    $"or less then {ServicesConstants.MinAuthorNameLength}");
-            }
+            this.validations.AuthorValidation(byAuthor);
 
             var booksByAuthor = context.Books
                 .Select(b => new BookViewModel

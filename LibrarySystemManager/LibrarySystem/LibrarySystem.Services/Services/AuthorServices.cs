@@ -1,21 +1,21 @@
 ﻿using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
-using System;
-using System.Collections.Generic;
+using LibrarySystem.Services.Abstract.Contracts;
 using System.Linq;
-using System.Text;
 
 namespace LibrarySystem.Services.Services
 {
     public class AuthorServices : BaseServicesClass, IAuthorServices
     {
-        public AuthorServices(ILibrarySystemContext context) : base(context)
+        public AuthorServices(ILibrarySystemContext context, IValidations validations) : base(context, validations)
         {
         }
 
         public Author AddAuthor(string authorName)
         {
+            this.validations.AuthorValidation(authorName);
+
             Author newAuthor = context.Authors.FirstOrDefault(a => a.Name == authorName);
 
             if (newAuthor == null)
@@ -29,6 +29,8 @@ namespace LibrarySystem.Services.Services
 
         public Author GetAuthor(string authorName)
         {
+            this.validations.AuthorValidation(authorName);
+
             return context.Authors.FirstOrDefault(a => a.Name == authorName);
         }
     }
