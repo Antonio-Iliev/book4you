@@ -214,7 +214,7 @@ namespace LibrarySystem.Services
                 throw new AddBookNullableExeption($"User {firstName} already borrow this book '{bookTitle}'.");
             }
 
-            bookForBorrow.BooksInStore -= 1;
+            bookForBorrow.BooksInStore--;
 
             var usersBooks = new UsersBooks
             {
@@ -228,5 +228,58 @@ namespace LibrarySystem.Services
             return currentUser;
         }
 
+        public User ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
+        {
+            if (firstName.Length < ServicesConstants.MinUserNameLength
+             || firstName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"First name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (middleName.Length < ServicesConstants.MinUserNameLength
+                || middleName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Middle name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (lastName.Length < ServicesConstants.MinUserNameLength
+                || lastName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Last name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
+               || bookTitle.Length < ServicesConstants.MinBookTitleLength)
+            {
+                throw new InvalidBookServiceParametersExeption($"The book title '{bookTitle}' is more then " +
+                    $"{ServicesConstants.MaxBookTitleLength} or " +
+                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
+            }
+
+            var currentUser = context.Users
+               .SingleOrDefault(u => u.FirstName == firstName
+               && u.MiddleName == middleName
+               && u.LastName == lastName);
+
+            if (currentUser == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
+
+            var bookToReturn = context.Books.FirstOrDefault(b => b.Title == bookTitle);
+
+            if (bookToReturn == null)
+            {
+                throw new AddBookNullableExeption("There is no such book in this Library");
+            }
+
+            bookToReturn.BooksInStore += 1;
+            context.SaveChanges();
+
+            return currentUser;
+        }
     }
 }

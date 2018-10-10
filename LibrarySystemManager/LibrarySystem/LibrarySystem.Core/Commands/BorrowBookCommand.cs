@@ -31,7 +31,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             string book = args[3];
 
             var userWithBook = usersServices.BorrowBook(firstName, middName, lastName, book);
-            return $"User {userWithBook.FirstName} borrow the book {book}";
+
+            return $"User {userWithBook.FirstName} {userWithBook.MiddleName} {userWithBook.LastName} " +
+                $"borrow the book {book}";
         }
     }
 }

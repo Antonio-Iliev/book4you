@@ -21,5 +21,7 @@ namespace LibrarySystem.Services
 
         User BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
 
+        User ReturnBook(string firstName, string middleName, string lastName, string bookTitle);
+
     }
 }
