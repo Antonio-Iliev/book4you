@@ -5,6 +5,11 @@ using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Constants;
+<<<<<<< HEAD
+=======
+using LibrarySystem.Services.Exceptions.BookServiceExeptions;
+using LibrarySystem.Services.Exceptions.BookServices;
+>>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
 using LibrarySystem.Services.Exceptions.UserServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +46,11 @@ namespace LibrarySystem.Services
             if (lastName.Length < ServicesConstants.MinUserNameLength
                 || lastName.Length > ServicesConstants.MaxUserNameLength)
             {
+<<<<<<< HEAD
                 throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols.");
+=======
+                throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols");
+>>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
             }
             var user = new User
             {
@@ -77,6 +86,10 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableExeption("This user does not exists.");
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
             return user;
         }
 
@@ -114,7 +127,11 @@ namespace LibrarySystem.Services
             return user;
         }
 
+<<<<<<< HEAD
         public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
+=======
+        public User UpdateUser(string firstName, string middleName, string lastName, Address address)
+>>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
         {
             var user = this.context.Users
                 .Include(u => u.Address)
@@ -151,6 +168,81 @@ namespace LibrarySystem.Services
             this.context.SaveChanges();
 
             return user;
+        }
+
+        public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
+        {
+            if (firstName.Length < ServicesConstants.MinUserNameLength
+              || firstName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"First name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (middleName.Length < ServicesConstants.MinUserNameLength
+                || middleName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Middle name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (lastName.Length < ServicesConstants.MinUserNameLength
+                || lastName.Length > ServicesConstants.MaxUserNameLength)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Last name should be between {ServicesConstants.MinUserNameLength} " +
+                    $"and {ServicesConstants.MaxUserNameLength} symbols");
+            }
+            if (bookTitle.Length > ServicesConstants.MaxBookTitleLength
+               || bookTitle.Length < ServicesConstants.MinBookTitleLength)
+            {
+                throw new InvalidBookServiceParametersExeption($"The book title '{bookTitle}' is more then " +
+                    $"{ServicesConstants.MaxBookTitleLength} or " +
+                    $"less then {ServicesConstants.MinBookTitleLength} symbols.");
+            }
+
+            var currentUser = context.Users
+                  .SingleOrDefault(u => u.FirstName == firstName
+                  && u.MiddleName == middleName
+                  && u.LastName == lastName);
+
+            if (currentUser == null)
+            {
+                throw new AddUserNullableExeption("There is no such user in this Library.");
+            }
+
+            var bookForBorrow = context.Books.FirstOrDefault(b => b.Title == bookTitle);
+
+            if (bookForBorrow == null)
+            {
+                throw new AddBookNullableExeption("There is no such book in this Library");
+            }
+            if (bookForBorrow.BooksInStore - 1 < 0)
+            {
+                throw new AddBookNullableExeption("There is no enough books in store");
+            }
+
+            var isBorrow = context.UsersBooks
+                .Select(b => b)
+                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == currentUser.Id).ToList();
+
+            if (isBorrow.Count != 0)
+            {
+                throw new AddBookNullableExeption($"User {firstName} already borrow this book '{bookTitle}'.");
+            }
+       
+            bookForBorrow.BooksInStore -= 1;
+
+            var usersBooks = new UsersBooks
+            {
+                User = currentUser,
+                Book = bookForBorrow
+            };
+
+            currentUser.UsersBooks.Add(usersBooks);
+            base.context.SaveChanges();
+
+            return currentUser;
         }
     }
 }

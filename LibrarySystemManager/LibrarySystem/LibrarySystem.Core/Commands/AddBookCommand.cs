@@ -40,9 +40,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             Genre newGenre = genreServices.AddGenre(genre);
             Author newAuthor = authorServices.AddAuthor(author);
 
-            booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
+            var addedBook = booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
 
-            return $"New book {title} was added.";
+            return $"New book {addedBook.Title} was added.";
         }
     }
 }
