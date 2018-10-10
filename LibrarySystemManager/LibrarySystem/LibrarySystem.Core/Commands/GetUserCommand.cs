@@ -1,11 +1,9 @@
-﻿
-using LibrarySystem.ConsoleClient.Commands.Contracts;
+﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Exceptions.UserServices;
 using LibrarySystem.Services.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
@@ -21,14 +19,13 @@ namespace LibrarySystem.ConsoleClient.Commands
             this.addressService = addressService;
             this.townService = townService;
         }
-
         public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
 
             if (args.Count != 3)
             {
-                throw new ArgumentException("InvalidNumbersOfParameters");
+                throw new InvalidUserServiceParametersExeption("Invalid number of parameters.");
             }
             var result = this.usersServices.GetUser(args[0], args[1], args[2]);           
             

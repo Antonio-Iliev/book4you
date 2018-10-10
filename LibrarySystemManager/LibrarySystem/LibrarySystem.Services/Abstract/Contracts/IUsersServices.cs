@@ -9,7 +9,9 @@ namespace LibrarySystem.Services
         User AddUser(string firstName, string middleName, string lastName,
             int phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
 
-        User UpdateUser(string firstName, string middleName, string lastName, Address address);
+        User UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
+
+        User UpdateUserPhone(string firstName, string middleName, string lastName, int phone);
 
         User RemoveUser(string firstName, string middleName, string lastName);
 

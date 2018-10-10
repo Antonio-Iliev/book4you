@@ -13,7 +13,6 @@ namespace LibrarySystem.ConsoleClient.Commands
         {
             this.usersServices = usersServices;
         }
-
         public string Execute(IEnumerable<string> parameters)
         {
             var users = this.usersServices.ListUsers();

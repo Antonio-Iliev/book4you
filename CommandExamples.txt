@@ -10,9 +10,11 @@ ListBooksByGenre, fantasy
 ListBookByAuthor Author[0]
 ListBookByAuthor, George R. R. Martin
 
-Adduser, NePesho, Nepeshov, Peshov, 0882585356, ul."Dran dran2", Sofia
-Adduser, Ivan, Goshova, Georgieva, 0882585356, ul."Dran dran2", Dupnitsa
+Adduser, NovUser, Nepeshov, Peshov, 0000000001, ul."address 1", NovGrad
+Adduser, NovUser2, Goshova, Georgieva, 0000000002, ul."address 2", NovGrad2
 Listusers
-GetUser, Gosho, Peshov, Goshov
-RemoveUser, Gosho, Peshov, Goshov
-Updateuser, NePesho, Nepeshov, Peshov, ul."New Dran Dran", Varna
+GetUser, NovUser, Nepeshov, Peshov
+RemoveUser, NovUser, Nepeshov, Peshov
+
+Updateuseraddress, NovUser2, Goshova, Georgieva, ul."novAddress", UpdateGrad
+Updateuserphone, NovUser2, Goshova, Georgieva, 1111111111

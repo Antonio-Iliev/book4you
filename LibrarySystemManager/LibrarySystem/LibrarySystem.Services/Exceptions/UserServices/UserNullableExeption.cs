@@ -4,9 +4,9 @@ using System.Text;
 
 namespace LibrarySystem.Services.Exceptions.UserServices
 {
-    public class AddUserNullableExeption : Exception
+    public class UserNullableExeption : Exception
     {
-        public AddUserNullableExeption(string message) : base(message)
+        public UserNullableExeption(string message) : base(message)
         {
         }
     }

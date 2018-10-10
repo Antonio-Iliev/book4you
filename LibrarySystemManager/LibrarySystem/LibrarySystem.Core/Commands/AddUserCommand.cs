@@ -1,15 +1,11 @@
-﻿using LibrarySystem.Services.Constants;
-using LibrarySystem.ConsoleClient.Commands.Contracts;
-using LibrarySystem.Data.Context;
-using LibrarySystem.Data.Contracts;
+﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
-using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using LibrarySystem.Services.Exceptions.UserServices;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
@@ -31,7 +27,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var args = parameters.ToList();
             if (args.Count != 6)
             {
-                throw new ArgumentException("InvalidNumbersOfParameters");
+                throw new InvalidUserServiceParametersExeption("Invalid number of parameters.");
             }
             var firstName = args[0];
             var middleName = args[1];

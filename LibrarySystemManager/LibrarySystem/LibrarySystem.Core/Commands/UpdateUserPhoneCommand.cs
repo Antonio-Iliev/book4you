@@ -1,38 +1,35 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
-using LibrarySystem.Data.Contracts;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Exceptions.UserServices;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
-    public class RemoveUserCommand : ICommand
+    public class UpdateUserPhoneCommand : ICommand
     {
         private readonly IUsersServices usersServices;
 
-        public RemoveUserCommand(IUsersServices usersServices)
+        public UpdateUserPhoneCommand(IUsersServices usersServices)
         {
             this.usersServices = usersServices;
         }
-
         public string Execute(IEnumerable<string> parameters)
         {
             var args = parameters.ToList();
 
-            if (args.Count != 3)
+            if (args.Count != 4)
             {
                 throw new InvalidUserServiceParametersExeption("Invalid number of parameters.");
             }
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
+            var newPhone = int.Parse(args[3]);
 
-            var user = this.usersServices.RemoveUser(firstName, middleName, lastName);
+            var user = this.usersServices.UpdateUserPhone(firstName, middleName, lastName, newPhone);
 
-            return $"User {user.FirstName} {user.MiddleName} {user.LastName} was successfully deleted.";
+            return $"The phone of user: {user.FirstName} {user.MiddleName} {user.LastName} was successfully updated to {user.PhoneNumber}";
         }
     }
 }
