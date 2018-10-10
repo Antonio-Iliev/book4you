@@ -5,11 +5,8 @@ using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Constants;
-<<<<<<< HEAD
-=======
 using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.BookServices;
->>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
 using LibrarySystem.Services.Exceptions.UserServices;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +28,7 @@ namespace LibrarySystem.Services
 
             if (query != null)
             {
-                throw new UserNullableExeption("User already exists.");
+                throw new UserNullableException("User already exists.");
             }
             if (firstName.Length < ServicesConstants.MinUserNameLength
                 || firstName.Length > ServicesConstants.MaxUserNameLength)
@@ -46,11 +43,7 @@ namespace LibrarySystem.Services
             if (lastName.Length < ServicesConstants.MinUserNameLength
                 || lastName.Length > ServicesConstants.MaxUserNameLength)
             {
-<<<<<<< HEAD
                 throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols.");
-=======
-                throw new ArgumentOutOfRangeException("Last name should be between 1 and 20 symbols");
->>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
             }
             var user = new User
             {
@@ -84,12 +77,8 @@ namespace LibrarySystem.Services
 
             if (user == null || user.IsDeleted)
             {
-                throw new UserNullableExeption("This user does not exists.");
+                throw new UserNullableException("This user does not exists.");
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
             return user;
         }
 
@@ -106,7 +95,7 @@ namespace LibrarySystem.Services
 
             if (users.Count == 0)
             {
-                throw new UserNullableExeption("No users were found.");
+                throw new UserNullableException("No users were found.");
             }
             return users;
         }
@@ -120,18 +109,13 @@ namespace LibrarySystem.Services
 
             if (user == null)
             {
-                throw new UserNullableExeption("This user does not exist.");
+                throw new UserNullableException("This user does not exist.");
             }
             user.IsDeleted = true;
             this.context.SaveChanges();
             return user;
         }
-
-<<<<<<< HEAD
         public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
-=======
-        public User UpdateUser(string firstName, string middleName, string lastName, Address address)
->>>>>>> 76558a5b31182dc5c2709458b84a7ba9e61341ff
         {
             var user = this.context.Users
                 .Include(u => u.Address)
@@ -142,7 +126,7 @@ namespace LibrarySystem.Services
 
             if (user == null || user.IsDeleted)
             {
-                throw new UserNullableExeption("This user does not exist.");
+                throw new UserNullableException("This user does not exist.");
             }
 
             user.Address.StreetAddress = address.StreetAddress;
@@ -162,14 +146,13 @@ namespace LibrarySystem.Services
 
             if (user == null || user.IsDeleted)
             {
-                throw new UserNullableExeption("This user does not exist.");
+                throw new UserNullableException("This user does not exist.");
             }
             user.PhoneNumber = phone;
             this.context.SaveChanges();
 
             return user;
         }
-
         public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             if (firstName.Length < ServicesConstants.MinUserNameLength
@@ -208,7 +191,7 @@ namespace LibrarySystem.Services
 
             if (currentUser == null)
             {
-                throw new AddUserNullableExeption("There is no such user in this Library.");
+                throw new UserNullableException("There is no such user in this Library.");
             }
 
             var bookForBorrow = context.Books.FirstOrDefault(b => b.Title == bookTitle);
@@ -230,7 +213,7 @@ namespace LibrarySystem.Services
             {
                 throw new AddBookNullableExeption($"User {firstName} already borrow this book '{bookTitle}'.");
             }
-       
+
             bookForBorrow.BooksInStore -= 1;
 
             var usersBooks = new UsersBooks
@@ -244,5 +227,6 @@ namespace LibrarySystem.Services
 
             return currentUser;
         }
+
     }
 }

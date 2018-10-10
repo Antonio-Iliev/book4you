@@ -9,7 +9,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class GetUserCommand : ICommand
     {
-        private IUsersServices usersServices;
+        private readonly IUsersServices usersServices;
         private readonly IAddressService addressService;
         private readonly ITownService townService;
 

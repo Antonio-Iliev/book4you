@@ -10,6 +10,8 @@ using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
+using LibrarySystem.Services.Exceptions.UserServices;
+using System;
 
 namespace LibrarySystem.Services
 {
@@ -137,5 +139,6 @@ namespace LibrarySystem.Services
 
             return booksByAuthor;
         }
+        
     }
 }

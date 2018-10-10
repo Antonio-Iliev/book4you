@@ -7,7 +7,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 {
     public class ListUsersCommand : ICommand
     {
-        private IUsersServices usersServices;
+        private readonly IUsersServices usersServices;
 
         public ListUsersCommand(IUsersServices usersServices)
         {
