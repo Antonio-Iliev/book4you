@@ -17,5 +17,7 @@ namespace LibrarySystem.Services
         
         IEnumerable<User> ListUsers();
 
+        User BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
+
     }
 }
