@@ -3,3 +3,9 @@ addbook, new book, horror, pesho, 10
 
 GetBook Title[0]
 getbook, A Dream of Spring
+
+ListBooksByGenre Genre[0]
+ListBooksByGenre, fantasy
+
+ListBookByAuthor Author[0]
+ListBookByAuthor, George R. R. Martin
