@@ -22,7 +22,7 @@ namespace LibrarySystem.Data.Models
         [MaxLength(50)]
         public string TownName { get; set; }
 
-        public virtual ICollection<Address> Addresses
+        public ICollection<Address> Addresses
         {
             get { return this.addresses; }
             set { this.addresses = value; }
