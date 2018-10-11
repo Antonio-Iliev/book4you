@@ -107,7 +107,7 @@ namespace LibrarySystem.Services
         }
         public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
         {
-            //this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.UserValidation(firstName, middleName, lastName);
 
             var user = this.context.Users
                 .Include(u => u.Address)
@@ -121,8 +121,7 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("This user does not exist.");
             }
 
-            user.Address.StreetAddress = address.StreetAddress;
-            user.Address.Town = address.Town;
+            user.AddressId = address.Id;
 
             this.context.SaveChanges();
             return user;

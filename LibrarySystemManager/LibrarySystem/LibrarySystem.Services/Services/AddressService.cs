@@ -9,7 +9,7 @@ namespace LibrarySystem.Services.Services
 {
     public class AddressService : BaseServicesClass, IAddressService
     {
-        public AddressService(ILibrarySystemContext context, IValidations validations) 
+        public AddressService(ILibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }
@@ -19,15 +19,14 @@ namespace LibrarySystem.Services.Services
             this.validations.AddressValidation(streetAddress, town);
 
             var address = this.context.Addresses
-                .Include(a=>a.Town)
-                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.Town == town);
+                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
 
             if (address == null)
             {
                 address = new Address()
                 {
                     StreetAddress = streetAddress,
-                    Town= town
+                    TownId = town.Id
                 };
 
                 address = this.context.Addresses.Add(address).Entity;
