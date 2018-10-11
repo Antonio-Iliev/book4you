@@ -12,11 +12,13 @@ namespace LibrarySystem.ConsoleClient.Core
     {
         private readonly IComponentContext autofacContext;
         private readonly IRenderer renderer;
+        private readonly ICommandProcessor processor;
 
-        public Engine(IComponentContext autofacContext, IRenderer renderer)
+        public Engine(IComponentContext autofacContext, IRenderer renderer, ICommandProcessor processor)
         {
             this.autofacContext = autofacContext;
             this.renderer = renderer;
+            this.processor = processor;
         }
         public void Start()
         {
@@ -27,7 +29,7 @@ namespace LibrarySystem.ConsoleClient.Core
                 try
                 {
                     var commands = this.renderer.Input();
-                    commandResults = this.ProcessCommands(commands).ToList();
+                    commandResults = this.processor.ProcessCommands(commands).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -36,21 +38,20 @@ namespace LibrarySystem.ConsoleClient.Core
                 this.renderer.Output(commandResults);
             }
         }
-        private IEnumerable<string> ProcessCommands(IEnumerable<string> commands)
-        {
-            var results = new List<string>();
-            foreach (string commandLine in commands)
-            {
-                var splittedCommand = commandLine.Split(",").Select(c => c.Trim()).ToList();
-                var commandName = splittedCommand[0].ToLower();
-                var commandParams = splittedCommand.Skip(1).ToList();
-                var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
-                
-               results.Add(command.Execute(commandParams));
-            }
-            return results;
-        }
-    }
+        //private IEnumerable<string> ProcessCommands(IEnumerable<string> commands)
+        //{
+        //    var results = new List<string>();
+        //    foreach (string commandLine in commands)
+        //    {
+        //        var splittedCommand = commandLine.Split(",").Select(c => c.Trim()).ToList();
+        //        var commandName = splittedCommand[0].ToLower();
+        //        var commandParams = splittedCommand.Skip(1).ToList();
+        //        var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
 
+        //       results.Add(command.Execute(commandParams));
+        //    }
+        //    return results;
+        //}
+    }
 }
 
