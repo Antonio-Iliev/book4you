@@ -22,13 +22,22 @@ namespace LibrarySystem.ConsoleClient.Core.Providers
             var results = new List<string>();
             foreach (string commandLine in commands)
             {
-                string commandName = commandLine.Substring(0, commandLine.IndexOf(' ')).ToLower();
+                string commandName;
+                IList<string> commandParams = new List<string>();
+                if (!commandLine.Contains(' '))
+                {
+                    commandName = commandLine.ToLower();
+                }
+                else
+                {
+                    commandName = commandLine.Substring(0, commandLine.IndexOf(' ')).ToLower();
 
-                var commandParams = commandLine
-                    .Substring(commandName.Length)
-                    .Split(",")
-                    .Select(c => c.Trim())
-                    .ToList();
+                    commandParams = commandLine
+                        .Substring(commandName.Length)
+                        .Split(",")
+                        .Select(c => c.Trim())
+                        .ToList();
+                }
 
                 var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
 
