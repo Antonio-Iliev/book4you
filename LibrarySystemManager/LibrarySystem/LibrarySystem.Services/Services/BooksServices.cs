@@ -30,24 +30,27 @@ namespace LibrarySystem.Services
 
             this.validations.BookInStoreValidation(numberOfBook);
 
-            var newBook = this.context.Books.FirstOrDefault(b => b.Title == title);
+            var currentBook = this.context.Books.FirstOrDefault(b => b.Title == title);
 
-            if (newBook != null)
+            if (currentBook == null)
             {
-                throw new AddBookNullableExeption("The book already exist.");
+                currentBook = new Book
+                {
+                    Title = title,
+                    GenreId = genre.Id,
+                    AuthorId = author.Id,
+                    BooksInStore = numberOfBook
+                };
+
+                this.context.Books.Add(currentBook);
+            }
+            else
+            {
+                currentBook.BooksInStore += numberOfBook;
             }
 
-            newBook = new Book
-            {
-                Title = title,
-                GenreId = genre.Id,
-                AuthorId = author.Id,
-                BooksInStore = numberOfBook
-            };
-
-            this.context.Books.Add(newBook);
             this.context.SaveChanges();
-            return newBook;
+            return currentBook;
         }
 
         public BookViewModel GetBook(string bookTitle)
@@ -112,6 +115,6 @@ namespace LibrarySystem.Services
 
             return booksByAuthor;
         }
-        
+
     }
 }

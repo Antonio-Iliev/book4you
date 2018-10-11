@@ -23,13 +23,6 @@
         internal const int MinAddressNameLength = 1;
         internal const int MaxAddressNameLength = 50;
         internal const int MinBookInStore = 1;
-        internal const int MaxBookInStore = 50;
-
-        //Commands
-        //AddUser, Ivanov, Peshov, Peshov, 0889257125, ul.Dran dran, Sofia
-        //getuser, Gosho, Goshov, Goshov
-        //AddUser, Pesho, Peshov, Peshov, 0889257125, ul."Dran dran", Dupnitsa
-        //AddBook, Ala Bala, Horror, Pesho 3
-        //AddBook, A Clash, Drama, Dr Radeva 5
+        internal const int MaxBookInStore = 150;
     }
 }
