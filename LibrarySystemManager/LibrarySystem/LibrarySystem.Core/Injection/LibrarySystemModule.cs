@@ -24,7 +24,7 @@ namespace LibrarySystem.ConsoleClient.Injection
         public void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
-            builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>();
+            builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>().SingleInstance();
             builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
         }
         public void RegisterCommands(ContainerBuilder builder)

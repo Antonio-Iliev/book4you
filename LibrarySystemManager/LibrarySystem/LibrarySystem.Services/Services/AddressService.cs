@@ -2,6 +2,7 @@
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LibrarySystem.Services.Services
@@ -18,14 +19,15 @@ namespace LibrarySystem.Services.Services
             this.validations.AddressValidation(streetAddress, town);
 
             var address = this.context.Addresses
-                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
+                .Include(a=>a.Town)
+                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.Town == town);
 
             if (address == null)
             {
                 address = new Address()
                 {
                     StreetAddress = streetAddress,
-                    TownId = town.Id
+                    Town= town
                 };
 
                 address = this.context.Addresses.Add(address).Entity;
