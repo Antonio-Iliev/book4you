@@ -12,14 +12,24 @@ namespace LibrarySystem.ConsoleClient.Core.Providers
     {
         private readonly IComponentContext autofacContext;
 
+        public CommandProcessor(IComponentContext autofacContext)
+        {
+            this.autofacContext = autofacContext;
+        }
+
         public IEnumerable<string> ProcessCommands(IEnumerable<string> commands)
         {
             var results = new List<string>();
             foreach (string commandLine in commands)
             {
-                var splittedCommand = commandLine.Split(",").Select(c => c.Trim()).ToList();
-                var commandName = splittedCommand[0].ToLower();
-                var commandParams = splittedCommand.Skip(1).ToList();
+                string commandName = commandLine.Substring(0, commandLine.IndexOf(' ')).ToLower();
+
+                var commandParams = commandLine
+                    .Substring(commandName.Length)
+                    .Split(",")
+                    .Select(c => c.Trim())
+                    .ToList();
+
                 var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
 
                 results.Add(command.Execute(commandParams));

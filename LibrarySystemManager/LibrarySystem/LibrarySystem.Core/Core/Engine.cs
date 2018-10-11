@@ -10,13 +10,11 @@ namespace LibrarySystem.ConsoleClient.Core
 {
     public class Engine : IEngine
     {
-        private readonly IComponentContext autofacContext;
         private readonly IRenderer renderer;
         private readonly ICommandProcessor processor;
 
-        public Engine(IComponentContext autofacContext, IRenderer renderer, ICommandProcessor processor)
+        public Engine(IRenderer renderer, ICommandProcessor processor)
         {
-            this.autofacContext = autofacContext;
             this.renderer = renderer;
             this.processor = processor;
         }
@@ -38,20 +36,6 @@ namespace LibrarySystem.ConsoleClient.Core
                 this.renderer.Output(commandResults);
             }
         }
-        //private IEnumerable<string> ProcessCommands(IEnumerable<string> commands)
-        //{
-        //    var results = new List<string>();
-        //    foreach (string commandLine in commands)
-        //    {
-        //        var splittedCommand = commandLine.Split(",").Select(c => c.Trim()).ToList();
-        //        var commandName = splittedCommand[0].ToLower();
-        //        var commandParams = splittedCommand.Skip(1).ToList();
-        //        var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
-
-        //       results.Add(command.Execute(commandParams));
-        //    }
-        //    return results;
-        //}
     }
 }
 
