@@ -10,13 +10,11 @@ namespace LibrarySystem.ConsoleClient.Core
 {
     public class Engine : IEngine
     {
-        private readonly IComponentContext autofacContext;
         private readonly IRenderer renderer;
         private readonly ICommandProcessor processor;
 
-        public Engine(IComponentContext autofacContext, IRenderer renderer, ICommandProcessor processor)
+        public Engine(IRenderer renderer, ICommandProcessor processor)
         {
-            this.autofacContext = autofacContext;
             this.renderer = renderer;
             this.processor = processor;
         }

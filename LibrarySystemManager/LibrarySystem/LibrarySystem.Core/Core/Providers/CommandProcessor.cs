@@ -12,6 +12,11 @@ namespace LibrarySystem.ConsoleClient.Core.Providers
     {
         private readonly IComponentContext autofacContext;
 
+        public CommandProcessor(IComponentContext autofacContext)
+        {
+            this.autofacContext = autofacContext;
+        }
+
         public IEnumerable<string> ProcessCommands(IEnumerable<string> commands)
         {
             var results = new List<string>();
