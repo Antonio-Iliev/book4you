@@ -33,7 +33,10 @@ namespace LibrarySystem.Data.Models
         [MaxLength(20)]
         public string LastName { get; set; }
 
-        public int? PhoneNumber { get; set; }
+        [Required]
+        [MinLength(5)]
+        [MaxLength(12)]
+        public string PhoneNumber { get; set; }
 
         public DateTime AddOnDate { get; set; }
 

@@ -39,7 +39,7 @@ namespace LibrarySystem.Services
                 FirstName = firstName,
                 MiddleName = middleName,
                 LastName = lastName,
-                PhoneNumber = phoneNumber,
+                PhoneNumber = phoneNumber.ToString(),
                 AddOnDate = DateTime.Now,
                 IsDeleted = false,
                 AddressId = address.Id
@@ -147,7 +147,7 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
-            user.PhoneNumber = phone;
+            user.PhoneNumber = phone.ToString();
             this.context.SaveChanges();
 
             return user;
