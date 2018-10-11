@@ -8,6 +8,7 @@ using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Exceptions.AddressServices;
 using LibrarySystem.Services.Exceptions.UserServices;
+using System;
 
 namespace LibrarySystem.Services.Validations
 {
@@ -17,8 +18,7 @@ namespace LibrarySystem.Services.Validations
         {
             if (inputObject == null)
             {
-                string objectName = inputObject.GetType().ToString().Split(".").Last();
-                throw new AddTownNullableExeption($"{objectName} can not be null!");
+                throw new ArgumentNullException("Parameter can not be null!");
             }
         }
 

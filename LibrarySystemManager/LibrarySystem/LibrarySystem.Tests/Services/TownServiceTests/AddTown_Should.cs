@@ -3,6 +3,7 @@ using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Exceptions.TownServices;
 using LibrarySystem.Services.Services;
+using LibrarySystem.Services.Validations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,39 +17,6 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
     [TestClass]
     public class AddTown_Should
     {
-        [TestMethod]
-        [ExpectedException(typeof(AddTownNullableExeption))]
-        public void Throw_When_TownName_IsNull()
-        {
-            var contextMoq = new Mock<ILibrarySystemContext>();
-
-            var service = new TownService(contextMoq.Object);
-
-            service.AddTown(null);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidTownServiceParametersExeption))]
-        public void Throw_When_TownName_IsMoreThan50()
-        {
-            var contextMoq = new Mock<ILibrarySystemContext>();
-            var service = new TownService(contextMoq.Object);
-
-            var town = new Town();
-
-            service.AddTown(new string('a', 51));
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(InvalidTownServiceParametersExeption))]
-        public void Throw_When_TownName_IsEmpty()
-        {
-            var contextMoq = new Mock<ILibrarySystemContext>();
-
-            var service = new TownService(contextMoq.Object);
-
-            service.AddTown("");
-        }
 
         [TestMethod]
         public void AddTown_InDataBase_IfNotAlready()
@@ -60,7 +28,8 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
             // Run the test against one instance of the context
             using (var context = new LibrarySystemContext(options))
             {
-                var service = new TownService(context);
+                var validationMock = new Mock<CommonValidations>();
+                var service = new TownService(context, validationMock.Object);
                 service.AddTown("Dupnitsa");
             }
 
@@ -83,7 +52,8 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
             // Run the test against one instance of the context
             using (var context = new LibrarySystemContext(options))
             {
-                var service = new TownService(context);
+                var validationMock = new Mock<CommonValidations>();
+                var service = new TownService(context, validationMock.Object);
                 service.AddTown("Dupnitsa");
                 result = service.AddTown("Dupnitsa");
             }
