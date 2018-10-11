@@ -17,14 +17,20 @@ namespace LibrarySystem.ConsoleClient.Commands
         {
             var users = this.usersServices.ListUsers();
 
-            var result = new StringBuilder();
+            var result = new StringBuilder();            
 
             foreach (var user in users)
             {
+                var books = new StringBuilder();
+
+                foreach (var item in user.UsersBooks)
+                {
+                    books.AppendLine(item.Book.Title);
+                }
                 result.AppendLine(
                     $"Name: {user.FirstName} {user.MiddleName} {user.LastName} Phone: {user.PhoneNumber} " +
                     $"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName} " +
-                    $"{string.Join(", ", user.UsersBooks)}."
+                    $"{books.ToString()}."
                     );
                 result.AppendLine();
             }

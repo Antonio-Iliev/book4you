@@ -32,7 +32,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
-            var phone = int.Parse(args[3]);
+            var phone = args[3];
             var addedOn = DateTime.Now;
             bool isDeleted = false;
             Town town = townService.AddTown(args[5]);

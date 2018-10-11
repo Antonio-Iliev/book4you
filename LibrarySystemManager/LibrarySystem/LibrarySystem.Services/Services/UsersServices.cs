@@ -18,11 +18,9 @@ namespace LibrarySystem.Services
         {
         }
 
-        public User AddUser(string firstName, string middleName, string lastName, int phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
+        public User AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
-
-            //TODO validation on phone number
 
             var query = context.Users
                .SingleOrDefault(u => u.FirstName == firstName
@@ -39,7 +37,7 @@ namespace LibrarySystem.Services
                 FirstName = firstName,
                 MiddleName = middleName,
                 LastName = lastName,
-                PhoneNumber = phoneNumber.ToString(),
+                PhoneNumber = phoneNumber,
                 AddOnDate = DateTime.Now,
                 IsDeleted = false,
                 AddressId = address.Id
@@ -59,7 +57,7 @@ namespace LibrarySystem.Services
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
+                    .ThenInclude(ub => ub.Book)                    
                 .SingleOrDefault(
                 u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -81,7 +79,6 @@ namespace LibrarySystem.Services
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
                 .Where(u => !u.IsDeleted)
-                .Take(10)
                 .ToList();
 
             if (users.Count == 0)
@@ -131,12 +128,10 @@ namespace LibrarySystem.Services
             return user;
         }
 
-        public User UpdateUserPhone(string firstName, string middleName, string lastName, int phone)
+        public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
-            
-            //TODO validation on phone number
-
+         
             var user = this.context.Users
                 .SingleOrDefault(
                 u => u.FirstName == firstName
