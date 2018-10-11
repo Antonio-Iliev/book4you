@@ -22,8 +22,6 @@ namespace LibrarySystem.Services
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
-            //TODO validation on phone number
-
             var query = context.Users
                .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -59,7 +57,7 @@ namespace LibrarySystem.Services
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
+                    .ThenInclude(ub => ub.Book)                    
                 .SingleOrDefault(
                 u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -81,7 +79,6 @@ namespace LibrarySystem.Services
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
                 .Where(u => !u.IsDeleted)
-                .Take(10)
                 .ToList();
 
             if (users.Count == 0)

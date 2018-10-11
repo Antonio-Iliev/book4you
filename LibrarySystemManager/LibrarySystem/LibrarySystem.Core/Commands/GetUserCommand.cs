@@ -4,6 +4,8 @@ using LibrarySystem.Services.Exceptions.UserServices;
 using LibrarySystem.Services.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
@@ -27,11 +29,18 @@ namespace LibrarySystem.ConsoleClient.Commands
             {
                 throw new InvalidUserServiceParametersExeption("Invalid number of parameters.");
             }
-            var result = this.usersServices.GetUser(args[0], args[1], args[2]);           
-            
+            var result = this.usersServices.GetUser(args[0], args[1], args[2]);
+
+            var books= new StringBuilder();
+
+            foreach (var item in result.UsersBooks)
+            {
+                books.AppendLine(item.Book.Title);  
+            }
+
             return $"User: {result.FirstName} {result.MiddleName} {result.LastName} Phone: {result.PhoneNumber} " +
                 $"Added On: {result.AddOnDate} Address: {result.Address.StreetAddress} {result.Address.Town.TownName} " +
-                $"Books: {string.Join(", ", result.UsersBooks)}.";
+                $"Books: {books.ToString()}";
         }
     }
 }
