@@ -25,7 +25,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
-            var newPhone = int.Parse(args[3]);
+            var newPhone = args[3];
 
             var user = this.usersServices.UpdateUserPhone(firstName, middleName, lastName, newPhone);
 
