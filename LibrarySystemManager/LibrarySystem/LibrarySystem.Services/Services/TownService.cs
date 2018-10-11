@@ -17,12 +17,12 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.TownValidation(townName);
 
-            var town = base.context.Towns.FirstOrDefault(t => t.TownName == townName);
+            var town = this.context.Towns.FirstOrDefault(t => t.TownName == townName);
 
             if (town == null)
             {
-                town = base.context.Towns.Add(new Town() { TownName = townName }).Entity;
-                base.context.SaveChanges();
+                town = this.context.Towns.Add(new Town() { TownName = townName }).Entity;
+                this.context.SaveChanges();
             }
 
             return town;

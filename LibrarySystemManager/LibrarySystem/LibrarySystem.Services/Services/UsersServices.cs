@@ -5,8 +5,6 @@ using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
-using LibrarySystem.Services.Constants;
-using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.UserServices;
 using Microsoft.EntityFrameworkCore;
@@ -198,7 +196,7 @@ namespace LibrarySystem.Services
             };
 
             currentUser.UsersBooks.Add(usersBooks);
-            base.context.SaveChanges();
+            this.context.SaveChanges();
 
             return currentUser;
         }

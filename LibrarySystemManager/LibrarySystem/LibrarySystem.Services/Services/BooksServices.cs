@@ -2,16 +2,12 @@
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using System.Linq;
-using LibrarySystem.Services.Constants;
 using LibrarySystem.Services.ViewModels;
 using System.Collections.Generic;
-using LibrarySystem.Services.Exceptions.GenreServiceExeptions;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
-using LibrarySystem.Services.Exceptions.UserServices;
-using System;
 using LibrarySystem.Services.Abstract.Contracts;
 
 namespace LibrarySystem.Services

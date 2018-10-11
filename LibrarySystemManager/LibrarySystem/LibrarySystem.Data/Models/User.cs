@@ -42,7 +42,7 @@ namespace LibrarySystem.Data.Models
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
-        public virtual ICollection<UsersBooks> UsersBooks
+        public ICollection<UsersBooks> UsersBooks
         {
             get { return this.usersBooks; }
             set { this.usersBooks = value; }
