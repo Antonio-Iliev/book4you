@@ -35,6 +35,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var phone = args[3];
             var addedOn = DateTime.Now;
             bool isDeleted = false;
+
             Town town = townService.AddTown(args[5]);
             Address address = addressService.AddAddress(args[4], town);           
                      

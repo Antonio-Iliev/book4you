@@ -1,16 +1,14 @@
-﻿using LibrarySystem.Data.Contracts;
-using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LibrarySystem.Services.Services
 {
     public class AddressService : BaseServicesClass, IAddressService
     {
-        public AddressService(ILibrarySystemContext context, IValidations validations)
-            : base(context, validations)
+        public AddressService(UnitOfWork unitOfWork, IValidations validations)
+            : base(unitOfWork, validations)
         {
         }
 
@@ -18,7 +16,7 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.AddressValidation(streetAddress, town);
 
-            var address = this.context.Addresses
+            var address = this.unitOfWork.GetRepo<Address>().All()
                 .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
 
             if (address == null)
@@ -29,8 +27,11 @@ namespace LibrarySystem.Services.Services
                     TownId = town.Id
                 };
 
-                address = this.context.Addresses.Add(address).Entity;
-                this.context.SaveChanges();
+                this.unitOfWork.GetRepo<Address>().Add(address);
+                this.unitOfWork.SaveChanges();
+
+                address = this.unitOfWork.GetRepo<Address>().All()
+               .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
             }
 
             return address;
