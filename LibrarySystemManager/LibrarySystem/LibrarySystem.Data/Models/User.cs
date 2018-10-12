@@ -20,16 +20,16 @@ namespace LibrarySystem.Data.Models
         public Guid Id { get; set; }
 
         [Required]
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(20)]
         public string FirstName { get; set; }
 
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(20)]
         public string MiddleName { get; set; }
 
         [Required]
-        [MinLength(1)]
+        [MinLength(2)]
         [MaxLength(20)]
         public string LastName { get; set; }
 

@@ -12,7 +12,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public Town AddTown(string townName)
+        public int AddTown(string townName)
         {
             this.validations.TownValidation(townName);
 
@@ -25,7 +25,7 @@ namespace LibrarySystem.Services.Services
                 town = this.unitOfWork.GetRepo<Town>().All().FirstOrDefault(t => t.TownName == townName);
             }
 
-            return town;
+            return town.Id;
         }
 
     }
