@@ -13,5 +13,7 @@ namespace LibrarySystem.Services
         IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre);
 
         IEnumerable<BookViewModel> ListOfBooksByAuthor(string byAuthor);
+
+        IEnumerable<BookViewModel> ListBooks();
     }
 }
