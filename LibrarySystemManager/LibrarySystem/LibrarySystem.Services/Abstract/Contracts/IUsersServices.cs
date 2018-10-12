@@ -1,4 +1,5 @@
 ﻿using LibrarySystem.Data.Models;
+using LibrarySystem.Services.ViewModels;
 using System;
 using System.Collections.Generic;
 
@@ -6,22 +7,22 @@ namespace LibrarySystem.Services
 {
     public interface IUsersServices
     {
-        User AddUser(string firstName, string middleName, string lastName,
+        UserViewModel AddUser(string firstName, string middleName, string lastName,
             string phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
 
-        User UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
+        UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
 
-        User UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
+        UserViewModel UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
 
-        User RemoveUser(string firstName, string middleName, string lastName);
+        UserViewModel RemoveUser(string firstName, string middleName, string lastName);
 
-        User GetUser(string firstName, string middleName, string lastName);
+        UserViewModel GetUser(string firstName, string middleName, string lastName);
         
-        IEnumerable<User> ListUsers();
+        IEnumerable<UserViewModel> ListUsers();
 
-        User BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
+        UserViewModel BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
 
-        User ReturnBook(string firstName, string middleName, string lastName, string bookTitle);
+        UserViewModel ReturnBook(string firstName, string middleName, string lastName, string bookTitle);
 
     }
 }

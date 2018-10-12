@@ -29,7 +29,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var user = this.usersServices.UpdateUserPhone(firstName, middleName, lastName, newPhone);
 
-            return $"The phone of user: {user.FirstName} {user.MiddleName} {user.LastName} was successfully updated to {user.PhoneNumber}";
+            return $"The phone of user: {user.FullName} was successfully updated to {user.FullName}";
         }
     }
 }
