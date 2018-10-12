@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
@@ -30,11 +29,12 @@ namespace LibrarySystem.ConsoleClient.Commands
             }
 
             string commandName = args[0].ToLower();
-            var reportBy = args.Skip(1);
+            IEnumerable<string> reportBy = args.Skip(1);
+            string infoParameter = args[1].ToLower();
 
             string exportFolder = @"../../../../Reports/";
             string reportDate = DateTime.Now.ToString("dd-MM-yyyy");
-            string exportFile = Path.Combine(exportFolder, $"report_{commandName}_{reportDate}.pdf");
+            string exportFile = Path.Combine(exportFolder, $"Report_{commandName}_by_{infoParameter}_{reportDate}.pdf");
             var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
 
             string print = command.Execute(reportBy);
@@ -49,7 +49,7 @@ namespace LibrarySystem.ConsoleClient.Commands
                 }
             }
 
-            return "Report is ready!";
+            return $"Report about {commandName} by {infoParameter} is ready!";
         }
     }
 }
