@@ -1,5 +1,4 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
-using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Services;
 using System;
