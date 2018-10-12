@@ -1,5 +1,4 @@
 ﻿using LibrarySystem.Data.Context;
-using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Exceptions.AddressServices;
 using LibrarySystem.Services.Services;
@@ -19,53 +18,66 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
     {
 
         [TestMethod]
-        public void AddAddress_ToDataBase_IfNotAlready()
+        public void Add_Address_ToDataBase()
         {
-            var options = new DbContextOptionsBuilder<LibrarySystemContext>()
-                   .UseInMemoryDatabase(databaseName: "AddAddress_ToDataBase")
-                   .Options;
+            var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
+                .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
+                .Options;
 
-            string street = "test street";
-            var town = new Town() { TownName = "Dupnitsa" };
-            var validationMock = new Mock<CommonValidations>();
-
-            using (var context = new LibrarySystemContext(options))
+            string streetAddress = "str test";
+            var address = new Address()
             {
-                var service = new AddressService(context, validationMock.Object);                
-                service.AddAddress(street, town);
+                StreetAddress = streetAddress,
+                TownId = 1
+            };
+
+            // Act
+            using (var actContext = new LibrarySystemContext(contextOptions))
+            {
+                actContext.Addresses.Add(address);
+                actContext.SaveChanges();
             }
 
-            using (var context = new LibrarySystemContext(options))
+            // Assert
+            using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                Assert.AreEqual(1, context.Addresses.Count());
-                Assert.AreEqual(street, context.Addresses.Single().StreetAddress);
+                int count = assertContext.Towns.Count();
+                Assert.AreEqual(1, count);
+                Assert.AreEqual(streetAddress, assertContext.Addresses.First().StreetAddress);
             }
+
         }
 
         [TestMethod]
-        public void Return_AddressFromDataBase_IfExists()
+        public void Not_Add_IfAddress_Exists()
         {
-            var options = new DbContextOptionsBuilder<LibrarySystemContext>()
-                   .UseInMemoryDatabase(databaseName: "AddAddress_ToDataBase")
-                   .Options;
+            var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
+                .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
+                .Options;
 
-            string street = "test street";
-            var town = new Town() { TownName = "Dupnitsa" };
-            var validationMock = new Mock<CommonValidations>();
-            Address address;
-
-            using (var context = new LibrarySystemContext(options))
+            string streetAddress = "str test";
+            var address = new Address()
             {
-                var service = new AddressService(context, validationMock.Object);
-                service.AddAddress(street, town);
-                address = service.AddAddress(street, town);
+                StreetAddress = streetAddress,
+                TownId = 1
+            };
+
+            // Act
+            using (var actContext = new LibrarySystemContext(contextOptions))
+            {
+                actContext.Addresses.Add(address);
+                actContext.Addresses.Add(address);
+                actContext.SaveChanges();
             }
 
-            using (var context = new LibrarySystemContext(options))
+            // Assert
+            using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                Assert.AreEqual(1, context.Addresses.Count());
-                Assert.AreEqual(street, address.StreetAddress);
+                int count = assertContext.Towns.Count();
+                Assert.AreEqual(1, count);
+                Assert.AreEqual(streetAddress, assertContext.Addresses.First().StreetAddress);
             }
+
         }
     }
 }

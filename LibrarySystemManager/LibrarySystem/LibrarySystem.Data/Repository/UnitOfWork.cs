@@ -14,7 +14,7 @@ public class UnitOfWork
         this.context = context;
     }
 
-    public IRepository<T> GetRepo<T>() where T : class
+    public virtual IRepository<T> GetRepo<T>() where T : class
     {
         var repoType = typeof(Repository<T>);
 

@@ -28,7 +28,7 @@ namespace LibrarySystem.Data.Repository
             return this.context.Set<T>();
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
 
