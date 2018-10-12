@@ -123,21 +123,23 @@ namespace LibrarySystem.Services
 
         public IEnumerable<UserViewModel> ListUsers()
         {
-            var users = this.unitOfWork.GetRepo<User>().All()
+            var query = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
-                .Where(u => !u.IsDeleted)
-                .Select(u => new UserViewModel
-                {
-                    FullName = $"{u.FirstName} {u.MiddleName} {u.LastName}",
-                    Phonenumber = u.PhoneNumber,
-                    Address = u.Address.StreetAddress,
-                    Town = u.Address.Town.TownName,
-                    AddedOn = u.AddOnDate
-                })
-                .ToList();
+                .Where(u => !u.IsDeleted).ToList();
+
+
+            var users = query.Select(u => new UserViewModel
+            {
+                FullName = $"{u.FirstName} {u.MiddleName} {u.LastName}",
+                Phonenumber = u.PhoneNumber,
+                Address = u.Address.StreetAddress,
+                Town = u.Address.Town.TownName,
+                AddedOn = u.AddOnDate,
+                UserBooks = u.UsersBooks
+            }).ToList();
 
             if (users.Count == 0)
             {
