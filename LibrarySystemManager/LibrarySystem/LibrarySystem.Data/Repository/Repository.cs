@@ -23,11 +23,6 @@ namespace LibrarySystem.Data.Repository
         }
 
 
-        public IQueryable<T> AllAndDeleted()
-        {
-            return this.context.Set<T>();
-        }
-
         public void Add(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
@@ -42,14 +37,6 @@ namespace LibrarySystem.Data.Repository
             }
         }
 
-        public void Delete(T entity)
-        {
-            //entity.IsDeleted = true;
-            //entity.DeleteOn = DateTime.Now;
-            //var entry = this.context.Entry(entity);
-            //entry.State = EntityState.Modified;
-        }
-
         public void Update(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
@@ -59,11 +46,6 @@ namespace LibrarySystem.Data.Repository
             }
 
             entry.State = EntityState.Modified;
-        }
-
-        public void Save()
-        {
-            this.context.SaveChanges();
         }
     }
 }

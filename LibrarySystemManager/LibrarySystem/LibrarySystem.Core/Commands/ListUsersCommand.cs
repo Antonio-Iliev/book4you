@@ -22,11 +22,11 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             foreach (var user in users)
             {
-                var books = user.UsersBooks.Select(x => x.Book.Title).ToList();
+                var books = user.UserBooks.Select(x => x.Book.Title).ToList();
                 
                 result.AppendLine(
-                    $"Name: {user.FirstName} {user.MiddleName} {user.LastName} Phone: {user.PhoneNumber} " +
-                    $"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName} " +
+                    $"Name: {user.FullName} Phone: {user.Phonenumber} " +
+                    $"Added On: {user.AddedOn} Address: {user.Address}, {user.Town} " +
                     $"{string.Join(", ", books)}."
                     );
                 result.AppendLine();
