@@ -1,5 +1,4 @@
-﻿using LibrarySystem.Data.Contracts;
-using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
 using System.Linq;
@@ -8,7 +7,7 @@ namespace LibrarySystem.Services.Services
 {
     public class AuthorServices : BaseServicesClass, IAuthorServices
     {
-        public AuthorServices(ILibrarySystemContext context, IValidations validations) : base(context, validations)
+        public AuthorServices(UnitOfWork unitOfWork, IValidations validations) : base(unitOfWork, validations)
         {
         }
 
@@ -16,12 +15,13 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.AuthorValidation(authorName);
 
-            Author newAuthor = context.Authors.FirstOrDefault(a => a.Name == authorName);
+            Author newAuthor = this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
 
             if (newAuthor == null)
             {
-                newAuthor = this.context.Authors.Add(new Author { Name = authorName }).Entity;
-                this.context.SaveChanges();
+                this.unitOfWork.GetRepo<Author>().Add(new Author { Name = authorName });
+                this.unitOfWork.SaveChanges();
+                newAuthor = this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
             }
 
             return newAuthor;
@@ -31,7 +31,7 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.AuthorValidation(authorName);
 
-            return context.Authors.FirstOrDefault(a => a.Name == authorName);
+            return this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
         }
     }
 }

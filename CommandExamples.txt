@@ -1,4 +1,6 @@
 addbook new book, horror, pesho, 10
+addbook old book, not horror, Gulatemahala, 15
+
 
 getbook A Dream of Spring
 
@@ -8,12 +10,25 @@ ListBookByAuthor George R. R. Martin
 
 Adduser Test100, Nepeshov, Peshov, 0000000001, ul."address 1", NovGrad
 Adduser NovUser2, Goshova, Georgieva, 0000000002, ul."address 2", NovGrad2
+Adduser NovUser3, Goshova, Georgieva, 0000000002, ul."address 2", NovGrad2
+Adduser NovUser6, Goshova, Georgieva, 0000000006, ul."address 16", Star Grad
+
 Listusers
+<<<<<<< HEAD
 GetUser Test100, Nepeshov, Peshov
 RemoveUser Test100, Nepeshov, Peshov
 
 Updateuseraddress Ivan, Goshova, Georgieva, ul."Mladost", TestGrad
 Updateuserphone Test100, Nepeshov, Peshov, 1111111111
+=======
+GetUser NovUser, Nepeshov, Peshov
+GetUser NovUser2, Goshova, Georgieva
+RemoveUser NovUser, Nepeshov, Peshov
+RemoveUser NovUser3, Goshova, Georgieva
+
+Updateuseraddress NovUser2, Goshova, Georgieva, ul."novAddress", UpdateGrad
+Updateuserphone NovUser2, Goshova, Georgieva, 1111311111
+>>>>>>> 9e60833dc05dd2f64650b1c41214bd39d9aae09e
 
 BorrowBook Test100, Nepeshov, Peshov, A Clash of Kings
 BorrowBook Test100, Nepeshov, Peshov, A Storm of Swords
@@ -24,3 +39,9 @@ ReturnBook NovUser, Nepeshov, Peshov, A Clash of Kings
 ReturnBook NovUser, Nepeshov, Peshov, A Storm of Swords
 
 Adduser NovUser Nepeshov, Peshov, 0000000001, ul."address 1", NovGrad
+
+Adduser Gerasim, Gmoshev, Gugev, 00002010002, ul."address 12", Plovdiv
+Updateuseraddress NovUser2, Goshova, Georgieva, ul."novAddress 9", Sofia
+Updateuseraddress NovUser2, Goshova, Georgieva, ul."Star adres", Sofia
+Updateuseraddress NovUser6, Goshova, Georgieva, ul."novAddress 9, Sofia
+Updateuseraddress NovUser6, Goshova, Georgieva, ul."Star adres", Sofia

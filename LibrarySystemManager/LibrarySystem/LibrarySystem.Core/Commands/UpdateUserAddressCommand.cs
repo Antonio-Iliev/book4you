@@ -31,12 +31,13 @@ namespace LibrarySystem.ConsoleClient.Commands
             var firstName = args[0];
             var middleName = args[1];
             var lastName = args[2];
+
             Town town = townService.AddTown(args[4]);
             Address newAddress = addressService.AddAddress(args[3], town);
 
-            var user = this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
+            this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 
-            return $"The address of user: {user.FirstName} {user.MiddleName} {user.LastName} was successfully updated to {user.Address.StreetAddress}, {user.Address.Town.TownName}";
+            return $"The address of user: {firstName} {middleName} {lastName} was successfully updated to {args[3]}, {args[4]}";
         }
     }
 }

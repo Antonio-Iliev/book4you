@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
@@ -13,8 +12,8 @@ namespace LibrarySystem.Services
 {
     public class UsersServices : BaseServicesClass, IUsersServices
     {
-        public UsersServices(ILibrarySystemContext context, IValidations validations)
-            : base(context, validations)
+        public UsersServices(UnitOfWork unitOfWork, IValidations validations)
+            : base(unitOfWork, validations)
         {
         }
 
@@ -22,13 +21,28 @@ namespace LibrarySystem.Services
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
-            var query = context.Users
+            var query = this.unitOfWork.GetRepo<User>().All()
                .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
 
             if (query != null)
             {
+                if (query.IsDeleted == true)
+                {
+                    query.IsDeleted = false;
+                    if (query.PhoneNumber != phoneNumber)
+                    {
+                        UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
+                    }
+                    if (query.AddressId != address.Id)
+                    {
+                        UpdateUserAddress(firstName, middleName, lastName, address);
+                    }
+                    this.unitOfWork.SaveChanges();
+                    return query;
+                }
+
                 throw new UserNullableException("User already exists.");
             }
 
@@ -43,8 +57,8 @@ namespace LibrarySystem.Services
                 AddressId = address.Id
             };
 
-            user = this.context.Users.Add(user).Entity;
-            this.context.SaveChanges();
+            this.unitOfWork.GetRepo<User>().Add(user);
+            this.unitOfWork.SaveChanges();
 
             return user;
         }
@@ -53,11 +67,11 @@ namespace LibrarySystem.Services
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
+            var user = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)                    
+                    .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(
                 u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -68,12 +82,13 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exists.");
             }
+
             return user;
         }
 
         public IEnumerable<User> ListUsers()
         {
-            var users = this.context.Users
+            var users = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
@@ -92,7 +107,7 @@ namespace LibrarySystem.Services
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
+            var user = this.unitOfWork.GetRepo<User>().All()
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
@@ -101,15 +116,17 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
+
             user.IsDeleted = true;
-            this.context.SaveChanges();
+            this.unitOfWork.SaveChanges();
+
             return user;
         }
         public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
         {
-            //this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
+            var user = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
                 .SingleOrDefault(u => u.FirstName == firstName
@@ -120,19 +137,18 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
+            user.AddressId = address.Id;
+            this.unitOfWork.GetRepo<User>().Update(user);
 
-            user.Address.StreetAddress = address.StreetAddress;
-            user.Address.Town = address.Town;
-
-            this.context.SaveChanges();
+            this.unitOfWork.SaveChanges();
             return user;
         }
 
         public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
-         
-            var user = this.context.Users
+
+            var user = this.unitOfWork.GetRepo<User>().All()
                 .SingleOrDefault(
                 u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -142,8 +158,9 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
+
             user.PhoneNumber = phone.ToString();
-            this.context.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return user;
         }
@@ -152,7 +169,7 @@ namespace LibrarySystem.Services
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
 
-            var currentUser = context.Users
+            var currentUser = this.unitOfWork.GetRepo<User>().All()
                   .SingleOrDefault(u => u.FirstName == firstName
                   && u.MiddleName == middleName
                   && u.LastName == lastName);
@@ -162,7 +179,7 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("There is no such user in this Library.");
             }
 
-            var bookForBorrow = context.Books.FirstOrDefault(b => b.Title == bookTitle);
+            var bookForBorrow = this.unitOfWork.GetRepo<Book>().All().FirstOrDefault(b => b.Title == bookTitle);
 
             if (bookForBorrow == null)
             {
@@ -173,7 +190,7 @@ namespace LibrarySystem.Services
                 throw new AddBookNullableExeption("There is no enough books in store");
             }
 
-            var isBorrow = context.UsersBooks
+            var isBorrow = this.unitOfWork.GetRepo<UsersBooks>().All()
                 .Select(b => b)
                 .Where(b => b.BookId == bookForBorrow.Id && b.UserId == currentUser.Id).ToList();
 
@@ -191,7 +208,7 @@ namespace LibrarySystem.Services
             };
 
             currentUser.UsersBooks.Add(usersBooks);
-            this.context.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return currentUser;
         }
@@ -201,7 +218,7 @@ namespace LibrarySystem.Services
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
 
-            var currentUser = context.Users
+            var currentUser = this.unitOfWork.GetRepo<User>().All()
                .SingleOrDefault(u => u.FirstName == firstName
                && u.MiddleName == middleName
                && u.LastName == lastName);
@@ -211,7 +228,7 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("There is no such user in this Library.");
             }
 
-            var bookToReturn = context.Books.FirstOrDefault(b => b.Title == bookTitle);
+            var bookToReturn = this.unitOfWork.GetRepo<Book>().All().FirstOrDefault(b => b.Title == bookTitle);
 
             if (bookToReturn == null)
             {
@@ -219,7 +236,7 @@ namespace LibrarySystem.Services
             }
 
             bookToReturn.BooksInStore++;
-            context.SaveChanges();
+            this.unitOfWork.SaveChanges();
 
             return currentUser;
         }

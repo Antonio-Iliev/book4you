@@ -1,15 +1,11 @@
-﻿using LibrarySystem.Data.Contracts;
-using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace LibrarySystem.Data.Context
 {
-    public class LibrarySystemContext : DbContext, ILibrarySystemContext
+    public class LibrarySystemContext : DbContext
     {
         public LibrarySystemContext()
         {

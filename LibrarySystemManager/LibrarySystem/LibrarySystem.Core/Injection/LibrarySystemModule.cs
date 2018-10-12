@@ -4,7 +4,6 @@ using LibrarySystem.ConsoleClient.Core;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 using LibrarySystem.ConsoleClient.Core.Providers;
 using LibrarySystem.Data.Context;
-using LibrarySystem.Data.Contracts;
 using System.Linq;
 using System.Reflection;
 
@@ -24,8 +23,9 @@ namespace LibrarySystem.ConsoleClient.Injection
         public void RegisterCoreComponents(ContainerBuilder builder)
         {
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
-            builder.RegisterType<LibrarySystemContext>().As<ILibrarySystemContext>().SingleInstance();
+            builder.RegisterType<LibrarySystemContext>().AsSelf();
             builder.RegisterType<ConsoleRenderer>().As<IRenderer>();
+            builder.RegisterType<UnitOfWork>().AsSelf();
         }
         public void RegisterCommands(ContainerBuilder builder)
         {

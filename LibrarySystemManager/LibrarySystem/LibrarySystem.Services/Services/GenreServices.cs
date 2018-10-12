@@ -1,5 +1,4 @@
-﻿using LibrarySystem.Data.Contracts;
-using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
 using System.Linq;
@@ -8,8 +7,8 @@ namespace LibrarySystem.Services.Services
 {
     public class GenreServices : BaseServicesClass, IGenreServices
     {
-        public GenreServices(ILibrarySystemContext context, IValidations validations)
-            : base(context, validations)
+        public GenreServices(UnitOfWork unitOfWork, IValidations validations)
+            : base(unitOfWork, validations)
         {
         }
 
@@ -17,12 +16,13 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.GenreValidation(genreName);
 
-            Genre newGenre = context.Genres.FirstOrDefault(g => g.GenreName == genreName);
+            Genre newGenre = this.unitOfWork.GetRepo<Genre>().All().FirstOrDefault(g => g.GenreName == genreName);
 
             if (newGenre == null)
             {
-                newGenre = this.context.Genres.Add(new Genre { GenreName = genreName }).Entity;
-                this.context.SaveChanges();
+                this.unitOfWork.GetRepo<Genre>().Add(new Genre { GenreName = genreName });
+                this.unitOfWork.SaveChanges();
+                newGenre = this.unitOfWork.GetRepo<Genre>().All().FirstOrDefault(g => g.GenreName == genreName);
             }
 
             return newGenre;
@@ -32,7 +32,7 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.GenreValidation(genreName);
 
-            return context.Genres.FirstOrDefault(g => g.GenreName == genreName);
+            return this.unitOfWork.GetRepo<Genre>().All().FirstOrDefault(g => g.GenreName == genreName);
         }
     }
 }
