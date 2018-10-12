@@ -21,61 +21,73 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
         public void Add_Address_ToDataBase()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
+                .UseInMemoryDatabase(databaseName: "Add_Address_ToDataBase")
                 .Options;
-
-            string streetAddress = "str test";
-            var address = new Address()
-            {
-                StreetAddress = streetAddress,
-                TownId = 1
-            };
+            var validationMock = new Mock<CommonValidations>();
+            
+            string streetAddress1 = "str test 1";
+            string streetAddress2 = "str test 2";
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Addresses.Add(address);
-                actContext.SaveChanges();
+                var unit = new UnitOfWork(actContext);
+                var repo = unit.GetRepo<Address>();
+
+                var service = new AddressService(unit, validationMock.Object);
+
+                service.AddAddress(streetAddress1, new Town());
+                service.AddAddress(streetAddress2, new Town());
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                int count = assertContext.Towns.Count();
-                Assert.AreEqual(1, count);
-                Assert.AreEqual(streetAddress, assertContext.Addresses.First().StreetAddress);
-            }
+                var unit = new UnitOfWork(assertContext);
+                var repo = unit.GetRepo<Address>();
 
+                var service = new AddressService(unit, validationMock.Object);
+
+                int count = assertContext.Addresses.Count();
+                Assert.AreEqual(2, count);
+                Assert.AreEqual(streetAddress1, assertContext.Addresses.First().StreetAddress);
+            }
         }
 
         [TestMethod]
         public void Not_Add_IfAddress_Exists()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
+                .UseInMemoryDatabase(databaseName: "Not_Add_IfAddress_Exists")
                 .Options;
+            var validationMock = new Mock<CommonValidations>();
 
-            string streetAddress = "str test";
-            var address = new Address()
-            {
-                StreetAddress = streetAddress,
-                TownId = 1
-            };
+            string streetAddress1 = "str test 1";
+            string streetAddress2 = "str test 1";
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Addresses.Add(address);
-                actContext.Addresses.Add(address);
-                actContext.SaveChanges();
+                var unit = new UnitOfWork(actContext);
+                var repo = unit.GetRepo<Address>();
+
+                var service = new AddressService(unit, validationMock.Object);
+
+                service.AddAddress(streetAddress1, new Town());
+                service.AddAddress(streetAddress2, new Town());
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                int count = assertContext.Towns.Count();
+                var unit = new UnitOfWork(assertContext);
+                var repo = unit.GetRepo<Address>();
+
+                var service = new AddressService(unit, validationMock.Object);
+
+                int count = assertContext.Addresses.Count();
                 Assert.AreEqual(1, count);
-                Assert.AreEqual(streetAddress, assertContext.Addresses.First().StreetAddress);
+                Assert.AreEqual(streetAddress1, assertContext.Addresses.First().StreetAddress);
             }
 
         }
