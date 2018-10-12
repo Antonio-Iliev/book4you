@@ -12,26 +12,26 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public Address AddAddress(string streetAddress, Town town)
+        public Address AddAddress(string streetAddress, int town)
         {
             this.validations.AddressValidation(streetAddress, town);
 
             var address = this.unitOfWork.GetRepo<Address>().All()
-                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
+                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
 
             if (address == null)
             {
                 address = new Address()
                 {
                     StreetAddress = streetAddress,
-                    TownId = town.Id
+                    TownId = town
                 };
 
                 this.unitOfWork.GetRepo<Address>().Add(address);
                 this.unitOfWork.SaveChanges();
 
                 address = this.unitOfWork.GetRepo<Address>().All()
-               .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
+               .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
             }
 
             return address;

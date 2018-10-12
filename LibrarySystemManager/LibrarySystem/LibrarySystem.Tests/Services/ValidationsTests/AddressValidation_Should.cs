@@ -18,19 +18,9 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation(null, town);
+            validator.AddressValidation(null, 1);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Throw_When_Town_IsNull()
-        {
-            var validator = new CommonValidations();
-            var town = new Town();
-
-            validator.AddressValidation("test", null);
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(InvalidAddressServiceParametersExeption))]
         public void Throw_When_StreetAddresss_IsEmpty()
@@ -38,7 +28,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation("", town);
+            validator.AddressValidation("", 1);
         }
 
         [TestMethod]
@@ -48,7 +38,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation(new string('a', 51), town);
+            validator.AddressValidation(new string('a', 51), 1);
         }
     }
 }

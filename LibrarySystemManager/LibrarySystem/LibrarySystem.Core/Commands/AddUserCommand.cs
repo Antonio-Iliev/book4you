@@ -36,7 +36,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var addedOn = DateTime.Now;
             bool isDeleted = false;
 
-            Town town = townService.AddTown(args[5]);
+            int town = townService.AddTown(args[5]);
             Address address = addressService.AddAddress(args[4], town);           
                      
             var user=usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
