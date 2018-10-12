@@ -22,23 +22,34 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Add_Town_ToDataBase")
                 .Options;
+            var validationMock = new Mock<CommonValidations>();
 
-            string townName = "test";
-            var town = new Town() { TownName = townName };
+            string town1 = "test 1";
+            string town2 = "test 2";
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Towns.Add(town);
-                actContext.SaveChanges();
+                var unit = new UnitOfWork(actContext);
+                var repo = unit.GetRepo<Town>();
+
+                var service = new TownService(unit, validationMock.Object);
+
+                service.AddTown(town1);
+                service.AddTown(town2);
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
+                var unit = new UnitOfWork(assertContext);
+                var repo = unit.GetRepo<Town>();
+
+                var service = new TownService(unit, validationMock.Object);
+
                 int count = assertContext.Towns.Count();
-                Assert.AreEqual(1, count);
-                Assert.AreEqual(townName, assertContext.Towns.First().TownName);
+                Assert.AreEqual(2, count);
+                Assert.AreEqual(town1, assertContext.Towns.First().TownName);
             }
         }
 
@@ -48,24 +59,34 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
                 .Options;
+            var validationMock = new Mock<CommonValidations>();
 
-            string townName = "test";
-            var town = new Town() { TownName = townName };
+            string town1 = "test 1";
+            string town2 = "test 1";
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Towns.Add(town);
-                actContext.Towns.Add(town);
-                actContext.SaveChanges();
+                var unit = new UnitOfWork(actContext);
+                var repo = unit.GetRepo<Town>();
+
+                var service = new TownService(unit, validationMock.Object);
+
+                service.AddTown(town1);
+                service.AddTown(town2);
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
+                var unit = new UnitOfWork(assertContext);
+                var repo = unit.GetRepo<Town>();
+
+                var service = new TownService(unit, validationMock.Object);
+
                 int count = assertContext.Towns.Count();
                 Assert.AreEqual(1, count);
-                Assert.AreEqual(townName, assertContext.Towns.First().TownName);
+                Assert.AreEqual(town1, assertContext.Towns.First().TownName);
             }
         }
     }
