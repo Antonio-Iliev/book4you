@@ -121,14 +121,14 @@ namespace LibrarySystem.Services
             return userToReturn;
         }
 
-        public IEnumerable<UserViewModel> ListUsers()
+        public IEnumerable<UserViewModel> ListUsers(bool userIsDeleted)
         {
             var query = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
-                .Where(u => !u.IsDeleted).ToList();
+                .Where(u => u.IsDeleted == userIsDeleted).ToList();
 
 
             var users = query.Select(u => new UserViewModel

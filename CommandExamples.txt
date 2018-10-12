@@ -6,7 +6,8 @@ Adduser NovUser Nepeshov, Peshov, 0000000001, ul."address 1", NovGrad
 Adduser Gerasim, Gmoshev, Gugev, 00002010002, ul."address 12", Plovdiv
 Adduser Ioan, Ivanov, Stavrev, 0888-Taina, U nas, Sofia
 
-Listusers
+Listusers active
+Listusers deleted
 
 addbook new book, horror, pesho, 10
 addbook old book, not horror, Gulatemahala, 15
@@ -47,4 +48,5 @@ ReturnBook NovUser, Nepeshov, Peshov, A Storm of Swords
 CreateReports ListBooksByGenre, fantasy
 CreateReports ListBookByAuthor, George R. R. Martin
 CreateReports Listusers, active
+CreateReports Listusers, deleted
 

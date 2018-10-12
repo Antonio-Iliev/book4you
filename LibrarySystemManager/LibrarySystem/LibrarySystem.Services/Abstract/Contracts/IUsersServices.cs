@@ -18,7 +18,7 @@ namespace LibrarySystem.Services
 
         UserViewModel GetUser(string firstName, string middleName, string lastName);
         
-        IEnumerable<UserViewModel> ListUsers();
+        IEnumerable<UserViewModel> ListUsers(bool userIsDeleted);
 
         UserViewModel BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
 
