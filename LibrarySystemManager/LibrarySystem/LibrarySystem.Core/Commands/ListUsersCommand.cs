@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace LibrarySystem.ConsoleClient.Commands
@@ -21,16 +22,12 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             foreach (var user in users)
             {
-                var books = new StringBuilder();
-
-                foreach (var item in user.UsersBooks)
-                {
-                    books.AppendLine(item.Book.Title);
-                }
+                var books = user.UserBooks.Select(x => x.Book.Title).ToList();
+                
                 result.AppendLine(
-                    $"Name: {user.FirstName} {user.MiddleName} {user.LastName} Phone: {user.PhoneNumber} " +
-                    $"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName} " +
-                    $"{books.ToString()}."
+                    $"Name: {user.FullName} Phone: {user.Phonenumber} " +
+                    $"Added On: {user.AddedOn} Address: {user.Address}, {user.Town} " +
+                    $"{string.Join(", ", books)}."
                     );
                 result.AppendLine();
             }

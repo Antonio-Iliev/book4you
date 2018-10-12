@@ -35,9 +35,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             Town town = townService.AddTown(args[4]);
             Address newAddress = addressService.AddAddress(args[3], town);
 
-            this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
+            var user = this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 
-            return $"The address of user: {firstName} {middleName} {lastName} was successfully updated to {args[3]}, {args[4]}";
+            return $"The address of user: {user.FullName} was successfully updated to {user.Address}, {user.Town}";
         }
     }
 }

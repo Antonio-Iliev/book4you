@@ -23,12 +23,7 @@ namespace LibrarySystem.Data.Repository
         }
 
 
-        public IQueryable<T> AllAndDeleted()
-        {
-            return this.context.Set<T>();
-        }
-
-        public virtual void Add(T entity)
+        public void Add(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
 
@@ -42,12 +37,6 @@ namespace LibrarySystem.Data.Repository
             }
         }
 
-        public void Delete(T entity)
-        {
-            //TODO
-            throw new Exception("not implemented");
-        }
-
         public void Update(T entity)
         {
             EntityEntry entry = this.context.Entry(entity);
@@ -57,11 +46,6 @@ namespace LibrarySystem.Data.Repository
             }
 
             entry.State = EntityState.Modified;
-        }
-
-        public void Save()
-        {
-            this.context.SaveChanges();
         }
     }
 }

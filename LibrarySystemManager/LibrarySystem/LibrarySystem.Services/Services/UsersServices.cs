@@ -6,6 +6,7 @@ using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.UserServices;
+using LibrarySystem.Services.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
@@ -17,7 +18,7 @@ namespace LibrarySystem.Services
         {
         }
 
-        public User AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
+        public UserViewModel AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -25,6 +26,8 @@ namespace LibrarySystem.Services
                .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
+
+            UserViewModel userToReturn;
 
             if (query != null)
             {
@@ -39,31 +42,53 @@ namespace LibrarySystem.Services
                     {
                         UpdateUserAddress(firstName, middleName, lastName, address);
                     }
-                    this.unitOfWork.SaveChanges();
-                    return query;
                 }
 
                 throw new UserNullableException("User already exists.");
             }
-
-            var user = new User
+            else
             {
-                FirstName = firstName,
-                MiddleName = middleName,
-                LastName = lastName,
-                PhoneNumber = phoneNumber,
-                AddOnDate = DateTime.Now,
-                IsDeleted = false,
-                AddressId = address.Id
-            };
 
-            this.unitOfWork.GetRepo<User>().Add(user);
+                var user = new User
+                {
+                    FirstName = firstName,
+                    MiddleName = middleName,
+                    LastName = lastName,
+                    PhoneNumber = phoneNumber,
+                    AddOnDate = DateTime.Now,
+                    IsDeleted = false,
+                    AddressId = address.Id
+                };
+
+                this.unitOfWork.GetRepo<User>().Add(user);
+            }
+
             this.unitOfWork.SaveChanges();
 
-            return user;
+            query = this.unitOfWork.GetRepo<User>().All()
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(
+                u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName
+                );
+
+            userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = phoneNumber,
+                Address = query.Address.StreetAddress,
+                Town = query.Address.Town.TownName,
+                AddedOn = addedOn
+            };
+
+            return userToReturn;
         }
 
-        public User GetUser(string firstName, string middleName, string lastName)
+        public UserViewModel GetUser(string firstName, string middleName, string lastName)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -83,10 +108,20 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("This user does not exists.");
             }
 
-            return user;
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate,
+                UserBooks = user.UsersBooks
+            };
+
+            return userToReturn;
         }
 
-        public IEnumerable<User> ListUsers()
+        public IEnumerable<UserViewModel> ListUsers()
         {
             var users = this.unitOfWork.GetRepo<User>().All()
                 .Include(u => u.Address)
@@ -94,16 +129,25 @@ namespace LibrarySystem.Services
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
                 .Where(u => !u.IsDeleted)
+                .Select(u => new UserViewModel
+                {
+                    FullName = $"{u.FirstName} {u.MiddleName} {u.LastName}",
+                    Phonenumber = u.PhoneNumber,
+                    Address = u.Address.StreetAddress,
+                    Town = u.Address.Town.TownName,
+                    AddedOn = u.AddOnDate
+                })
                 .ToList();
 
             if (users.Count == 0)
             {
                 throw new UserNullableException("No users were found.");
             }
+
             return users;
         }
 
-        public User RemoveUser(string firstName, string middleName, string lastName)
+        public UserViewModel RemoveUser(string firstName, string middleName, string lastName)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -120,9 +164,29 @@ namespace LibrarySystem.Services
             user.IsDeleted = true;
             this.unitOfWork.SaveChanges();
 
-            return user;
+            user = this.unitOfWork.GetRepo<User>()
+                .All().Include(u => u.Address)
+                .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(
+                    u => u.FirstName == firstName
+                    && u.MiddleName == middleName
+                    && u.LastName == lastName
+                );
+
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate
+            };
+
+            return userToReturn;
         }
-        public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
+        public UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -141,10 +205,31 @@ namespace LibrarySystem.Services
             this.unitOfWork.GetRepo<User>().Update(user);
 
             this.unitOfWork.SaveChanges();
-            return user;
+
+            user = this.unitOfWork.GetRepo<User>()
+               .All().Include(u => u.Address)
+               .ThenInclude(a => a.Town)
+               .Include(u => u.UsersBooks)
+               .ThenInclude(ub => ub.Book)
+               .SingleOrDefault(
+                   u => u.FirstName == firstName
+                   && u.MiddleName == middleName
+                   && u.LastName == lastName
+               );
+
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate
+            };
+
+            return userToReturn;
         }
 
-        public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
+        public UserViewModel UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -162,19 +247,39 @@ namespace LibrarySystem.Services
             user.PhoneNumber = phone.ToString();
             this.unitOfWork.SaveChanges();
 
-            return user;
+            user = this.unitOfWork.GetRepo<User>()
+             .All().Include(u => u.Address)
+             .ThenInclude(a => a.Town)
+             .Include(u => u.UsersBooks)
+             .ThenInclude(ub => ub.Book)
+             .SingleOrDefault(
+                 u => u.FirstName == firstName
+                 && u.MiddleName == middleName
+                 && u.LastName == lastName
+             );
+
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate
+            };
+
+            return userToReturn;
         }
-        public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
+        public UserViewModel BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
 
-            var currentUser = this.unitOfWork.GetRepo<User>().All()
+            var user = this.unitOfWork.GetRepo<User>().All()
                   .SingleOrDefault(u => u.FirstName == firstName
                   && u.MiddleName == middleName
                   && u.LastName == lastName);
 
-            if (currentUser == null)
+            if (user == null)
             {
                 throw new UserNullableException("There is no such user in this Library.");
             }
@@ -192,7 +297,7 @@ namespace LibrarySystem.Services
 
             var isBorrow = this.unitOfWork.GetRepo<UsersBooks>().All()
                 .Select(b => b)
-                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == currentUser.Id).ToList();
+                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == user.Id).ToList();
 
             if (isBorrow.Count != 0)
             {
@@ -203,27 +308,47 @@ namespace LibrarySystem.Services
 
             var usersBooks = new UsersBooks
             {
-                User = currentUser,
+                User = user,
                 Book = bookForBorrow
             };
 
-            currentUser.UsersBooks.Add(usersBooks);
+            user.UsersBooks.Add(usersBooks);
             this.unitOfWork.SaveChanges();
 
-            return currentUser;
+            user = this.unitOfWork.GetRepo<User>()
+            .All().Include(u => u.Address)
+            .ThenInclude(a => a.Town)
+            .Include(u => u.UsersBooks)
+            .ThenInclude(ub => ub.Book)
+            .SingleOrDefault(
+                u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName
+            );
+
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate
+            };
+
+            return userToReturn;
         }
 
-        public User ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
+        public UserViewModel ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
 
-            var currentUser = this.unitOfWork.GetRepo<User>().All()
+            var user = this.unitOfWork.GetRepo<User>().All()
                .SingleOrDefault(u => u.FirstName == firstName
                && u.MiddleName == middleName
                && u.LastName == lastName);
 
-            if (currentUser == null)
+            if (user == null)
             {
                 throw new UserNullableException("There is no such user in this Library.");
             }
@@ -238,7 +363,27 @@ namespace LibrarySystem.Services
             bookToReturn.BooksInStore++;
             this.unitOfWork.SaveChanges();
 
-            return currentUser;
+            user = this.unitOfWork.GetRepo<User>()
+            .All().Include(u => u.Address)
+            .ThenInclude(a => a.Town)
+            .Include(u => u.UsersBooks)
+            .ThenInclude(ub => ub.Book)
+            .SingleOrDefault(
+                u => u.FirstName == firstName
+                && u.MiddleName == middleName
+                && u.LastName == lastName
+            );
+
+            UserViewModel userToReturn = new UserViewModel
+            {
+                FullName = $"{firstName} {middleName} {lastName}",
+                Phonenumber = user.PhoneNumber,
+                Address = user.Address.StreetAddress,
+                Town = user.Address.Town.TownName,
+                AddedOn = user.AddOnDate
+            };
+
+            return userToReturn;
         }
     }
 }

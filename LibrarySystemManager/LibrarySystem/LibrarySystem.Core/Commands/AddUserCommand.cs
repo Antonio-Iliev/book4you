@@ -41,7 +41,7 @@ namespace LibrarySystem.ConsoleClient.Commands
                      
             var user=usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
 
-            return $"New user {user.FirstName} {user.MiddleName} {user.LastName} was added successfully on {user.AddOnDate}.";
+            return $"New user {user.FullName} was added successfully on {user.AddedOn}.";
         }
     }
 }

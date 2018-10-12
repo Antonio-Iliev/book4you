@@ -33,13 +33,13 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var books= new StringBuilder();
 
-            foreach (var item in result.UsersBooks)
+            foreach (var item in result.UserBooks)
             {
                 books.AppendLine(item.Book.Title);  
             }
 
-            return $"User: {result.FirstName} {result.MiddleName} {result.LastName} Phone: {result.PhoneNumber} " +
-                $"Added On: {result.AddOnDate} Address: {result.Address.StreetAddress} {result.Address.Town.TownName} " +
+            return $"User: {result.FullName} Phone: {result.Phonenumber} " +
+                $"Added On: {result.AddedOn} Address: {result.Address} {result.Town} " +
                 $"Books: {books.ToString()}";
         }
     }
