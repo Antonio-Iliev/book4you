@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.Data.Context;
-using LibrarySystem.Data.Contracts;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Data.Repository;
+using LibrarySystem.Data.Repository.Contracts;
 using LibrarySystem.Services.Exceptions.TownServices;
 using LibrarySystem.Services.Services;
 using LibrarySystem.Services.Validations;
@@ -16,52 +17,56 @@ namespace LibrarySystem.Tests.Services.TownServiceTests
     {
 
         [TestMethod]
-        public void AddTown_InDataBase_IfNotAlready()
+        public void Add_Town_ToDataBase()
         {
-            var options = new DbContextOptionsBuilder<LibrarySystemContext>()
-                   .UseInMemoryDatabase(databaseName: "AddTown_InDataBase")
-                   .Options;
+            var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
+                .UseInMemoryDatabase(databaseName: "Add_Town_ToDataBase")
+                .Options;
 
-            // Run the test against one instance of the context
-            using (var context = new LibrarySystemContext(options))
+            string townName = "test";
+            var town = new Town() { TownName = townName };
+
+            // Act
+            using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                var validationMock = new Mock<CommonValidations>();
-                var service = new TownService(context, validationMock.Object);
-                service.AddTown("Dupnitsa");
+                actContext.Towns.Add(town);
+                actContext.SaveChanges();
             }
 
-            // Use a separate instance of the context to verify correct data was saved to database
-            using (var context = new LibrarySystemContext(options))
+            // Assert
+            using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                Assert.AreEqual(1, context.Towns.Count());
-                Assert.AreEqual("Dupnitsa", context.Towns.Single().TownName);
+                int count = assertContext.Towns.Count();
+                Assert.AreEqual(1, count);
+                Assert.AreEqual(townName, assertContext.Towns.First().TownName);
             }
         }
 
         [TestMethod]
-        public void Return_TownFromDataBase_IfExists()
+        public void Not_Add_IfTown_Exists()
         {
-            var options = new DbContextOptionsBuilder<LibrarySystemContext>()
-                   .UseInMemoryDatabase(databaseName: "Return_TownFromDataBase")
-                   .Options;
-            Town result;
+            var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
+                .UseInMemoryDatabase(databaseName: "Not_Add_IfTown_Exists")
+                .Options;
 
-            // Run the test against one instance of the context
-            using (var context = new LibrarySystemContext(options))
+            string townName = "test";
+            var town = new Town() { TownName = townName };
+
+            // Act
+            using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                var validationMock = new Mock<CommonValidations>();
-                var service = new TownService(context, validationMock.Object);
-                service.AddTown("Dupnitsa");
-                result = service.AddTown("Dupnitsa");
+                actContext.Towns.Add(town);
+                actContext.Towns.Add(town);
+                actContext.SaveChanges();
             }
 
-            // Use a separate instance of the context to verify correct data was saved to database
-            using (var context = new LibrarySystemContext(options))
+            // Assert
+            using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                Assert.AreEqual(1, context.Towns.Count());
-                Assert.AreEqual("Dupnitsa", result.TownName);
+                int count = assertContext.Towns.Count();
+                Assert.AreEqual(1, count);
+                Assert.AreEqual(townName, assertContext.Towns.First().TownName);
             }
         }
-
     }
 }
