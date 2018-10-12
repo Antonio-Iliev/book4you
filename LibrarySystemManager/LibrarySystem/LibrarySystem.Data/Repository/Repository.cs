@@ -44,8 +44,10 @@ namespace LibrarySystem.Data.Repository
 
         public void Delete(T entity)
         {
-            //TODO
-            throw new Exception("not implemented");
+            //entity.IsDeleted = true;
+            //entity.DeleteOn = DateTime.Now;
+            //var entry = this.context.Entry(entity);
+            //entry.State = EntityState.Modified;
         }
 
         public void Update(T entity)
