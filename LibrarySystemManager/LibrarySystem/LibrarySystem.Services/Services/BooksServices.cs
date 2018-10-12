@@ -115,5 +115,17 @@ namespace LibrarySystem.Services
             return booksByAuthor;
         }
 
+        public IEnumerable<BookViewModel> ListBooks()
+        {
+            IEnumerable<BookViewModel> books = this.unitOfWork.GetRepo<Book>().All()
+                .Select(b => new BookViewModel
+                {
+                    Title = b.Title,
+                    Author = b.Author.Name,
+                    Genre = b.Genre.GenreName
+                }).ToList();
+
+            return books;
+        }
     }
 }

@@ -4,6 +4,7 @@ Adduser NovUser3, Goshova, Georgieva, 0000000002, ul."address 2", NovGrad2
 Adduser NovUser6, Goshova, Georgieva, 0000000006, ul."address 16", Star Grad
 Adduser NovUser Nepeshov, Peshov, 0000000001, ul."address 1", NovGrad
 Adduser Gerasim, Gmoshev, Gugev, 00002010002, ul."address 12", Plovdiv
+Adduser Ioan, Ivanov, Stavrev, 0888-Taina, U nas, Sofia
 
 Listusers
 
@@ -42,3 +43,8 @@ BorrowBook Test100, Nepeshov, Peshov, A Storm of Swords
 
 ReturnBook Test100, Nepeshov, Peshov, A Clash of Kings
 ReturnBook NovUser, Nepeshov, Peshov, A Storm of Swords
+
+CreateReports ListBooksByGenre, fantasy
+CreateReports ListBookByAuthor, George R. R. Martin
+CreateReports Listusers, active
+
