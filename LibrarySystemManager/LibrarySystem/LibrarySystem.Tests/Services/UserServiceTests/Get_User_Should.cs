@@ -9,7 +9,6 @@ using System.Text;
 
 namespace LibrarySystem.Tests.Services.UserServiceTests
 {
-    [Ignore]
     [TestClass]
     public class Get_User_Should
     {       

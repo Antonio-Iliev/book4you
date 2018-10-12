@@ -33,7 +33,7 @@ namespace LibrarySystem.ConsoleClient.Commands
             var lastName = args[2];
 
             int town = townService.AddTown(args[4]);
-            Address newAddress = addressService.AddAddress(args[3], town);
+            int newAddress = addressService.AddAddress(args[3], town);
 
             var user = this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 

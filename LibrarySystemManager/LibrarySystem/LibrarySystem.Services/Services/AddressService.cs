@@ -12,7 +12,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public Address AddAddress(string streetAddress, int town)
+        public int AddAddress(string streetAddress, int town)
         {
             this.validations.AddressValidation(streetAddress, town);
 
@@ -34,7 +34,7 @@ namespace LibrarySystem.Services.Services
                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
             }
 
-            return address;
+            return address.Id;
         }
     }
 }

@@ -8,9 +8,9 @@ namespace LibrarySystem.Services
     public interface IUsersServices
     {
         UserViewModel AddUser(string firstName, string middleName, string lastName,
-            string phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
+            string phoneNumber, DateTime addedOn, bool IsDeleted, int address);
 
-        UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
+        UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, int address);
 
         UserViewModel UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
 

@@ -18,7 +18,7 @@ namespace LibrarySystem.Services
         {
         }
 
-        public UserViewModel AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, Address address)
+        public UserViewModel AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -38,7 +38,7 @@ namespace LibrarySystem.Services
                     {
                         UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
                     }
-                    if (query.AddressId != address.Id)
+                    if (query.AddressId != address)
                     {
                         UpdateUserAddress(firstName, middleName, lastName, address);
                     }
@@ -57,7 +57,7 @@ namespace LibrarySystem.Services
                     PhoneNumber = phoneNumber,
                     AddOnDate = DateTime.Now,
                     IsDeleted = false,
-                    AddressId = address.Id
+                    AddressId = address
                 };
 
                 this.unitOfWork.GetRepo<User>().Add(user);
@@ -188,7 +188,7 @@ namespace LibrarySystem.Services
 
             return userToReturn;
         }
-        public UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
+        public UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -203,7 +203,7 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
-            user.AddressId = address.Id;
+            user.AddressId = address;
             this.unitOfWork.GetRepo<User>().Update(user);
 
             this.unitOfWork.SaveChanges();
