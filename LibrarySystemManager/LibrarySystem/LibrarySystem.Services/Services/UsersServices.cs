@@ -28,6 +28,21 @@ namespace LibrarySystem.Services
 
             if (query != null)
             {
+                if (query.IsDeleted == true)
+                {
+                    query.IsDeleted = false;
+                    if (query.PhoneNumber != phoneNumber)
+                    {
+                        UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
+                    }
+                    if (query.AddressId != address.Id)
+                    {
+                        UpdateUserAddress(firstName, middleName, lastName, address);
+                    }
+                    this.unitOfWork.SaveChanges();
+                    return query;
+                }
+
                 throw new UserNullableException("User already exists.");
             }
 
