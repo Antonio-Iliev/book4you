@@ -21,6 +21,7 @@ namespace LibrarySystem.Services
         public UserViewModel AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.PhoneValidation(phoneNumber);
 
             var query = this.unitOfWork.GetRepo<User>().All()
                .SingleOrDefault(u => u.FirstName == firstName
@@ -234,6 +235,7 @@ namespace LibrarySystem.Services
         public UserViewModel UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
+            this.validations.PhoneValidation(phone);
 
             var user = this.unitOfWork.GetRepo<User>().All()
                 .SingleOrDefault(

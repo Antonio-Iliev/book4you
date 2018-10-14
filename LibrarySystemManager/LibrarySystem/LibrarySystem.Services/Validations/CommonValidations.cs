@@ -150,5 +150,19 @@ namespace LibrarySystem.Services.Validations
                       ($"Last name is more then {ServicesConstants.MaxUserNameLength} symbols.");
             }
         }
+        public void PhoneValidation(string phone)
+        {
+            IsNull(phone);
+            if (phone.Length < ServicesConstants.MinPhoneLength)
+            {
+                throw new InvalidUserServiceParametersExeption
+                      ($"Phone number can not be less than {ServicesConstants.MinPhoneLength} symbols.");
+            }
+            if (phone.Length > ServicesConstants.MinPhoneLength)
+            {
+                throw new InvalidUserServiceParametersExeption
+                      ($"Phone number is more than {ServicesConstants.MaxPhoneLength} symbols.");
+            }
+        }
     }
 }
