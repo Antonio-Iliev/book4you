@@ -17,5 +17,7 @@ namespace LibrarySystem.Services.Abstract.Contracts
         void AddressValidation(string streetAddress, int town);
 
         void UserValidation(string firstName, string middleName, string lastName);
+
+        void PhoneValidation(string phone);
     }
 }
