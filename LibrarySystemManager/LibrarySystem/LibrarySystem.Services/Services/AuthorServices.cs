@@ -11,7 +11,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public Author AddAuthor(string authorName)
+        public int AddAuthor(string authorName)
         {
             this.validations.AuthorValidation(authorName);
 
@@ -24,7 +24,7 @@ namespace LibrarySystem.Services.Services
                 newAuthor = this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
             }
 
-            return newAuthor;
+            return newAuthor.Id;
         }
 
         public Author GetAuthor(string authorName)

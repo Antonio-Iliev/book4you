@@ -12,7 +12,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public Genre AddGenre(string genreName)
+        public int AddGenre(string genreName)
         {
             this.validations.GenreValidation(genreName);
 
@@ -25,7 +25,7 @@ namespace LibrarySystem.Services.Services
                 newGenre = this.unitOfWork.GetRepo<Genre>().All().FirstOrDefault(g => g.GenreName == genreName);
             }
 
-            return newGenre;
+            return newGenre.Id;
         }
 
         public Genre GetGenre(string genreName)
