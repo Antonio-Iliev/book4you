@@ -1,5 +1,6 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 1)
             {
-                throw new ArgumentException("Invalid parameters");
+                throw new InvalidBookServiceParametersExeption("Invalid parameters");
             }
 
             string genre = args[0];

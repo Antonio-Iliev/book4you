@@ -8,6 +8,7 @@ using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Abstract.Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
 {
@@ -17,7 +18,7 @@ namespace LibrarySystem.Services
         {
         }
 
-        public Book AddBook(string title, int genreId, int authorId, string bookInStore)
+        public BookViewModel AddBook(string title, int genreId, int authorId, string bookInStore)
         {
             this.validations.BookTitleValidation(title);
 
@@ -49,7 +50,13 @@ namespace LibrarySystem.Services
             }
 
             this.unitOfWork.SaveChanges();
-            return currentBook;
+
+            var bookToReturn = new BookViewModel
+            {
+                Title = currentBook.Title,
+            };
+
+            return bookToReturn;
         }
 
         public BookViewModel GetBook(string bookTitle)
