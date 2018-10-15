@@ -1,5 +1,4 @@
 ﻿using LibrarySystem.Data.Context;
-using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Exceptions.UserServices;
 using LibrarySystem.Services.Services;
@@ -8,9 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace LibrarySystem.Tests.Services.UserServiceTests
 {
@@ -20,6 +17,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [TestMethod]
         public void Add_User_ToDatabase()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Add_User_ToDatabase")
                 .Options;
@@ -30,22 +28,22 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
+            var validationMock = new Mock<CommonValidations>();
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
+                
+                var townService = new TownService(unit, validationMock.Object);
+                var addressService = new AddressService(unit, validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
 
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-
+                
+                //Act
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
             }
-
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
@@ -59,6 +57,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [ExpectedException(typeof(UserNullableException))]
         public void Not_Add_IfUser_Exists()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Not_Add_IfUser_Exists").Options;
 
@@ -69,18 +68,20 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
 
+            var validationMock = new Mock<CommonValidations>();
+
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
+                
+                var townService = new TownService(unit, validationMock.Object);
+                var addressService = new AddressService(unit, validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
 
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-
+                
+                // Act and Assert
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
             }           

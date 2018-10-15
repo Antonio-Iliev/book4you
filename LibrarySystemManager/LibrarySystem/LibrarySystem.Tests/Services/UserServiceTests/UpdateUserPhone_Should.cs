@@ -7,18 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Linq;
 
 namespace LibrarySystem.Tests.Services.UserServiceTests
 {
     [TestClass]
-    public class GetUser_Should
+    public class UpdateUserPhone_Should
     {
         [TestMethod]
-        public void Get_User_FromDatabase_IfUser_Exists()
+        public void Change_User_Phone_IfUser_Exists()
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Get_User_FromDatabase")
+                .UseInMemoryDatabase(databaseName: "Change_User_Phone")
                 .Options;
 
             string firstName = "Ivan",
@@ -27,33 +28,28 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
-
-            string fullName = firstName + " " + middleName + " " + lastName;
-
             var validationMock = new Mock<CommonValidations>();
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-
                 var townService = new TownService(unit, validationMock.Object);
                 var addressService = new AddressService(unit, validationMock.Object);
                 var userService = new UsersServices(unit, validationMock.Object);
-
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
-            }         
+            }
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(assertContext);
                 var userService = new UsersServices(unit, validationMock.Object);
-                
+
                 //Act
-                var getUser = userService.GetUser(firstName, middleName, lastName);
+                userService.UpdateUserPhone(firstName, middleName, lastName, "22222222");
+
                 //Assert
-                Assert.AreEqual(fullName, getUser.FullName);
+                Assert.AreEqual("22222222", assertContext.Users.First().PhoneNumber);
             }
         }
         [TestMethod]
@@ -62,7 +58,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Get_User_FromDatabase")
+                .UseInMemoryDatabase(databaseName: "Change_User_Phone")
                 .Options;
             string firstName = "Ivan1",
                 middleName = "Ivanov1",
@@ -77,15 +73,14 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 var unit = new UnitOfWork(actContext);
                 var townService = new TownService(unit,validationMock.Object);
                 var addressService = new AddressService(unit, validationMock.Object);
-                var userService = new UsersServices(unit,validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-
-                //Act
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
                 userService.RemoveUser(firstName, middleName, lastName);
-                //Assert
-                userService.GetUser(firstName, middleName, lastName);
+
+                //Act & Assert
+                userService.UpdateUserPhone(firstName, middleName, lastName, "1111111111");
             }
         }
         [TestMethod]
@@ -94,16 +89,16 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Get_User_FromDatabase").Options;
+                .UseInMemoryDatabase(databaseName: "Change_User_Phone").Options;
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
                 var validationMock = new Mock<CommonValidations>();
                 var userService = new UsersServices(unit, validationMock.Object);
-                
+
                 //Act & Assert
-                userService.GetUser("hjasmnzx", "iqdkwjsan", "kjasn");
+                userService.UpdateUserPhone("hjasmnzx", "iqdkwjsan", "kjasn", "111112222");
             }
         }
     }

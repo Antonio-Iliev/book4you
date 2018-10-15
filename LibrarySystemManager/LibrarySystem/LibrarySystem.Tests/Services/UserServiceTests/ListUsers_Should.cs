@@ -17,6 +17,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [TestMethod]
         public void List_Users_IfUsers_Exist()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "List_Users")
                 .Options;
@@ -27,32 +28,28 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
-
             string fullName = firstName + " " + middleName + " " + lastName;
+            var validationMock = new Mock<CommonValidations>();
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
+                var townService = new TownService(unit, validationMock.Object);
+                var addressService = new AddressService(unit, validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
 
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
 
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
-
             }
-            // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(assertContext);
-                var userService = new UsersServices(unit, new CommonValidations());
+                var userService = new UsersServices(unit, validationMock.Object);
 
-                var count=userService.ListUsers(false).Count();
-
+                //Act & Assert
+                var count = userService.ListUsers(false).Count();
                 Assert.AreEqual(1, count);
                 Assert.AreEqual(fullName, userService.ListUsers(false).First().FullName);
             }
@@ -61,17 +58,17 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [ExpectedException(typeof(UserNullableException))]
         public void Throw_If_NoUsers()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Throw_IfNoUsers").Options;
-            
-            // Act
+            var validationMock = new Mock<CommonValidations>();
+
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
                 var service = new UsersServices(unit, validationMock.Object);
-
+                
+                // Act & Assert
                 service.ListUsers(true);
             }
         }

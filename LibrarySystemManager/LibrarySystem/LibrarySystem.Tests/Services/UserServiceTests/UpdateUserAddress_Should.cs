@@ -17,6 +17,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [TestMethod]
         public void Change_User_Address_IfUser_Exists()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Change_User_Address")
                 .Options;
@@ -27,36 +28,31 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
+            var validationMock = new Mock<CommonValidations>();
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
-
+                var townService = new TownService(unit, validationMock.Object);
+                var addressService = new AddressService(unit, validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
             }
-            // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(assertContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
-
+                var townService = new TownService(unit, validationMock.Object);
+                var addressService = new AddressService(unit, validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
                 var town = townService.AddTown("NewTown");
                 var newAddress = addressService.AddAddress("NewAddress", town);
 
+                //Act
                 userService.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 
+                //Assert
                 Assert.AreEqual(newAddress, assertContext.Users.First().AddressId);
             }
         }
@@ -64,6 +60,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [ExpectedException(typeof(UserNullableException))]
         public void Throw_Exeption_IfUser_IsDeleted()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Change_User_Address")
                 .Options;
@@ -73,18 +70,18 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
+            var validationMock = new Mock<CommonValidations>();
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                var validationMock = new Mock<CommonValidations>();
-
-                var townService = new TownService(unit, new CommonValidations());
-                var addressService = new AddressService(unit, new CommonValidations());
-                var userService = new UsersServices(unit, new CommonValidations());
-
+                var townService = new TownService(unit,validationMock.Object);
+                var addressService = new AddressService(unit,validationMock.Object);
+                var userService = new UsersServices(unit, validationMock.Object);
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
+
+                //Act & Assert
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
                 userService.RemoveUser(firstName, middleName, lastName);
                 userService.UpdateUserAddress(firstName, middleName, lastName, 3);
@@ -94,6 +91,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         [ExpectedException(typeof(UserNullableException))]
         public void Throw_Exeption_IfUser_DoesNot_Exist()
         {
+            //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
                 .UseInMemoryDatabase(databaseName: "Change_User_Address").Options;
 
@@ -101,9 +99,10 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
             {
                 var unit = new UnitOfWork(actContext);
                 var validationMock = new Mock<CommonValidations>();
+                var userService = new UsersServices(unit, validationMock.Object);
 
-                var userService = new UsersServices(unit, new CommonValidations());
-                userService.UpdateUserAddress("hjasmnzx", "iqdkwjsan", "kjasn",5);
+                //Act & Assert
+                userService.UpdateUserAddress("hjasmnzx", "iqdkwjsan", "kjasn", 5);
             }
         }
     }
