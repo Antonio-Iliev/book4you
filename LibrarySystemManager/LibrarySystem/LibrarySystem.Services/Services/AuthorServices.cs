@@ -1,6 +1,9 @@
 ﻿using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
+using LibrarySystem.Services.Exceptions.AuthorServices;
+using LibrarySystem.Services.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LibrarySystem.Services.Services
@@ -15,23 +18,40 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.AuthorValidation(authorName);
 
-            Author newAuthor = this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
+            Author newAuthor = this.unitOfWork.GetRepo<Author>().All()
+                .FirstOrDefault(a => a.Name == authorName);
 
             if (newAuthor == null)
             {
                 this.unitOfWork.GetRepo<Author>().Add(new Author { Name = authorName });
                 this.unitOfWork.SaveChanges();
-                newAuthor = this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
+                newAuthor = this.unitOfWork.GetRepo<Author>().All()
+                    .FirstOrDefault(a => a.Name == authorName);
             }
 
             return newAuthor.Id;
         }
 
-        public Author GetAuthor(string authorName)
+        public AuthorViewModel GetAuthor(string authorName)
         {
             this.validations.AuthorValidation(authorName);
 
-            return this.unitOfWork.GetRepo<Author>().All().FirstOrDefault(a => a.Name == authorName);
+            var searchAuthor = this.unitOfWork.GetRepo<Author>().All()
+                .Include(b => b.Books).ToList()
+                .FirstOrDefault(a => a.Name == authorName);
+
+            if (searchAuthor == null)
+            {
+                throw new AddAuthorNullableExeption("There is no such author in this Library.");
+            }
+
+            AuthorViewModel author = new AuthorViewModel()
+            {
+                AuthorName = searchAuthor.Name,
+                AuthorBooks = searchAuthor.Books
+            };
+
+            return author;
         }
     }
 }

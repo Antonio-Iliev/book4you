@@ -1,4 +1,5 @@
 ﻿using LibrarySystem.Data.Models;
+using LibrarySystem.Services.ViewModels;
 
 namespace LibrarySystem.Services.Services
 {
@@ -6,6 +7,6 @@ namespace LibrarySystem.Services.Services
     {
         int AddAuthor(string authorName);
 
-        Author GetAuthor(string authorName);
+        AuthorViewModel GetAuthor(string authorName);
     }
 }

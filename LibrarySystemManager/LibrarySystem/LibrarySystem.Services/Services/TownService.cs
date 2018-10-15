@@ -27,6 +27,5 @@ namespace LibrarySystem.Services.Services
 
             return town.Id;
         }
-
     }
 }
