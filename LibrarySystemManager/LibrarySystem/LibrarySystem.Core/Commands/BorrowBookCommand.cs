@@ -3,7 +3,7 @@ using LibrarySystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using LibrarySystem.Services.Exceptions.UserServices;
 
 namespace LibrarySystem.ConsoleClient.Commands
 {
@@ -22,7 +22,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 4)
             {
-                throw new ArgumentException("Invalid numbers of parameters");
+                throw new InvalidUserServiceParametersExeption("Invalid numbers of parameters");
             }
 
             string firstName = args[0];
