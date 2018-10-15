@@ -58,7 +58,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Change_User_Phone")
+                .UseInMemoryDatabase(databaseName: "Throw_Exeption_IfUser_IsDeleted")
                 .Options;
             string firstName = "Ivan1",
                 middleName = "Ivanov1",
@@ -89,7 +89,7 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Change_User_Phone").Options;
+                .UseInMemoryDatabase(databaseName: "Throw_Exeption_IfUser_DoesNot_Exist").Options;
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
