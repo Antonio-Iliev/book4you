@@ -12,13 +12,13 @@ using System.Linq;
 namespace LibrarySystem.Tests.Services.UserServiceTests
 {
     [TestClass]
-    public class ListUsers_Should
+    public class RemoveUser_Should
     {
         [TestMethod]
-        public void List_Users_IfUsers_Exist()
+        public void Remove_User_FromDatabase_IfUser_Exists()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "List_Users")
+                .UseInMemoryDatabase(databaseName: "Remove_User_FromDatabase")
                 .Options;
 
             string firstName = "Ivan",
@@ -27,8 +27,6 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 phoneNumber = "1234567899";
             DateTime addOnDate = DateTime.Now;
             bool isDeleted = false;
-
-            string fullName = firstName + " " + middleName + " " + lastName;
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
@@ -43,36 +41,31 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 var address = addressService.AddAddress("test address", town);
 
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
-
             }
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(assertContext);
                 var userService = new UsersServices(unit, new CommonValidations());
+                userService.RemoveUser(firstName, middleName, lastName);
 
-                var count=userService.ListUsers(false).Count();
-
-                Assert.AreEqual(1, count);
-                Assert.AreEqual(fullName, userService.ListUsers(false).First().FullName);
+                Assert.AreEqual(true,assertContext.Users.First().IsDeleted);
             }
         }
         [TestMethod]
         [ExpectedException(typeof(UserNullableException))]
-        public void Throw_If_NoUsers()
+        public void Throw_Exeption_IfUser_DoesNot_Exist()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Throw_IfNoUsers").Options;
-            
-            // Act
+                .UseInMemoryDatabase(databaseName: "Remove_User_FromDatabase").Options;
+
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
                 var validationMock = new Mock<CommonValidations>();
 
-                var service = new UsersServices(unit, validationMock.Object);
-
-                service.ListUsers(true);
+                var userService = new UsersServices(unit, new CommonValidations());
+                userService.RemoveUser("hjasmnzx", "iqdkwjsan", "kjasn");
             }
         }
     }
