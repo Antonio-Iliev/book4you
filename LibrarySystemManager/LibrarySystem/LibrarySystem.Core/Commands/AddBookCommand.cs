@@ -37,8 +37,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             string author = args[2];
             string bookInStore = args[3];
 
-            Genre newGenre = genreServices.AddGenre(genre);
-            Author newAuthor = authorServices.AddAuthor(author);
+            var newGenre = genreServices.AddGenre(genre);
+            var newAuthor = authorServices.AddAuthor(author);
 
             var addedBook = booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
 
