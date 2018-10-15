@@ -78,7 +78,7 @@ namespace LibrarySystem.Tests.Services.BooksserviceTests
                 var unitOfWork = new UnitOfWork(actContext);
                 var bookServices = new BooksServices(unitOfWork, validationMock.Object);
 
-                var fundedBook = bookServices.GetBook(title);
+                bookServices.GetBook(title);
             }
         }
     }
