@@ -9,6 +9,7 @@ using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Abstract.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace LibrarySystem.Services
 {
@@ -23,14 +24,26 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(title);
 
             int numberOfBook;
-            if (!int.TryParse(bookInStore, out numberOfBook))
+
+            try
             {
-                throw new InvalidBookServiceParametersExeption("Invalid number");
+                numberOfBook = int.Parse(bookInStore);
+            }
+            catch (FormatException)
+            {
+                throw new InvalidBookServiceParametersExeption
+                    ("This is not a number. You need a count of books");
             }
 
+            if (numberOfBook < 1)
+            {
+                throw new InvalidBookServiceParametersExeption
+                    ("The count of books cannot be negative number");
+            }
             this.validations.BookInStoreValidation(numberOfBook);
 
-            var currentBook = this.unitOfWork.GetRepo<Book>().All().FirstOrDefault(b => b.Title == title);
+            var currentBook = this.unitOfWork.GetRepo<Book>().All()
+                .FirstOrDefault(b => b.Title == title);
 
             if (currentBook == null)
             {
@@ -70,14 +83,14 @@ namespace LibrarySystem.Services
                     Author = b.Author.Name,
                     Genre = b.Genre.GenreName
                 })
-                .Where(b => b.Title == bookTitle).ToList();
+                .FirstOrDefault(b => b.Title == bookTitle);
 
-            if (!findBook.Any())
+            if (findBook == null)
             {
                 throw new AddBookNullableExeption("There is no such book in this Library.");
             }
 
-            return findBook[0];
+            return findBook;
         }
 
         public IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre)

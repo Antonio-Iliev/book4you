@@ -24,6 +24,8 @@ ListBooksByGenre fantasy
 
 ListBookByAuthor George R. R. Martin
 
+ListBooks
+
 RemoveUser Test100, Nepeshov, Peshov
 RemoveUser NovUser, Nepeshov, Peshov
 RemoveUser NovUser3, Goshova, Georgieva

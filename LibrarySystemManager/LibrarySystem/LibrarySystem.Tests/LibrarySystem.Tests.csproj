@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Services\GenreServiceTests\" />
-    <Folder Include="Services\BooksserviceTests\" />
     <Folder Include="Services\AuthorServiceTests\" />
   </ItemGroup>
 
