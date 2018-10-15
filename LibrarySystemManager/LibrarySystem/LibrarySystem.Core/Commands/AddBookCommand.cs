@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Services;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             if (args.Count != 4)
             {
-                throw new ArgumentException("Invalid numbers of parameters");
+                throw new InvalidBookServiceParametersExeption("Invalid numbers of parameters");
             }
 
             string title = args[0];

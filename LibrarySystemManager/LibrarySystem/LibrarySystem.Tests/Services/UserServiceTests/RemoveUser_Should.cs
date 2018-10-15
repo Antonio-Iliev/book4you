@@ -12,14 +12,14 @@ using System.Linq;
 namespace LibrarySystem.Tests.Services.UserServiceTests
 {
     [TestClass]
-    public class AddUser_Should
+    public class RemoveUser_Should
     {
         [TestMethod]
-        public void Add_User_ToDatabase()
+        public void Remove_User_FromDatabase_IfUser_Exists()
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Add_User_ToDatabase")
+                .UseInMemoryDatabase(databaseName: "Remove_User_FromDatabase")
                 .Options;
 
             string firstName = "Ivan",
@@ -33,58 +33,45 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                
+
                 var townService = new TownService(unit, validationMock.Object);
                 var addressService = new AddressService(unit, validationMock.Object);
                 var userService = new UsersServices(unit, validationMock.Object);
 
                 var town = townService.AddTown("test");
                 var address = addressService.AddAddress("test address", town);
-                
-                //Act
+
                 userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
             }
-            // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                int count = assertContext.Users.Count();
-                Assert.AreEqual(1, count);
-                Assert.AreEqual(firstName, assertContext.Users.First().FirstName);
+                var unit = new UnitOfWork(assertContext);
+                var userService = new UsersServices(unit, validationMock.Object);
+                
+                //Act
+                userService.RemoveUser(firstName, middleName, lastName);
+                
+                // Assert
+                Assert.AreEqual(true, assertContext.Users.First().IsDeleted);
             }
         }
-
         [TestMethod]
         [ExpectedException(typeof(UserNullableException))]
-        public void Not_Add_IfUser_Exists()
+        public void Throw_Exeption_IfUser_DoesNot_Exist()
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Not_Add_IfUser_Exists").Options;
-
-            string firstName = "Ivan",
-                middleName = "Ivanov",
-                lastName = "Ivanov",
-                phoneNumber = "1234567899";
-            DateTime addOnDate = DateTime.Now;
-            bool isDeleted = false;
-
-            var validationMock = new Mock<CommonValidations>();
+                .UseInMemoryDatabase(databaseName: "Remove_User_FromDatabase").Options;
 
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
                 var unit = new UnitOfWork(actContext);
-                
-                var townService = new TownService(unit, validationMock.Object);
-                var addressService = new AddressService(unit, validationMock.Object);
+                var validationMock = new Mock<CommonValidations>();
                 var userService = new UsersServices(unit, validationMock.Object);
 
-                var town = townService.AddTown("test");
-                var address = addressService.AddAddress("test address", town);
-                
-                // Act and Assert
-                userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
-                userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
-            }           
+                //Act & Assert
+                userService.RemoveUser("hjasmnzx", "iqdkwjsan", "kjasn");
+            }
         }
     }
 }
