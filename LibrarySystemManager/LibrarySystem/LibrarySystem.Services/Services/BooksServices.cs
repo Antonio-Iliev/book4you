@@ -8,8 +8,8 @@ using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Abstract.Contracts;
-using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
 {
@@ -77,12 +77,8 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var findBook = this.unitOfWork.GetRepo<Book>().All()
-                .Select(b => new BookViewModel
-                {
-                    Title = b.Title,
-                    Author = b.Author.Name,
-                    Genre = b.Genre.GenreName
-                })
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
                 .FirstOrDefault(b => b.Title == bookTitle);
 
             if (findBook == null)
@@ -90,7 +86,14 @@ namespace LibrarySystem.Services
                 throw new AddBookNullableExeption("There is no such book in this Library.");
             }
 
-            return findBook;
+            var bookToReturn = new BookViewModel
+                {
+                    Title = findBook.Title,
+                    Author = findBook.Author.Name,
+                    Genre = findBook.Genre.GenreName
+                };
+
+            return bookToReturn;
         }
 
         public IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre)
