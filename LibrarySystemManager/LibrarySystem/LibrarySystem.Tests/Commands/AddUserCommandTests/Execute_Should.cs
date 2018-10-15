@@ -14,7 +14,6 @@ namespace LibrarySystem.Tests.Commands.AddUserCommandTests
     [TestClass]
     public class Execute_Should
     {
-
         [TestMethod]
         [ExpectedException(typeof(InvalidUserServiceParametersExeption))]
         public void Throw_If_ParamethersCount_IsInvalid()
