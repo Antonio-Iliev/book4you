@@ -1,7 +1,12 @@
 ﻿using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Services;
+using LibrarySystem.Services.Exceptions.UserServices;
+using LibrarySystem.Services.Services;
+using LibrarySystem.Services.Validations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,24 +21,29 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
         public void Add_User_ToDatabase()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Add_IfUser_Does_Not_Exist").Options;
+                .UseInMemoryDatabase(databaseName: "Add_User_ToDatabase")
+                .Options;
 
-            var user = new User()
-            {
-                FirstName = "Ivan",
-                MiddleName = "Ivanov",
-                LastName = "Ivanov",
-                PhoneNumber = "1234567899",
-                AddOnDate = DateTime.Now,
-                IsDeleted = false,
-                AddressId = 1
-            };
+            string firstName = "Ivan",
+                middleName = "Ivanov",
+                lastName = "Ivanov",
+                phoneNumber = "1234567899";
+            DateTime addOnDate = DateTime.Now;
+            bool isDeleted = false;
 
-            // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Users.Add(user);
-                actContext.SaveChanges();
+                var unit = new UnitOfWork(actContext);
+                var validationMock = new Mock<CommonValidations>();
+
+                var townService = new TownService(unit, new CommonValidations());
+                var addressService = new AddressService(unit, new CommonValidations());
+                var userService = new UsersServices(unit, new CommonValidations());
+
+                var town = townService.AddTown("test");
+                var address = addressService.AddAddress("test address", town);
+
+                userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
             }
 
             // Assert
@@ -41,43 +51,39 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
             {
                 int count = assertContext.Users.Count();
                 Assert.AreEqual(1, count);
-                Assert.AreEqual(user.FirstName, assertContext.Users.First().FirstName);
+                Assert.AreEqual(firstName, assertContext.Users.First().FirstName);
             }
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UserNullableException))]
         public void Not_Add_IfUser_Exists()
         {
             var contextOptions = new DbContextOptionsBuilder<LibrarySystemContext>()
-                .UseInMemoryDatabase(databaseName: "Not_Add_IfUser_Exist").Options;
+                .UseInMemoryDatabase(databaseName: "Not_Add_IfUser_Exists").Options;
 
-            var user = new User()
-            {
-                FirstName = "Ivan",
-                MiddleName = "Ivanov",
-                LastName = "Ivanov",
-                PhoneNumber = "1234567899",
-                AddOnDate = DateTime.Now,
-                IsDeleted = false,
-                AddressId = 1
-            };
+            string firstName = "Ivan",
+                middleName = "Ivanov",
+                lastName = "Ivanov",
+                phoneNumber = "1234567899";
+            DateTime addOnDate = DateTime.Now;
+            bool isDeleted = false;
 
-            // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                actContext.Users.Add(user);
-                actContext.Users.Add(user);
-                actContext.SaveChanges();
-            }
+                var unit = new UnitOfWork(actContext);
+                var validationMock = new Mock<CommonValidations>();
 
-            // Assert
-            using (var assertContext = new LibrarySystemContext(contextOptions))
-            {
-                int count = assertContext.Users.Count();
-                Assert.AreEqual(1, count);
-                Assert.AreEqual(user.FirstName, assertContext.Users.First().FirstName);
-            }
+                var townService = new TownService(unit, new CommonValidations());
+                var addressService = new AddressService(unit, new CommonValidations());
+                var userService = new UsersServices(unit, new CommonValidations());
 
+                var town = townService.AddTown("test");
+                var address = addressService.AddAddress("test address", town);
+
+                userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
+                userService.AddUser(firstName, middleName, lastName, phoneNumber, addOnDate, isDeleted, address);
+            }           
         }
     }
 }

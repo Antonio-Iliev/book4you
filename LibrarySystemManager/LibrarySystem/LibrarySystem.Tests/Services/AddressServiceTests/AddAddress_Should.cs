@@ -74,7 +74,7 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
                 var service = new AddressService(unit, validationMock.Object);
 
                 service.AddAddress(streetAddress1, 1);
-                service.AddAddress(streetAddress2, 2);
+                service.AddAddress(streetAddress2, 1);
             }
 
             // Assert

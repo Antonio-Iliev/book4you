@@ -158,7 +158,7 @@ namespace LibrarySystem.Services.Validations
                 throw new InvalidUserServiceParametersExeption
                       ($"Phone number can not be less than {ServicesConstants.MinPhoneLength} symbols.");
             }
-            if (phone.Length > ServicesConstants.MinPhoneLength)
+            if (phone.Length > ServicesConstants.MaxPhoneLength)
             {
                 throw new InvalidUserServiceParametersExeption
                       ($"Phone number is more than {ServicesConstants.MaxPhoneLength} symbols.");
