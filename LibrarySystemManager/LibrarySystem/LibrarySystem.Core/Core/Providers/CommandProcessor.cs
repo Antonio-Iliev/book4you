@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using Autofac.Core;
 using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.ConsoleClient.Core.Contracts;
 
@@ -37,7 +39,15 @@ namespace LibrarySystem.ConsoleClient.Core.Providers
                         .ToList();
                 }
 
-                var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
+                ICommand command;
+                try
+                {
+                    command = this.autofacContext.ResolveNamed<ICommand>(commandName);
+                }
+                catch (DependencyResolutionException)
+                {
+                    throw new Exception("There is not such command.");
+                }
 
                 results.Add(command.Execute(commandParams));
             }

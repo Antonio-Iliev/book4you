@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
@@ -35,7 +36,16 @@ namespace LibrarySystem.ConsoleClient.Commands
             string exportFolder = @"../../../../Reports/";
             string reportDate = DateTime.Now.ToString("dd-MM-yyyy");
             string exportFile = Path.Combine(exportFolder, $"Report_{commandName}_by_{infoParameter}_{reportDate}.pdf");
-            var command = this.autofacContext.ResolveNamed<ICommand>(commandName);
+
+            ICommand command;
+            try
+            {
+                command = this.autofacContext.ResolveNamed<ICommand>(commandName);
+            }
+            catch (DependencyResolutionException)
+            {
+                throw new Exception("There is not such command.");
+            }
 
             string print = command.Execute(reportBy);
 
