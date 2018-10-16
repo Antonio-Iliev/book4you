@@ -29,12 +29,12 @@ namespace LibrarySystem.Tests.Services.BooksserviceTests
             genre1 = "Genre1", genre2 = "Genre2", genre3 = "Genre3";
 
             Author authorMock1 = new Author() { Name = author1 },
-            authorMock2 = new Author() { Name = author1 },
-            authorMock3 = new Author() { Name = author1 };
+            authorMock2 = new Author() { Name = author2 },
+            authorMock3 = new Author() { Name = author3 };
 
             Genre genreMock1 = new Genre() { GenreName = genre1 },
-            genreMock2 = new Genre() { GenreName = genre1 },
-            genreMock3 = new Genre() { GenreName = genre1 };
+            genreMock2 = new Genre() { GenreName = genre2 },
+            genreMock3 = new Genre() { GenreName = genre3 };
 
             var book1 = new Book
             {
