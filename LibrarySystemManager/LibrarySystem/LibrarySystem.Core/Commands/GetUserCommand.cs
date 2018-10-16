@@ -29,18 +29,19 @@ namespace LibrarySystem.ConsoleClient.Commands
             {
                 throw new InvalidUserServiceParametersExeption("Invalid number of parameters.");
             }
-            var result = this.usersServices.GetUser(args[0], args[1], args[2]);
+            var user = this.usersServices.GetUser(args[0], args[1], args[2]);
 
-            var books= new StringBuilder();
+            var result = new StringBuilder();
 
-            foreach (var item in result.UserBooks)
+            result.AppendLine($"Name: {user.FullName} Phone: {user.Phonenumber}");
+            result.AppendLine($"Added On: {user.AddedOn} Address: {user.Address}, {user.Town}");
+            if (user.UserBooks.Count > 0)
             {
-                books.AppendLine(item.Book.Title);  
+                result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, user.UserBooks)}");
             }
+            result.AppendLine("-------");
 
-            return $"User: {result.FullName} Phone: {result.Phonenumber} " +
-                $"Added On: {result.AddedOn} Address: {result.Address} {result.Town} " +
-                $"Books: {books.ToString()}";
+            return result.ToString();
         }
     }
 }

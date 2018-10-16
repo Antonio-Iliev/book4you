@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.ConsoleClient.Commands.Contracts;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Exceptions.UserServices;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,20 +43,21 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var users = this.usersServices.ListUsers(userIsDeleted);
 
-            var result = new StringBuilder();            
+            var result = new StringBuilder();
 
             foreach (var user in users)
             {
                 var books = user.UserBooks.Select(x => x.Book.Title).ToList();
-                
-                result.AppendLine(
-                    $"Name: {user.FullName} Phone: {user.Phonenumber} " +
-                    $"Added On: {user.AddedOn} Address: {user.Address}, {user.Town} " +
-                    $"{string.Join(", ", books)}."
-                    );
-                result.AppendLine();
+
+                result.AppendLine($"Name: {user.FullName} Phone: {user.Phonenumber}");
+                result.AppendLine($"Added On: {user.AddedOn} Address: {user.Address}, {user.Town}");
+                if (books.Count > 0)
+                {
+                    result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, books)}");
+                }
+                result.AppendLine("-------");
             }
-            return result.ToString();
+            return result.ToString().Trim();
         }
     }
 }
