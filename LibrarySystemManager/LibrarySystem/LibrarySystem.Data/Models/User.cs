@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace LibrarySystem.Data.Models
 {
     public class User
     {
-        private ICollection<UsersBooks> usersBooks;
-
         public User()
         {
-            this.usersBooks = new HashSet<UsersBooks>();
+            this.UsersBooks = new HashSet<UsersBooks>();
         }
 
         [Key]
@@ -45,10 +42,6 @@ namespace LibrarySystem.Data.Models
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
-        public ICollection<UsersBooks> UsersBooks
-        {
-            get { return this.usersBooks; }
-            set { this.usersBooks = value; }
-        }
+        public ICollection<UsersBooks> UsersBooks { get; set; }
     }
 }
