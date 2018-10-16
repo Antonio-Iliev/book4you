@@ -432,16 +432,13 @@ namespace LibrarySystem.Tests.Services.UserServiceTests
                 arrangeContext.SaveChanges();
             }
 
-            UserViewModel borrow;
-
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
                 var unitOfWork = new UnitOfWork(actContext);
                 var services = new UsersServices(unitOfWork, validationMock.Object);
 
-                borrow = services.BorrowBook
-                    (userFirstName, userMiddName, userLastName, title);
+                services.BorrowBook(userFirstName, userMiddName, userLastName, title);
             }
 
             // Assert
