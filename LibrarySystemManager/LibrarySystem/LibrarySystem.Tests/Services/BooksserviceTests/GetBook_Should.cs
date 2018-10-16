@@ -35,12 +35,6 @@ namespace LibrarySystem.Tests.Services.BooksserviceTests
                 Genre = new Genre() { GenreName = genre }
             };
 
-
-            using (var arrangeContext = new LibrarySystemContext(contexInMemory))
-            {
-                arrangeContext.Books.Add(book);
-            }
-
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {

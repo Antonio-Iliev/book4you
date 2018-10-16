@@ -88,9 +88,11 @@ namespace LibrarySystem.Tests.Commands.GetUserCommandTests
 
             var message = command.Execute(parameters);
             
-            Assert.AreEqual($"User: {fullName} Phone: {phone} " +
-                $"Added On: {date} Address: {address} {town} " +
-                $"Books: ", message);
+            StringAssert.Contains(message, fullName);
+            StringAssert.Contains(message, phone);
+            StringAssert.Contains(message, date.ToString());
+            StringAssert.Contains(message, address);
+            StringAssert.Contains(message, town);
         }
     }
 }

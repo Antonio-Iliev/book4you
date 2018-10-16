@@ -189,6 +189,7 @@ namespace LibrarySystem.Services
 
             return userToReturn;
         }
+
         public UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
@@ -273,6 +274,7 @@ namespace LibrarySystem.Services
 
             return userToReturn;
         }
+
         public UserViewModel BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
@@ -288,7 +290,8 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("There is no such user in this Library.");
             }
 
-            var bookForBorrow = this.unitOfWork.GetRepo<Book>().All().FirstOrDefault(b => b.Title == bookTitle);
+            var bookForBorrow = this.unitOfWork.GetRepo<Book>().All()
+                .FirstOrDefault(b => b.Title == bookTitle);
 
             if (bookForBorrow == null)
             {

@@ -4,9 +4,7 @@ using LibrarySystem.Services.Exceptions.BookServiceExeptions;
 using LibrarySystem.Services.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LibrarySystem.Tests.Commands.GetBookCommandTests
 {
@@ -69,7 +67,9 @@ namespace LibrarySystem.Tests.Commands.GetBookCommandTests
 
             string message = command.Execute(parameters);
 
-            Assert.AreEqual($" {title}, {author}, {genre}", message);
+            StringAssert.Contains(message, title);
+            StringAssert.Contains(message, author);
+            StringAssert.Contains(message, genre);
         }
     }
 }
