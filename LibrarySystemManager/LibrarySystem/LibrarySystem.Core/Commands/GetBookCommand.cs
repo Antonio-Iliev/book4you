@@ -25,11 +25,11 @@ namespace LibrarySystem.ConsoleClient.Commands
                 throw new InvalidBookServiceParametersExeption("Invalid parameters");
             }
 
-            string book = args[0];
+            string bookTitle = args[0];
 
-            var findedBook = this.booksServices.GetBook(book);
+            var book = this.booksServices.GetBook(bookTitle);
            
-            return $" {findedBook.Title}, {findedBook.Author}, {findedBook.Genre}";
+            return $"Title '{book.Title}' by {book.Author} - {book.Genre}";
         }
     }
 }

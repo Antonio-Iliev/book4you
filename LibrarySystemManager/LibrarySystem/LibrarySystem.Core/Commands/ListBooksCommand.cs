@@ -23,7 +23,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             foreach (var book in books)
             {
-                str.AppendLine($"{book.Title}, {book.Author}, {book.Genre}");
+                str.AppendLine($"Title '{book.Title}' by {book.Author} - {book.Genre}");
             }
 
             return str.ToString().Trim();
