@@ -28,7 +28,5 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             return str.ToString().Trim();
         }
-
-
     }
 }
