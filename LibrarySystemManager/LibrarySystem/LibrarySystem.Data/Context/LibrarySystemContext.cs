@@ -5,7 +5,7 @@ using System.IO;
 
 namespace LibrarySystem.Data.Context
 {
-    public class LibrarySystemContext : DbContext
+    public class LibrarySystemContext : DbContext, ILibrarySystemContext
     {
         public LibrarySystemContext()
         {

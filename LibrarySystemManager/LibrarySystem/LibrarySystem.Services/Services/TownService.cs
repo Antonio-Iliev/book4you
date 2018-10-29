@@ -2,13 +2,14 @@
 using System.Linq;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract.Contracts;
+using LibrarySystem.Data.Context;
 
 namespace LibrarySystem.Services.Services
 {
     public class TownService : BaseServicesClass, ITownService
     {
-        public TownService(UnitOfWork unitOfWork, IValidations validations) 
-            : base(unitOfWork, validations)
+        public TownService(ILibrarySystemContext context, IValidations validations) 
+            : base(context, validations)
         {
         }
 
@@ -16,13 +17,13 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.TownValidation(townName);
 
-            var town = this.unitOfWork.GetRepo<Town>().All().FirstOrDefault(t => t.TownName == townName);
+            var town = this.context.Towns.FirstOrDefault(t => t.TownName == townName);
 
             if (town == null)
             {
-                this.unitOfWork.GetRepo<Town>().Add(new Town() { TownName = townName });
-                this.unitOfWork.SaveChanges();
-                town = this.unitOfWork.GetRepo<Town>().All().FirstOrDefault(t => t.TownName == townName);
+                this.context.Towns.Add(new Town() { TownName = townName });
+                this.context.SaveChanges();
+                town = this.context.Towns.FirstOrDefault(t => t.TownName == townName);
             }
 
             return town.Id;

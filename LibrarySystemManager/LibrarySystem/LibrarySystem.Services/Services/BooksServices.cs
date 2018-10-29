@@ -10,12 +10,14 @@ using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Abstract.Contracts;
 using System;
 using Microsoft.EntityFrameworkCore;
+using LibrarySystem.Data.Context;
 
 namespace LibrarySystem.Services
 {
     public class BooksServices : BaseServicesClass, IBooksServices
     {
-        public BooksServices(UnitOfWork unitOfWork, IValidations validations) : base(unitOfWork, validations)
+        public BooksServices(ILibrarySystemContext context, IValidations validations)
+            : base(context, validations)
         {
         }
 
@@ -42,7 +44,7 @@ namespace LibrarySystem.Services
             }
             this.validations.BookInStoreValidation(numberOfBook);
 
-            var currentBook = this.unitOfWork.GetRepo<Book>().All()
+            var currentBook = this.context.Books
                 .FirstOrDefault(b => b.Title == title);
 
             if (currentBook == null)
@@ -55,14 +57,14 @@ namespace LibrarySystem.Services
                     BooksInStore = numberOfBook
                 };
 
-                this.unitOfWork.GetRepo<Book>().Add(currentBook);
+                this.context.Books.Add(currentBook);
             }
             else
             {
                 currentBook.BooksInStore += numberOfBook;
             }
 
-            this.unitOfWork.SaveChanges();
+            this.context.SaveChanges();
 
             var bookToReturn = new BookViewModel
             {
@@ -76,7 +78,7 @@ namespace LibrarySystem.Services
         {
             this.validations.BookTitleValidation(bookTitle);
 
-            var findBook = this.unitOfWork.GetRepo<Book>().All()
+            var findBook = this.context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
                 .FirstOrDefault(b => b.Title == bookTitle);
@@ -100,7 +102,7 @@ namespace LibrarySystem.Services
         {
             this.validations.GenreValidation(byGenre);
 
-            var booksByGenre = this.unitOfWork.GetRepo<Book>().All()
+            var booksByGenre = this.context.Books
                 .Select(b => new BookViewModel
                 {
                     Title = b.Title,
@@ -121,7 +123,7 @@ namespace LibrarySystem.Services
         {
             this.validations.AuthorValidation(byAuthor);
 
-            var booksByAuthor = this.unitOfWork.GetRepo<Book>().All()
+            var booksByAuthor = this.context.Books
                 .Select(b => new BookViewModel
                 {
                     Title = b.Title,
@@ -140,7 +142,7 @@ namespace LibrarySystem.Services
 
         public IEnumerable<BookViewModel> ListBooks()
         {
-            IEnumerable<BookViewModel> books = this.unitOfWork.GetRepo<Book>().All()
+            IEnumerable<BookViewModel> books = this.context.Books
                 .Select(b => new BookViewModel
                 {
                     Title = b.Title,

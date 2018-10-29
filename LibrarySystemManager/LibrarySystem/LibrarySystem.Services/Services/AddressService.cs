@@ -1,4 +1,5 @@
-﻿using LibrarySystem.Data.Models;
+﻿using LibrarySystem.Data.Context;
+using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
 using System.Linq;
@@ -7,8 +8,8 @@ namespace LibrarySystem.Services.Services
 {
     public class AddressService : BaseServicesClass, IAddressService
     {
-        public AddressService(UnitOfWork unitOfWork, IValidations validations)
-            : base(unitOfWork, validations)
+        public AddressService(ILibrarySystemContext context, IValidations validations)
+            : base(context, validations)
         {
         }
 
@@ -16,7 +17,7 @@ namespace LibrarySystem.Services.Services
         {
             this.validations.AddressValidation(streetAddress, town);
 
-            var address = this.unitOfWork.GetRepo<Address>().All()
+            var address = this.context.Addresses
                 .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
 
             if (address == null)
@@ -27,10 +28,10 @@ namespace LibrarySystem.Services.Services
                     TownId = town
                 };
 
-                this.unitOfWork.GetRepo<Address>().Add(address);
-                this.unitOfWork.SaveChanges();
+                this.context.Addresses.Add(address);
+                this.context.SaveChanges();
 
-                address = this.unitOfWork.GetRepo<Address>().All()
+                address = this.context.Addresses
                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
             }
 
