@@ -18,7 +18,12 @@ namespace LibrarySystem.Services
         {
         }
 
-        public User AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, int address)
+        public User AddUser
+            (string firstName, string middleName, string lastName,
+            string phoneNumber,
+            DateTime addedOn,
+            bool IsDeleted,
+            Address address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.PhoneValidation(phoneNumber);
@@ -39,7 +44,7 @@ namespace LibrarySystem.Services
                     {
                         UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
                     }
-                    if (user.AddressId != address)
+                    if (user.AddressId != address.Id)
                     {
                         UpdateUserAddress(firstName, middleName, lastName, address);
                     }
@@ -61,13 +66,16 @@ namespace LibrarySystem.Services
                     PhoneNumber = phoneNumber,
                     AddOnDate = DateTime.Now,
                     IsDeleted = false,
-                    AddressId = address
+                    AddressId = address.Id,
+                    Address = address
                 };
 
                 this.context.Users.Add(newUser);
                 this.context.SaveChanges();
                 user = newUser;
             }
+
+            user.Address = address;
 
             return user;
         }
@@ -136,7 +144,7 @@ namespace LibrarySystem.Services
             return user;
         }
 
-        public User UpdateUserAddress(string firstName, string middleName, string lastName, int address)
+        public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -152,7 +160,8 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("This user does not exist.");
             }
 
-            user.AddressId = address;
+            user.AddressId = address.Id;
+            user.Address = address;
             this.context.Users.Update(user);
 
             this.context.SaveChanges();

@@ -13,29 +13,28 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public int AddAddress(string streetAddress, int town)
+        public Address AddAddress(string streetAddress, Town town)
         {
             this.validations.AddressValidation(streetAddress, town);
 
             var address = this.context.Addresses
-                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
+                .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town.Id);
 
             if (address == null)
             {
                 address = new Address()
                 {
                     StreetAddress = streetAddress,
-                    TownId = town
+                    TownId = town.Id
                 };
 
                 this.context.Addresses.Add(address);
                 this.context.SaveChanges();
-
-                address = this.context.Addresses
-               .FirstOrDefault(a => a.StreetAddress == streetAddress && a.TownId == town);
             }
 
-            return address.Id;
+            address.Town = town;
+
+            return address;
         }
     }
 }

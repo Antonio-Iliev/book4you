@@ -4,7 +4,7 @@ namespace LibrarySystem.Services.Services
 {
     public interface IGenreServices
     {
-        int AddGenre(string genreName);
+        Genre AddGenre(string genreName);
 
         Genre GetGenre(string genreName);
     }

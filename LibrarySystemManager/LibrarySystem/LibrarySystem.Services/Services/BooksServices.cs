@@ -20,7 +20,7 @@ namespace LibrarySystem.Services
         {
         }
 
-        public Book AddBook(string title, int genreId, int authorId, string bookInStore)
+        public Book AddBook(string title, Genre genre, Author author, string bookInStore)
         {
             this.validations.BookTitleValidation(title);
 
@@ -51,8 +51,8 @@ namespace LibrarySystem.Services
                 book = new Book
                 {
                     Title = title,
-                    GenreId = genreId,
-                    AuthorId = authorId,
+                    GenreId = genre.Id,
+                    AuthorId = author.Id,
                     BooksInStore = numberOfBook
                 };
 
@@ -64,6 +64,9 @@ namespace LibrarySystem.Services
             }
 
             this.context.SaveChanges();
+
+            book.Author = author;
+            book.Genre = genre;
 
             return book;
         }

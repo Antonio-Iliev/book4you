@@ -4,6 +4,6 @@ namespace LibrarySystem.Services.Services
 {
     public interface ITownService
     {
-        int AddTown(string townName);
+        Town AddTown(string townName);
     }
 }

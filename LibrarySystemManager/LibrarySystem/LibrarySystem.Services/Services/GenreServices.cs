@@ -15,7 +15,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public int AddGenre(string genreName)
+        public Genre AddGenre(string genreName)
         {
             this.validations.GenreValidation(genreName);
 
@@ -28,7 +28,7 @@ namespace LibrarySystem.Services.Services
                 newGenre = this.context.Genres.FirstOrDefault(g => g.GenreName == genreName);
             }
 
-            return newGenre.Id;
+            return newGenre;
         }
 
         public Genre GetGenre(string genreName)

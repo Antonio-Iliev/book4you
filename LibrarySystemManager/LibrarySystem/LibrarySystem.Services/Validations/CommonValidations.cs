@@ -37,7 +37,7 @@ namespace LibrarySystem.Services.Validations
             }
         }
 
-        public void AddressValidation(string streetAddress, int town)
+        public void AddressValidation(string streetAddress, Town town)
         {
             IsNull(streetAddress);
             IsNull(town);

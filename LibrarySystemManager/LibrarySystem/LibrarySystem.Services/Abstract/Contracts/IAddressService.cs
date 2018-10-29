@@ -5,6 +5,6 @@ namespace LibrarySystem.Services.Services
 {
     public interface IAddressService
     {
-        int AddAddress(string streetAddress, int town);
+        Address AddAddress(string streetAddress, Town town);
     }
 }

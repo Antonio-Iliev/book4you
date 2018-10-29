@@ -13,7 +13,7 @@ namespace LibrarySystem.Services.Services
         {
         }
 
-        public int AddTown(string townName)
+        public Town AddTown(string townName)
         {
             this.validations.TownValidation(townName);
 
@@ -26,7 +26,7 @@ namespace LibrarySystem.Services.Services
                 town = this.context.Towns.FirstOrDefault(t => t.TownName == townName);
             }
 
-            return town.Id;
+            return town;
         }
     }
 }

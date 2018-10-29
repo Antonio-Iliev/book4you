@@ -31,8 +31,8 @@ namespace LibrarySystem.ConsoleClient.Commands
             var middleName = args[1];
             var lastName = args[2];
 
-            int town = townService.AddTown(args[4]);
-            int newAddress = addressService.AddAddress(args[3], town);
+            var town = townService.AddTown(args[4]);
+            var newAddress = addressService.AddAddress(args[3], town);
 
             var user = this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 
