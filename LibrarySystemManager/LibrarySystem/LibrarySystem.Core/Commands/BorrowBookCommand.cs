@@ -32,7 +32,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var userWithBook = usersServices.BorrowBook(firstName, middName, lastName, book);
 
-            return $"User {userWithBook.FullName} " +
+            return $"User {userWithBook.FirstName} " +
                 $"borrow the book {book}";
         }
     }

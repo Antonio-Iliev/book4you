@@ -36,7 +36,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var user = this.usersServices.UpdateUserAddress(firstName, middleName, lastName, newAddress);
 
-            return $"The address of user: {user.FullName} was successfully updated to {user.Address}, {user.Town}";
+            return $"The address of user: {user.FirstName} was successfully updated to {user.Address.StreetAddress}, {user.Address.Town.TownName}";
         }
     }
 }

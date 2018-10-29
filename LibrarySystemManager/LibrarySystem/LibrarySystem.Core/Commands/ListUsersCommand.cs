@@ -47,10 +47,10 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             foreach (var user in users)
             {
-                var books = user.UserBooks.Select(x => x.Book.Title).ToList();
+                var books = user.UsersBooks.Select(x => x.Book.Title).ToList();
 
-                result.AppendLine($"Name: {user.FullName} Phone: {user.Phonenumber}");
-                result.AppendLine($"Added On: {user.AddedOn} Address: {user.Address}, {user.Town}");
+                result.AppendLine($"Name: {user.FirstName} Phone: {user.PhoneNumber}");
+                result.AppendLine($"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName}");
                 if (books.Count > 0)
                 {
                     result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, books)}");

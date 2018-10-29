@@ -7,7 +7,6 @@ using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.UserServices;
-using LibrarySystem.Services.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.Services
@@ -19,39 +18,42 @@ namespace LibrarySystem.Services
         {
         }
 
-        public UserViewModel AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, int address)
+        public User AddUser(string firstName, string middleName, string lastName, string phoneNumber, DateTime addedOn, bool IsDeleted, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.PhoneValidation(phoneNumber);
 
-            var query = this.context.Users
+            var user = this.context.Users
+               .Include(u => u.Address).ThenInclude(a => a.Town)
+               .Include(u => u.UsersBooks).ThenInclude(ub => ub.Book)
                .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
 
-            UserViewModel userToReturn;
-
-            if (query != null)
+            if (user != null)
             {
-                if (query.IsDeleted == true)
+                if (user.IsDeleted == true)
                 {
-                    query.IsDeleted = false;
-                    if (query.PhoneNumber != phoneNumber)
+                    user.IsDeleted = false;
+                    if (user.PhoneNumber != phoneNumber)
                     {
                         UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
                     }
-                    if (query.AddressId != address)
+                    if (user.AddressId != address)
                     {
                         UpdateUserAddress(firstName, middleName, lastName, address);
                     }
-                }
 
-                throw new UserNullableException("User already exists.");
+                    this.context.SaveChanges();
+                }
+                else
+                {
+                    throw new UserNullableException("User already exists.");
+                }
             }
             else
             {
-
-                var user = new User
+                var newUser = new User
                 {
                     FirstName = firstName,
                     MiddleName = middleName,
@@ -62,35 +64,15 @@ namespace LibrarySystem.Services
                     AddressId = address
                 };
 
-                this.context.Users.Add(user);
+                this.context.Users.Add(newUser);
+                this.context.SaveChanges();
+                user = newUser;
             }
 
-            this.context.SaveChanges();
-
-            query = this.context.Users
-                .Include(u => u.Address)
-                    .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(
-                u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName
-                );
-
-            userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = phoneNumber,
-                Address = query.Address.StreetAddress,
-                Town = query.Address.Town.TownName,
-                AddedOn = addedOn
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public UserViewModel GetUser(string firstName, string middleName, string lastName)
+        public User GetUser(string firstName, string middleName, string lastName)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
@@ -110,52 +92,35 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("This user does not exists.");
             }
 
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate,
-                UserBooks = user.UsersBooks
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public IEnumerable<UserViewModel> ListUsers(bool userIsDeleted)
+        public IEnumerable<User> ListUsers(bool userIsDeleted)
         {
-            var query = this.context.Users
+            var user = this.context.Users
                   .Include(u => u.Address)
                   .ThenInclude(a => a.Town)
                   .Include(u => u.UsersBooks)
                   .ThenInclude(ub => ub.Book)
                   .Where(u => u.IsDeleted == userIsDeleted).ToList();
 
-
-            var users = query.Select(u => new UserViewModel
-            {
-                FullName = $"{u.FirstName} {u.MiddleName} {u.LastName}",
-                Phonenumber = u.PhoneNumber,
-                Address = u.Address.StreetAddress,
-                Town = u.Address.Town.TownName,
-                AddedOn = u.AddOnDate,
-                UserBooks = u.UsersBooks
-            }).ToList();
-
-            if (users.Count == 0)
+            if (user.Count == 0)
             {
                 throw new UserNullableException("No users were found.");
             }
 
-            return users;
+            return user;
         }
 
-        public UserViewModel RemoveUser(string firstName, string middleName, string lastName)
+        public User RemoveUser(string firstName, string middleName, string lastName)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
             var user = this.context.Users
+                .Include(u => u.Address)
+                .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
@@ -168,36 +133,16 @@ namespace LibrarySystem.Services
             user.IsDeleted = true;
             this.context.SaveChanges();
 
-            user = this.context.Users
-                .Include(u => u.Address)
-                .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(
-                    u => u.FirstName == firstName
-                    && u.MiddleName == middleName
-                    && u.LastName == lastName
-                );
-
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public UserViewModel UpdateUserAddress(string firstName, string middleName, string lastName, int address)
+        public User UpdateUserAddress(string firstName, string middleName, string lastName, int address)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
 
             var user = this.context.Users
                 .Include(u => u.Address)
-                  .ThenInclude(a => a.Town)
+                .ThenInclude(a => a.Town)
                 .SingleOrDefault(u => u.FirstName == firstName
                 && u.MiddleName == middleName
                 && u.LastName == lastName);
@@ -206,40 +151,25 @@ namespace LibrarySystem.Services
             {
                 throw new UserNullableException("This user does not exist.");
             }
+
             user.AddressId = address;
             this.context.Users.Update(user);
 
             this.context.SaveChanges();
 
-            user = this.context.Users
-                .Include(u => u.Address)
-               .ThenInclude(a => a.Town)
-               .Include(u => u.UsersBooks)
-               .ThenInclude(ub => ub.Book)
-               .SingleOrDefault(
-                   u => u.FirstName == firstName
-                   && u.MiddleName == middleName
-                   && u.LastName == lastName
-               );
-
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public UserViewModel UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
+        public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.PhoneValidation(phone);
 
             var user = this.context.Users
+                .Include(u => u.Address)
+                .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(
                 u => u.FirstName == firstName
                 && u.MiddleName == middleName
@@ -253,30 +183,10 @@ namespace LibrarySystem.Services
             user.PhoneNumber = phone.ToString();
             this.context.SaveChanges();
 
-            user = this.context.Users
-             .Include(u => u.Address)
-             .ThenInclude(a => a.Town)
-             .Include(u => u.UsersBooks)
-             .ThenInclude(ub => ub.Book)
-             .SingleOrDefault(
-                 u => u.FirstName == firstName
-                 && u.MiddleName == middleName
-                 && u.LastName == lastName
-             );
-
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public UserViewModel BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
+        public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
@@ -323,6 +233,7 @@ namespace LibrarySystem.Services
             user.UsersBooks.Add(usersBooks);
             this.context.SaveChanges();
 
+            // TODO remove this query
             user = this.context.Users
             .Include(u => u.Address)
             .ThenInclude(a => a.Town)
@@ -334,19 +245,10 @@ namespace LibrarySystem.Services
                 && u.LastName == lastName
             );
 
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate
-            };
-
-            return userToReturn;
+            return user;
         }
 
-        public UserViewModel ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
+        public User ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
             this.validations.BookTitleValidation(bookTitle);
@@ -371,6 +273,7 @@ namespace LibrarySystem.Services
             bookToReturn.BooksInStore++;
             this.context.SaveChanges();
 
+            // TODO remove this query
             user = this.context.Users
             .Include(u => u.Address)
             .ThenInclude(a => a.Town)
@@ -382,16 +285,7 @@ namespace LibrarySystem.Services
                 && u.LastName == lastName
             );
 
-            UserViewModel userToReturn = new UserViewModel
-            {
-                FullName = $"{firstName} {middleName} {lastName}",
-                Phonenumber = user.PhoneNumber,
-                Address = user.Address.StreetAddress,
-                Town = user.Address.Town.TownName,
-                AddedOn = user.AddOnDate
-            };
-
-            return userToReturn;
+            return user;
         }
     }
 }

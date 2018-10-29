@@ -33,11 +33,11 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var result = new StringBuilder();
 
-            result.AppendLine($"Name: {user.FullName} Phone: {user.Phonenumber}");
-            result.AppendLine($"Added On: {user.AddedOn} Address: {user.Address}, {user.Town}");
-            if (user.UserBooks.Count > 0)
+            result.AppendLine($"Name: {user.FirstName} Phone: {user.PhoneNumber}");
+            result.AppendLine($"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName}");
+            if (user.UsersBooks.Count > 0)
             {
-                result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, user.UserBooks)}");
+                result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, user.UsersBooks)}");
             }
             result.AppendLine("-------");
 

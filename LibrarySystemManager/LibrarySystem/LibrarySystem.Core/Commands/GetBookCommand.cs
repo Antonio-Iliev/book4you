@@ -29,7 +29,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var book = this.booksServices.GetBook(bookTitle);
            
-            return $"Title '{book.Title}' by {book.Author} - {book.Genre}";
+            return $"Title '{book.Title}' by {book.Author.Name} - {book.Genre.GenreName}";
         }
     }
 }

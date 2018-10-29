@@ -33,7 +33,7 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             var user = usersServices.ReturnBook(firstName, middName, lastName, book);
 
-            return $"User {user.FullName} return the book {book}";
+            return $"User {user.FirstName} return the book {book}";
         }
     }
 }

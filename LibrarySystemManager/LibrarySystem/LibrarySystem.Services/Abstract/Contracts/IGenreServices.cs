@@ -1,5 +1,4 @@
 ﻿using LibrarySystem.Data.Models;
-using LibrarySystem.Services.ViewModels;
 
 namespace LibrarySystem.Services.Services
 {
@@ -7,6 +6,6 @@ namespace LibrarySystem.Services.Services
     {
         int AddGenre(string genreName);
 
-        GenreViewModel GetGenre(string genreName);
+        Genre GetGenre(string genreName);
     }
 }

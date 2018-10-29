@@ -1,7 +1,6 @@
 ﻿using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using System.Linq;
-using LibrarySystem.Services.ViewModels;
 using System.Collections.Generic;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.BookServiceExeptions;
@@ -21,7 +20,7 @@ namespace LibrarySystem.Services
         {
         }
 
-        public BookViewModel AddBook(string title, int genreId, int authorId, string bookInStore)
+        public Book AddBook(string title, int genreId, int authorId, string bookInStore)
         {
             this.validations.BookTitleValidation(title);
 
@@ -44,12 +43,12 @@ namespace LibrarySystem.Services
             }
             this.validations.BookInStoreValidation(numberOfBook);
 
-            var currentBook = this.context.Books
+            var book = this.context.Books
                 .FirstOrDefault(b => b.Title == title);
 
-            if (currentBook == null)
+            if (book == null)
             {
-                currentBook = new Book
+                book = new Book
                 {
                     Title = title,
                     GenreId = genreId,
@@ -57,59 +56,43 @@ namespace LibrarySystem.Services
                     BooksInStore = numberOfBook
                 };
 
-                this.context.Books.Add(currentBook);
+                this.context.Books.Add(book);
             }
             else
             {
-                currentBook.BooksInStore += numberOfBook;
+                book.BooksInStore += numberOfBook;
             }
 
             this.context.SaveChanges();
 
-            var bookToReturn = new BookViewModel
-            {
-                Title = currentBook.Title,
-            };
-
-            return bookToReturn;
+            return book;
         }
 
-        public BookViewModel GetBook(string bookTitle)
+        public Book GetBook(string bookTitle)
         {
             this.validations.BookTitleValidation(bookTitle);
 
-            var findBook = this.context.Books
+            var book = this.context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
                 .FirstOrDefault(b => b.Title == bookTitle);
 
-            if (findBook == null)
+            if (book == null)
             {
                 throw new AddBookNullableExeption("There is no such book in this Library.");
             }
 
-            var bookToReturn = new BookViewModel
-                {
-                    Title = findBook.Title,
-                    Author = findBook.Author.Name,
-                    Genre = findBook.Genre.GenreName
-                };
-
-            return bookToReturn;
+            return book;
         }
 
-        public IEnumerable<BookViewModel> ListOfBooksByGenre(string byGenre)
+        public IEnumerable<Book> ListOfBooksByGenre(string byGenre)
         {
             this.validations.GenreValidation(byGenre);
 
             var booksByGenre = this.context.Books
-                .Select(b => new BookViewModel
-                {
-                    Title = b.Title,
-                    Author = b.Author.Name,
-                    Genre = b.Genre.GenreName
-                })
-                .Where(g => g.Genre == byGenre).ToList();
+                .Include(b => b.Author)
+                .Include(g => g.Genre)
+                .Where(b => b.Genre.GenreName == byGenre).ToList();
 
             if (!booksByGenre.Any())
             {
@@ -119,18 +102,14 @@ namespace LibrarySystem.Services
             return booksByGenre;
         }
 
-        public IEnumerable<BookViewModel> ListOfBooksByAuthor(string byAuthor)
+        public IEnumerable<Book> ListOfBooksByAuthor(string byAuthor)
         {
             this.validations.AuthorValidation(byAuthor);
 
             var booksByAuthor = this.context.Books
-                .Select(b => new BookViewModel
-                {
-                    Title = b.Title,
-                    Author = b.Author.Name,
-                    Genre = b.Genre.GenreName
-                })
-                .Where(g => g.Author == byAuthor).ToList();
+                .Include(b => b.Author)
+                .Include(g => g.Genre)
+                .Where(a => a.Author.Name == byAuthor).ToList();
 
             if (!booksByAuthor.Any())
             {
@@ -140,15 +119,12 @@ namespace LibrarySystem.Services
             return booksByAuthor;
         }
 
-        public IEnumerable<BookViewModel> ListBooks()
+        public IEnumerable<Book> ListBooks()
         {
-            IEnumerable<BookViewModel> books = this.context.Books
-                .Select(b => new BookViewModel
-                {
-                    Title = b.Title,
-                    Author = b.Author.Name,
-                    Genre = b.Genre.GenreName
-                }).ToList();
+            IEnumerable<Book> books = this.context.Books
+                .Include(b => b.Author)
+                .Include(g => g.Genre)
+                .ToList();
 
             return books;
         }
