@@ -201,6 +201,10 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
+                  .Include(u => u.Address)
+                  .ThenInclude(a => a.Town)
+                  .Include(u => u.UsersBooks)
+                  .ThenInclude(ub => ub.Book)
                   .SingleOrDefault(u => u.FirstName == firstName
                   && u.MiddleName == middleName
                   && u.LastName == lastName);
@@ -211,6 +215,8 @@ namespace LibrarySystem.Services
             }
 
             var bookForBorrow = this.context.Books
+                .Include(a => a.Author)
+                .Include(g => g.Genre)
                 .FirstOrDefault(b => b.Title == bookTitle);
 
             if (bookForBorrow == null)
@@ -242,18 +248,6 @@ namespace LibrarySystem.Services
             user.UsersBooks.Add(usersBooks);
             this.context.SaveChanges();
 
-            // TODO remove this query
-            user = this.context.Users
-            .Include(u => u.Address)
-            .ThenInclude(a => a.Town)
-            .Include(u => u.UsersBooks)
-            .ThenInclude(ub => ub.Book)
-            .SingleOrDefault(
-                u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName
-            );
-
             return user;
         }
 
@@ -263,6 +257,10 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
+               .Include(u => u.Address)
+               .ThenInclude(a => a.Town)
+               .Include(u => u.UsersBooks)
+               .ThenInclude(ub => ub.Book)
                .SingleOrDefault(u => u.FirstName == firstName
                && u.MiddleName == middleName
                && u.LastName == lastName);
@@ -281,18 +279,6 @@ namespace LibrarySystem.Services
 
             bookToReturn.BooksInStore++;
             this.context.SaveChanges();
-
-            // TODO remove this query
-            user = this.context.Users
-            .Include(u => u.Address)
-            .ThenInclude(a => a.Town)
-            .Include(u => u.UsersBooks)
-            .ThenInclude(ub => ub.Book)
-            .SingleOrDefault(
-                u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName
-            );
 
             return user;
         }
