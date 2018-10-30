@@ -4,7 +4,7 @@ namespace LibrarySystem.Data.Models
 {
     public class UsersBooks
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public Guid BookId { get; set; }
 

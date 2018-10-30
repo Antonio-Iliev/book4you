@@ -1,16 +1,14 @@
 ﻿using LibrarySystem.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace LibrarySystem.Data.Context
 {
-    public class LibrarySystemContext : DbContext, ILibrarySystemContext
+    public class LibrarySystemContext : IdentityDbContext<User>
     {
-        public LibrarySystemContext()
-        {
-        }
-
         public LibrarySystemContext(DbContextOptions<LibrarySystemContext> options)
             : base(options)
         {
@@ -19,7 +17,6 @@ namespace LibrarySystem.Data.Context
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Town> Towns { get; set; }
         public DbSet<UsersBooks> UsersBooks { get; set; }
