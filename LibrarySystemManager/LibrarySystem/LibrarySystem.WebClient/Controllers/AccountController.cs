@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using LibrarySystem.WebClient.Models;
 using LibrarySystem.WebClient.Models.AccountViewModels;
 using LibrarySystem.WebClient.Services;
+using LibrarySystem.Data.Models;
 
 namespace LibrarySystem.WebClient.Controllers
 {
