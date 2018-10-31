@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using LibrarySystem.WebClient.Models;
-using LibrarySystem.WebClient.Services;
 using LibrarySystem.Data.Context;
 using LibrarySystem.Services.Services;
 using LibrarySystem.Services;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Services.Abstract.Contracts;
+using LibrarySystem.Services.Validations;
 
 namespace LibrarySystem.WebClient
 {
@@ -37,7 +38,6 @@ namespace LibrarySystem.WebClient
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IAuthorServices, AuthorServices>();
@@ -45,6 +45,7 @@ namespace LibrarySystem.WebClient
             services.AddScoped<IGenreServices, GenreServices>();
             services.AddScoped<ITownService, TownService>();
             services.AddScoped<IUsersServices, UsersServices>();
+            services.AddScoped<IValidations, CommonValidations>();
 
             services.AddMvc();
         }

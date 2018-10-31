@@ -15,7 +15,7 @@ namespace LibrarySystem.Services
 {
     public class BooksServices : BaseServicesClass, IBooksServices
     {
-        public BooksServices(ILibrarySystemContext context, IValidations validations)
+        public BooksServices(LibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }

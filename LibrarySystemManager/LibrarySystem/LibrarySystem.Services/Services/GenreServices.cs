@@ -10,7 +10,7 @@ namespace LibrarySystem.Services.Services
 {
     public class GenreServices : BaseServicesClass, IGenreServices
     {
-        public GenreServices(ILibrarySystemContext context, IValidations validations)
+        public GenreServices(LibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }

@@ -13,7 +13,7 @@ namespace LibrarySystem.Services
 {
     public class UsersServices : BaseServicesClass, IUsersServices
     {
-        public UsersServices(ILibrarySystemContext context, IValidations validations)
+        public UsersServices(LibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }

@@ -8,7 +8,7 @@ namespace LibrarySystem.Services.Services
 {
     public class TownService : BaseServicesClass, ITownService
     {
-        public TownService(ILibrarySystemContext context, IValidations validations) 
+        public TownService(LibrarySystemContext context, IValidations validations) 
             : base(context, validations)
         {
         }

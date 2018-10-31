@@ -8,7 +8,7 @@ namespace LibrarySystem.Services.Services
 {
     public class AddressService : BaseServicesClass, IAddressService
     {
-        public AddressService(ILibrarySystemContext context, IValidations validations)
+        public AddressService(LibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }

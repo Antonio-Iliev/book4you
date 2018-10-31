@@ -28,7 +28,13 @@ namespace LibrarySystem.Data.Models
         [MinLength(2)]
         [MaxLength(20)]
         public string LastName { get; set; }
-        
+
+        [Required]
+        [MinLength(4)]
+        [MaxLength(200)]
+        [EmailAddress]
+        public override string Email { get; set; }
+
         public DateTime AddOnDate { get; set; }
 
         public bool IsDeleted { get; set; }

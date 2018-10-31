@@ -10,7 +10,7 @@ namespace LibrarySystem.Services.Services
 {
     public class AuthorServices : BaseServicesClass, IAuthorServices
     {
-        public AuthorServices(ILibrarySystemContext context, IValidations validations)
+        public AuthorServices(LibrarySystemContext context, IValidations validations)
             : base(context, validations)
         {
         }
