@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 
 namespace LibrarySystem.Data.Context
 {
@@ -35,7 +37,7 @@ namespace LibrarySystem.Data.Context
             var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
             var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
             var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
-
+            
             modelBuilder.Entity<Town>().HasData(towns);
             modelBuilder.Entity<Genre>().HasData(genres);
             modelBuilder.Entity<Author>().HasData(authors);
