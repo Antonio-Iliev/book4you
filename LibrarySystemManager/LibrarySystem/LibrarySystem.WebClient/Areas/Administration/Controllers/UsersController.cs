@@ -33,5 +33,24 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
 
             return View(users);
         }
+        public IActionResult Details()
+        {           
+            var userId = _userManager.GetUserId(HttpContext.User);
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            else
+            {             
+                var user = this._userManager
+                    .Users
+                    .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                    .SingleOrDefault(u => u.Id == userId);
+                    
+                var viewModel=new UserViewModel(user);
+                return View(viewModel);
+            }
+        }
     }
 }

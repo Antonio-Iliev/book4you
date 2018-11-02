@@ -11,6 +11,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Models
     {
         public UserViewModel(User user)
         {
+            Id = user.Id;
             FirstName = user.FirstName;
             MiddleName = user.MiddleName;
             LastName = user.LastName;
@@ -21,6 +22,8 @@ namespace LibrarySystem.WebClient.Areas.Administration.Models
             Town = user.Address.Town.TownName;
             UsersBooks = user.UsersBooks;
         }
+
+        public string Id { get; set; }
 
         [Required]
         [MinLength(2)]
