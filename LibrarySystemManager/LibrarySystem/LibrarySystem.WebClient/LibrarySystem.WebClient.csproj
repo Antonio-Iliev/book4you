@@ -18,4 +18,11 @@
     <ProjectReference Include="..\LibrarySystem.Services\LibrarySystem.Services.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Reference Include="Kendo.Mvc">
+      <HintPath>Libraries\Kendo.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
