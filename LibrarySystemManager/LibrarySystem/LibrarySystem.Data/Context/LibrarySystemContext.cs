@@ -1,4 +1,5 @@
 ﻿using LibrarySystem.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -45,6 +46,43 @@ namespace LibrarySystem.Data.Context
             
             modelBuilder.Entity<UsersBooks>()
                 .HasKey(p => new { p.UserId, p.BookId });
+
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(new IdentityRole { Name = "Admin", Id = 1.ToString(), NormalizedName = "Admin".ToUpper() });
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(new IdentityRole { Name = "User", Id = 2.ToString(), NormalizedName = "User".ToUpper() });
+
+            modelBuilder.Entity<Address>().HasData(new Address
+            { Id = 1, StreetAddress = "AdminAddres", TownId = 1 });
+
+            var adminUser = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstName = "Admin",
+                LastName = "AdminLastName",
+                UserName = "adminMain",
+                NormalizedUserName = "adminMain".ToUpper(),
+                Email = "admin@mail.com",
+                NormalizedEmail = "admin@mail.com".ToUpper(),
+                EmailConfirmed = true,
+                PhoneNumber = "+111111111",
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D"),
+                AddressId = 1
+            };
+
+            var hashePass = new PasswordHasher<User>().HashPassword(adminUser, "magicString");
+            adminUser.PasswordHash = hashePass;
+
+            modelBuilder.Entity<User>().HasData(adminUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = 1.ToString(),
+                UserId = adminUser.Id
+            });
 
             base.OnModelCreating(modelBuilder);
         }

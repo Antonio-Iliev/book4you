@@ -4,14 +4,16 @@ using LibrarySystem.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrarySystemContext))]
-    partial class LibrarySystemContextModelSnapshot : ModelSnapshot
+    [Migration("20181102105318_SeedAdmin")]
+    partial class SeedAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,7 +233,7 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "92a3cc2e-923c-4c6a-94c4-d60c9696427d", AccessFailedCount = 0, AddOnDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), AddressId = 1, ConcurrencyStamp = "5c0fb7fa-a412-4116-847b-cf917e886aad", Email = "admin@mail.com", EmailConfirmed = true, FirstName = "Admin", IsDeleted = false, LastName = "AdminLastName", LockoutEnabled = false, NormalizedEmail = "ADMIN@MAIL.COM", NormalizedUserName = "ADMINMAIN", PasswordHash = "AQAAAAEAACcQAAAAEJnMpEx5//f45C29JFrQjTGfWba0VkoVSVCuEJHStGW+xnS/GQ/1ukFDPRg24FCgPQ==", PhoneNumber = "+111111111", PhoneNumberConfirmed = true, SecurityStamp = "e91a560b-850b-42dd-aa6f-cc025c73d64e", TwoFactorEnabled = false, UserName = "adminMain" }
+                        new { Id = "68c0e422-b1ee-412d-bac9-23eee1da6d74", AccessFailedCount = 0, AddOnDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), AddressId = 1, ConcurrencyStamp = "7944e193-64c1-42b9-a85e-f04309a7d197", Email = "admin@mail.com", EmailConfirmed = true, FirstName = "Admin", IsDeleted = false, LastName = "AdminLastName", LockoutEnabled = false, NormalizedEmail = "ADMIN@MAIL.COM", NormalizedUserName = "ADMINMAIN", PasswordHash = "AQAAAAEAACcQAAAAEGVxGNMaIGZJnfqtmLu/7Qwwy+NeZFPQuLDYWQrnyqAZtSPZwz5+sXt8vZnmrHUNqQ==", PhoneNumber = "+111111111", PhoneNumberConfirmed = true, SecurityStamp = "1c521d2b-a22e-4399-b4aa-514d14253f6e", TwoFactorEnabled = false, UserName = "adminMain" }
                     );
                 });
 
@@ -272,8 +274,8 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "0fc0a00d-3dd2-47d1-b7ac-57abfa295ba7", Name = "Admin", NormalizedName = "ADMIN" },
-                        new { Id = "2", ConcurrencyStamp = "907a9f1b-5fc4-4d7b-b7fc-fb814b96cbe5", Name = "User", NormalizedName = "USER" }
+                        new { Id = "1", ConcurrencyStamp = "279faf65-cebb-4e7b-b5f4-ac5bb4fa5865", Name = "Admin" },
+                        new { Id = "2", ConcurrencyStamp = "ec14078c-b475-43d5-8a42-d7d24947e8c0", Name = "User" }
                     );
                 });
 
@@ -348,7 +350,7 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "92a3cc2e-923c-4c6a-94c4-d60c9696427d", RoleId = "1" }
+                        new { UserId = "68c0e422-b1ee-412d-bac9-23eee1da6d74", RoleId = "1" }
                     );
                 });
 

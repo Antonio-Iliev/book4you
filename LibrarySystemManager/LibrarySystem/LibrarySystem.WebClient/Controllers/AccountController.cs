@@ -116,12 +116,16 @@ namespace LibrarySystem.WebClient.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
-                 //   var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //   var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _userManager.AddToRoleAsync(user, "USER");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
 
                     return RedirectToLocal(returnUrl);
                 }

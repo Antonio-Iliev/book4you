@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
 using LibrarySystem.WebClient.Areas.Administration.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LibrarySystem.WebClient.Areas.Administration.Controllers
 {
     [Area("Administration")]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
