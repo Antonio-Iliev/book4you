@@ -5,14 +5,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LibrarySystem.WebClient.Models;
+using Kendo.Mvc.UI;
+using Kendo.Mvc.Extensions;
+using LibrarySystem.Services;
+using LibrarySystem.Data.Context;
 
 namespace LibrarySystem.WebClient.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IBooksServices bookService;
+
+        public HomeController(IBooksServices bookService)
+        {
+            this.bookService = bookService;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var books = this.bookService.ListBooks().Select(b => new BookViewModel(b));
+            return View(books);
+        }
+
+        public IActionResult ReadGridBooks([DataSourceRequest] DataSourceRequest request)
+        {
+            var result = this.bookService.ListBooks().Select(b => new BookViewModel(b)).ToDataSourceResult(request);
+
+            return this.Json(result);
         }
 
         public IActionResult About()
