@@ -15,6 +15,7 @@ using LibrarySystem.Services;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Validations;
+using Newtonsoft.Json.Serialization;
 
 namespace LibrarySystem.WebClient
 {
@@ -37,6 +38,10 @@ namespace LibrarySystem.WebClient
                 .AddEntityFrameworkStores<LibrarySystemContext>()
                 .AddDefaultTokenProviders();
 
+
+            // Add Kendo UI services to the services container
+            services.AddKendo();
+
             // Add application services.
 
             services.AddScoped<IAddressService, AddressService>();
@@ -47,7 +52,12 @@ namespace LibrarySystem.WebClient
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IValidations, CommonValidations>();
 
-            services.AddMvc();
+            // Maintain property names during serialization. See:
+            // https://github.com/aspnet/Announcements/issues/194
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +77,8 @@ namespace LibrarySystem.WebClient
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            // Configure Kendo UI
 
             app.UseMvc(routes =>
             {
