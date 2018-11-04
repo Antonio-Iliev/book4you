@@ -16,7 +16,7 @@
             <td valign="middle">
                 @if (Model.BooksInStore > 0)
                 {
-                    <a class="btn btn-success" asp-controller="User" asp-action="AddBook" asp-route-title="@Model.Title">
+                    <a class="btn btn-success" asp-controller="Books" asp-action="AddBook" asp-route-title="@Model.Title">
                         Available
                     </a>
                 }
