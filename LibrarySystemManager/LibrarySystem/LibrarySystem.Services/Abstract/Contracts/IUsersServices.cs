@@ -23,5 +23,8 @@ namespace LibrarySystem.Services
 
         User ReturnBook(string firstName, string middleName, string lastName, string bookTitle);
 
+        User GetUserById(string id);
+
+        User RemoveUserById(string id);
     }
 }
