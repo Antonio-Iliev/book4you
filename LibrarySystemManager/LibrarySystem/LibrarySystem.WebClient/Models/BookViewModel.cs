@@ -11,6 +11,7 @@ namespace LibrarySystem.WebClient.Models
     {
         public BookViewModel(Book book)
         {
+            Id = book.Id.ToString();
             Title = book.Title;
             BooksInStore = book.BooksInStore;
             Genre = book.Genre.GenreName;
@@ -18,6 +19,8 @@ namespace LibrarySystem.WebClient.Models
             // TDOD add ImageUrl in db.Book model
             ImageUrl = @"\images\Books\Default_image.png";
         }
+
+        public string Id { get; set; }
 
         [Required]
         [MinLength(2)]

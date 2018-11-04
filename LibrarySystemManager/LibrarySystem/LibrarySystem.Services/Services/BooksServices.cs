@@ -93,7 +93,7 @@ namespace LibrarySystem.Services
             var book = this.context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
-                .FirstOrDefault(b => b.Id.ToString() == bookId);
+                .FirstOrDefault(b => b.Id == Guid.Parse(bookId));
 
             if (book == null)
             {
