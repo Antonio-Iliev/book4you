@@ -1,0 +1,30 @@
+﻿@model BookViewModel
+
+    <table class="table table-striped">
+        <tr>
+            <td><img src=@Model.ImageUrl alt="Book Cover" class="img-responsive" /></td>
+            <td>@Model.Title</td>
+            <td>@Model.Author</td>
+            <td>@Model.Genre</td>
+            <td>
+                <div>
+                    <a class="btn btn-info" asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
+                        details
+                    </a>
+                </div>
+            </td>
+            <td valign="middle">
+                @if (Model.BooksInStore > 0)
+                {
+                    <a class="btn btn-success" asp-controller="User" asp-action="AddBook" asp-route-title="@Model.Title">
+                        Available
+                    </a>
+                }
+                else
+                {
+                    <div>Not available</div>
+                    <div>in this moment</div>
+                }
+            </td>
+        </tr>
+    </table>

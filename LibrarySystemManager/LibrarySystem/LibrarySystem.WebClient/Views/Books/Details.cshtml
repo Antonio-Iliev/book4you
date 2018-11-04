@@ -1,11 +1,17 @@
 ﻿@model BookViewModel
-@{
-    ViewData["Title"] = "Details";
-}
 
-<h2>@Model.Title</h2>
+<h2>Book Details</h2>
 
-<p>@Model.Author</p>
-<p>@Model.Genre</p>
-<p>@Model.BooksInStore</p>
-
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+       <partial name="_BooksDetailsPartial" model="@Model" />
+    </tbody>
+</table>

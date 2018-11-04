@@ -205,7 +205,7 @@ namespace LibrarySystem.Services
                   .ThenInclude(a => a.Town)
                   .Include(u => u.UsersBooks)
                   .ThenInclude(ub => ub.Book)
-                  .SingleOrDefault(u => u.FirstName == firstName
+                  .FirstOrDefault(u => u.FirstName == firstName
                   && u.MiddleName == middleName
                   && u.LastName == lastName);
 

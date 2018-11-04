@@ -1,0 +1,28 @@
+﻿@model UserIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Today's book suggestions</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>more info</th>
+            <th>booking</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var book in Model.Books)
+        {
+            <partial name="_BooksDetailsPartial" model="book" />
+        }
+
+    </tbody>
+</table>
