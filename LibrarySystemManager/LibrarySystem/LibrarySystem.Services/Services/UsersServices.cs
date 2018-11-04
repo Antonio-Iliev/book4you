@@ -91,7 +91,7 @@ namespace LibrarySystem.Services
                     .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(
                 u => u.FirstName == firstName
-                && u.MiddleName == middleName
+              //  && u.MiddleName == middleName
                 && u.LastName == lastName
                 );
 

@@ -17,7 +17,7 @@ namespace LibrarySystem.WebClient.Models
             Genre = book.Genre.GenreName;
             Author = book.Author.Name;
             // TDOD add ImageUrl in db.Book model
-            ImageUrl = @"\images\Books\Default_image.png";
+            ImageUrl = "Default_image.png";
         }
 
         public string Id { get; set; }

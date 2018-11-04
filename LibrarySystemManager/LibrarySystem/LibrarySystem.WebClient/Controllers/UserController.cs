@@ -35,15 +35,26 @@ namespace LibrarySystem.WebClient.Controllers
             // TODO Take 5 random books.
             var allBooks = _booksServices.ListBooks().Take(5);
 
-            var model = new UserIndexViewModel(allBooks);
+            // TODO ask Edo for permission to use .Result
+            var user = this._userManager.GetUserAsync(HttpContext.User).Result;
+
+            var model = new UserViewModel(user, allBooks);
 
             return View(model);
         }
 
         public IActionResult Details()
         {
-            var user = this._userManager.GetUserId(HttpContext.User);
-            return View();
+            // TODO ask Edo for permission to use .Result
+            User currentUser = this._userManager.GetUserAsync(HttpContext.User).Result;
+
+            var user = this._usersServices.GetUser(currentUser.FirstName, "", currentUser.LastName);
+
+            var books = user.UsersBooks.Select(b => b.Book);
+
+            var model = new UserViewModel(user, books);
+
+            return View(model);
         }
     }
 }
