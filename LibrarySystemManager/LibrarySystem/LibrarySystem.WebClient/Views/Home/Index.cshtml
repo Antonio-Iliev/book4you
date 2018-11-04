@@ -9,7 +9,8 @@
     .Name("Books")
     .Columns(c =>
     {
-        c.Bound(m => m.Title);
+        c.Bound(m => m.Title)
+            .ClientTemplate("<a href='" + Url.Action("Details", "Books") + "/#= Title #'" + ">#= Title #</a>");
         c.Bound(m => m.Genre);
         c.Bound(m => m.Author);
         c.Bound(m => m.BooksInStore).Title("Books In Store");
@@ -25,6 +26,7 @@
         source.Ajax().Read(c =>
         {
             c.Action("ReadGridBooks", "Home");
+
         });
     })
 

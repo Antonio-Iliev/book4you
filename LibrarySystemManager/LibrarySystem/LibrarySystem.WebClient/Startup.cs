@@ -78,14 +78,16 @@ namespace LibrarySystem.WebClient
 
             app.UseAuthentication();
 
-            // Configure Kendo UI
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                   name: "administration",
                   template: "{area:exists}/{controller=Users}/{action=Index}/{id?}"
                 );
+
+                routes.MapRoute(
+                    name: "default2",
+                    template: "{controller=Home}/{action=Index}/{title}");
 
                 routes.MapRoute(
                     name: "default",

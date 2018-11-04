@@ -9,6 +9,8 @@ namespace LibrarySystem.Services
 
         Book GetBook(string bookTitel);
 
+        Book GetBookById(string bookId);
+
         IEnumerable<Book> ListOfBooksByGenre(string byGenre);
 
         IEnumerable<Book> ListOfBooksByAuthor(string byAuthor);
