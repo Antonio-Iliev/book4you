@@ -88,6 +88,21 @@ namespace LibrarySystem.Services
             return book;
         }
 
+        public Book GetBookById(string bookId)
+        {
+            var book = this.context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
+                .FirstOrDefault(b => b.Id.ToString() == bookId);
+
+            if (book == null)
+            {
+                throw new AddBookNullableExeption("There is no such book in this Library.");
+            }
+
+            return book;
+        }
+
         public IEnumerable<Book> ListOfBooksByGenre(string byGenre)
         {
             this.validations.GenreValidation(byGenre);
