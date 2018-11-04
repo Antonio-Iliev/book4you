@@ -21,32 +21,7 @@
 
         @foreach (var book in Model.Books)
         {
-            <tr>
-                <td><img src=@book.ImageUrl alt="Book Cover" class="img-responsive" /></td>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Genre</td>
-                <td>
-                    <div>
-                        <a class="btn btn-info" asp-controller="User" asp-action="Details" asp-route-title="@book.Title">
-                            details
-                        </a>
-                    </div>
-                </td>
-                <td valign="middle">
-                    @if (book.BooksInStore > 0)
-                    {
-                        <a class="btn btn-success" asp-controller="User" asp-action="AddBook" asp-route-title="@book.Title">
-                            Available
-                        </a>
-                    }
-                    else
-                    {
-                        <div>Not available</div>
-                        <div>in this moment</div>
-                    }
-                </td>
-            </tr>
+            <partial name="_BooksDetailsPartial" model="book" />
         }
 
     </tbody>

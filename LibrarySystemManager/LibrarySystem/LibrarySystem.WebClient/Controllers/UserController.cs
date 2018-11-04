@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibrarySystem.WebClient.Controllers
 {
+
     [Authorize(Roles = "Admin, User")]
     public class UserController : Controller
     {
@@ -29,7 +30,6 @@ namespace LibrarySystem.WebClient.Controllers
             this._userManager = userManager;
         }
 
-
         public IActionResult Index()
         {
             // TODO Take 5 random books.
@@ -40,23 +40,10 @@ namespace LibrarySystem.WebClient.Controllers
             return View(model);
         }
 
-        public IActionResult Details(string title)
+        public IActionResult Details()
         {
-            var book = _booksServices.GetBook(title);
-
-            var model = new BookViewModel(book);
-
-            return View(model);
-        }
-
-        public IActionResult AddBook(string title)
-        {
-            // TODO take user Id
-            var user = this._userManager.GetUserAsync(HttpContext.User).Result;
-
-            // TODO BorrowBook(userID, bookID)
-            var addbook = this._usersServices.BorrowBook(user.FirstName, user.MiddleName, user.LastName, title);
-            return RedirectToAction("Index", "User");
+            var user = this._userManager.GetUserId(HttpContext.User);
+            return View();
         }
     }
 }

@@ -1,0 +1,17 @@
+﻿@model BookViewModel
+
+<h2>Book Details</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+       <partial name="_BooksDetailsPartial" model="@Model" />
+    </tbody>
+</table>
