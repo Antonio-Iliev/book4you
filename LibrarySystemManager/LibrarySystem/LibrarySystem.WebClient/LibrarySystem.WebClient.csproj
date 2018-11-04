@@ -19,9 +19,4 @@
     <ProjectReference Include="..\LibrarySystem.Services\LibrarySystem.Services.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="Models\UserBookModels\" />
-  </ItemGroup>
-
 </Project>

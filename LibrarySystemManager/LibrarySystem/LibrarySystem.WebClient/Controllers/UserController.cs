@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
+using LibrarySystem.WebClient.Models;
+using LibrarySystem.WebClient.Models.UserViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibrarySystem.WebClient.Controllers
@@ -12,17 +16,47 @@ namespace LibrarySystem.WebClient.Controllers
     public class UserController : Controller
     {
         private readonly IBooksServices _booksServices;
+        private readonly IUsersServices _usersServices;
+        private readonly UserManager<User> _userManager;
 
-        public UserController(IBooksServices booksServices)
+        public UserController(
+            IBooksServices booksServices,
+            IUsersServices usersServices,
+            UserManager<User> userManager)
         {
             this._booksServices = booksServices;
+            this._usersServices = usersServices;
+            this._userManager = userManager;
         }
+
 
         public IActionResult Index()
         {
-            var allBooks = _booksServices.ListBooks();
+            // TODO Take 5 random books.
+            var allBooks = _booksServices.ListBooks().Take(5);
 
-            return View();
+            var model = new UserIndexViewModel(allBooks);
+
+            return View(model);
+        }
+
+        public IActionResult Details(string title)
+        {
+            var book = _booksServices.GetBook(title);
+
+            var model = new BookViewModel(book);
+
+            return View(model);
+        }
+
+        public IActionResult AddBook(string title)
+        {
+            // TODO take user Id
+            var user = this._userManager.GetUserAsync(HttpContext.User).Result;
+
+            // TODO BorrowBook(userID, bookID)
+            var addbook = this._usersServices.BorrowBook(user.FirstName, user.MiddleName, user.LastName, title);
+            return RedirectToAction("Index", "User");
         }
     }
 }

@@ -115,7 +115,6 @@ namespace LibrarySystem.Services.Validations
         public void UserValidation(string firstName, string middleName, string lastName)
         {
             IsNull(firstName);
-            IsNull(middleName);
             IsNull(lastName);
             if (firstName.Length < ServicesConstants.MinUserNameLength)
             {
@@ -128,15 +127,18 @@ namespace LibrarySystem.Services.Validations
                       ($"First name is more then {ServicesConstants.MaxUserNameLength} symbols.");
             }
 
-            if (middleName.Length < ServicesConstants.MinUserNameLength)
+            if (!String.IsNullOrEmpty(middleName))
             {
-                throw new InvalidUserServiceParametersExeption
-                      ($"Middle name is less then {ServicesConstants.MinUserNameLength} symbols.");
-            }
-            if (middleName.Length > ServicesConstants.MaxUserNameLength)
-            {
-                throw new InvalidUserServiceParametersExeption
-                      ($"Middle name is more then {ServicesConstants.MaxUserNameLength} symbols.");
+                if (middleName.Length < ServicesConstants.MinUserNameLength)
+                {
+                    throw new InvalidUserServiceParametersExeption
+                          ($"Middle name is less then {ServicesConstants.MinUserNameLength} symbols.");
+                }
+                if (middleName.Length > ServicesConstants.MaxUserNameLength)
+                {
+                    throw new InvalidUserServiceParametersExeption
+                          ($"Middle name is more then {ServicesConstants.MaxUserNameLength} symbols.");
+                }
             }
 
             if (lastName.Length < ServicesConstants.MinUserNameLength)

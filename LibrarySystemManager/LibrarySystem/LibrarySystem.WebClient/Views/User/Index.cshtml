@@ -1,0 +1,53 @@
+﻿@model UserIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Today's book suggestions</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>more info</th>
+            <th>booking</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td><img src=@book.ImageUrl alt="Book Cover" class="img-responsive" /></td>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Genre</td>
+                <td>
+                    <div>
+                        <a class="btn btn-info" asp-controller="User" asp-action="Details" asp-route-title="@book.Title">
+                            details
+                        </a>
+                    </div>
+                </td>
+                <td valign="middle">
+                    @if (book.BooksInStore > 0)
+                    {
+                        <a class="btn btn-success" asp-controller="User" asp-action="AddBook" asp-route-title="@book.Title">
+                            Available
+                        </a>
+                    }
+                    else
+                    {
+                        <div>Not available</div>
+                        <div>in this moment</div>
+                    }
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
