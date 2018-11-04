@@ -2,7 +2,7 @@
 
     <table class="table table-striped">
         <tr>
-            <td><img src=@Model.ImageUrl alt="Book Cover" class="img-responsive" /></td>
+            <td><img src="~/images/Books/@(Model.ImageUrl ?? "Default_image.png")"alt="Book Cover" class="img-responsive" /></td>
             <td>@Model.Title</td>
             <td>@Model.Author</td>
             <td>@Model.Genre</td>
