@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
+using LibrarySystem.Services;
 using LibrarySystem.WebClient.Areas.Administration.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,41 +17,47 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
+        private readonly IUsersServices _usersServices;
 
-        public UsersController(UserManager<User> userManager)
+        public UsersController(UserManager<User> userManager, IUsersServices usersServices)
         {
             _userManager = userManager;
+            _usersServices = usersServices;
         }
 
         public IActionResult Index()
         {
             var users = this._userManager
                 .Users
-                .Include(u=>u.Address)
-                .ThenInclude(a=>a.Town)
-                .Select(u=>new UserViewModel(u))
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .Where(u => u.IsDeleted == false)
+                .Select(u => new UserViewModel(u))
                 .ToList();
 
             return View(users);
         }
-        public IActionResult Details()
-        {           
-            var userId = _userManager.GetUserId(HttpContext.User);
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-            else
-            {             
-                var user = this._userManager
-                    .Users
-                    .Include(u => u.Address)
-                    .ThenInclude(a => a.Town)
-                    .SingleOrDefault(u => u.Id == userId);
-                    
-                var viewModel=new UserViewModel(user);
-                return View(viewModel);
-            }
+        public IActionResult ActiveUsers()
+        {
+            var users = this._usersServices
+                .ListUsers(false)
+                .Select(u => new UserViewModel(u))
+                .ToList();
+            return View(users);
+        }
+
+        public IActionResult Details(string id)
+        {
+            var user = this._usersServices.GetUserById(id);
+            var model = new UserViewModel(user);
+            return View(model);           
+        }
+        public IActionResult Delete(string id)
+        {
+            this._usersServices.RemoveUserById(id);
+            return this.RedirectToAction("ActiveUsers", "Users");
         }
     }
 }

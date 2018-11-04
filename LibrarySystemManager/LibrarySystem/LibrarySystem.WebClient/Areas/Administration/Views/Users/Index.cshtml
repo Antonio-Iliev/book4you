@@ -4,8 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Users</h2>
-<<<<<<< HEAD
+<h2>All Users</h2>
+<div>
+    <a asp-area="administration" asp-controller="Users" asp-action="ActiveUsers"
+       class="btn btn-info btn-sm active" role="button">Active Users</a>
+</div>
 <div class="clearfix">
         <table class="table table-striped">
             <thead>
@@ -15,8 +18,7 @@
                     <th>View Details</th>
                     <th>Edit</th>
                     <th>Make Admin</th>
-                    <th>Delete</th>
-                    
+                    <th>Delete</th>                   
                 </tr>
             </thead>
             <tbody>
@@ -31,35 +33,12 @@
                     </td>
                     <td><button class="btn btn-sm btn-lg active" role="button">Edit</button></td>
                     <td><button class="btn btn-sm btn-lg active" role="button">Make Admin</button></td>
-                    <td><button class="btn btn-sm btn-lg active" role="button">Delete</button></td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Delete</a>
+                    </td>
                 </tr>
                 }
             </tbody>
         </table>
     </div>
-=======
-<div>       
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th class="col-md-2">First</th>
-                <th class="col-md-2">Middle</th>
-                <th class="col-md-3">Last</th>
-                <th class="col-md-5">Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var user in Model)
-            {
-            <tr>
-                <td>@user.FirstName</td>
-                <td>@user.MiddleName</td>
-                <td>@user.LastName</td>
-                <td>@user.Email</td>
-            </tr>
-            }            
-        </tbody>
-    </table>
-</div>
->>>>>>> 67cf4044f2012ed6db857abe4ec38e2162cd785f
-

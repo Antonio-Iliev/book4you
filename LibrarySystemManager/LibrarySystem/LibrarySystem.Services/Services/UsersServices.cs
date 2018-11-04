@@ -282,5 +282,41 @@ namespace LibrarySystem.Services
 
             return user;
         }
+
+        public User GetUserById(string id)
+        {
+            var user=this.context.Users
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+               throw new UserNullableException("There is no such user in this Library.");
+            }
+
+            return user;
+        }
+        public User RemoveUserById(string id)
+        {
+            var user = this.context.Users
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
+
+            user.IsDeleted = true;
+            this.context.SaveChanges();
+
+            return user;
+        }
     }
 }
