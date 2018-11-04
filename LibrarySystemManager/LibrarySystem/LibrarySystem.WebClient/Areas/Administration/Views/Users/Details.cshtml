@@ -38,7 +38,12 @@
         </tr>
         <tr>
             <th>Books</th>
-            <td>Books</td>
+            <td>
+                @foreach (var book in Model.UsersBooks)
+                {
+                    <p> @book.Book.Title</p>
+                }
+            </td>
         </tr>
     </tbody>
 </table>

@@ -1,4 +1,4 @@
-﻿@model UserViewModel
+﻿@model IEnumerable<BookViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
 
-        @foreach (var book in Model.Books)
+        @foreach (var book in Model)
         {
             <partial name="_BooksDetailsPartial" model="book" />
         }

@@ -33,26 +33,20 @@ namespace LibrarySystem.WebClient.Controllers
         public IActionResult Index()
         {
             // TODO Take 5 random books.
-            var allBooks = _booksServices.ListBooks().Take(5);
+            var booksOfTheDay = this._booksServices.ListBooks().Take(5);
 
-            // TODO ask Edo for permission to use .Result
-            var user = this._userManager.GetUserAsync(HttpContext.User).Result;
-
-            var model = new UserViewModel(user, allBooks);
+            var model = booksOfTheDay.Select(b => new BookViewModel(b));
 
             return View(model);
         }
 
         public IActionResult Details()
         {
-            // TODO ask Edo for permission to use .Result
-            User currentUser = this._userManager.GetUserAsync(HttpContext.User).Result;
+            var userId = this._userManager.GetUserId(HttpContext.User);
 
-            var user = this._usersServices.GetUser(currentUser.FirstName, "", currentUser.LastName);
+            var user = this._usersServices.GetUserById(userId);
 
-            var books = user.UsersBooks.Select(b => b.Book);
-
-            var model = new UserViewModel(user, books);
+            var model = new UserViewModel(user);
 
             return View(model);
         }
