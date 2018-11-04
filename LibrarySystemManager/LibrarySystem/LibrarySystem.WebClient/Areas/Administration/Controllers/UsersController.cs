@@ -32,8 +32,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
-                .Where(u => u.IsDeleted == false)
+                    .ThenInclude(ub => ub.Book)               
                 .Select(u => new UserViewModel(u))
                 .ToList();
 

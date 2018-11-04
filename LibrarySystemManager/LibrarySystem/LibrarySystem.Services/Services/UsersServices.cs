@@ -302,10 +302,10 @@ namespace LibrarySystem.Services
         public User RemoveUserById(string id)
         {
             var user = this.context.Users
-                .Include(u => u.Address)
-                    .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
+                //.Include(u => u.Address)
+                //    .ThenInclude(a => a.Town)
+                //.Include(u => u.UsersBooks)
+                //    .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(u => u.Id == id);
 
             if (user == null)
