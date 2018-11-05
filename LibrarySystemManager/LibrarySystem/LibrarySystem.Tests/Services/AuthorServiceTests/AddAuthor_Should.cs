@@ -26,9 +26,7 @@ namespace LibrarySystem.Tests.Services.AuthorServiceTests
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unit = new UnitOfWork(actContext);
-
-                var service = new AuthorServices(unit, validationMock.Object);
+                var service = new AuthorServices(actContext, validationMock.Object);
 
                 var result = service.AddAuthor(author);
             }
@@ -51,36 +49,30 @@ namespace LibrarySystem.Tests.Services.AuthorServiceTests
 
             var validationMock = new Mock<IValidations>();
 
-            string author = "newAuthor";
+            string authorName = "newAuthor";
 
-            Author existingAuthor = new Author()
-            {
-                Id = 1,
-                Name = author
-            };
-            int result;
+            Author existingAuthor = new Author() { Name = authorName };
 
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unit = new UnitOfWork(actContext);
                 var test = actContext.Authors.Add(existingAuthor).Entity;
                 actContext.SaveChanges();
 
-                var service = new AuthorServices(unit, validationMock.Object);
-                result = service.AddAuthor(author);
+                var service = new AuthorServices(actContext, validationMock.Object);
+                existingAuthor = service.AddAuthor(authorName);
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contexInMemory))
             {
                 var toAssert = assertContext.Authors
-                    .SingleOrDefault(a => a.Name == author);
+                    .SingleOrDefault(a => a.Name == authorName);
 
                 int count = assertContext.Authors.Count();
 
                 Assert.AreEqual(1, count);
-                Assert.AreEqual(toAssert.Id, result);
+                Assert.AreEqual(toAssert.Id, existingAuthor.Id);
             }
         }
     }

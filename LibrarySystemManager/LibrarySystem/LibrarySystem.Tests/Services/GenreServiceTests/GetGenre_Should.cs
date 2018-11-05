@@ -3,13 +3,13 @@ using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Exceptions.GenreServices;
 using LibrarySystem.Services.Services;
-using LibrarySystem.Services.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace LibrarySystem.Tests.Services.AddressServiceTests
+namespace LibrarySystem.Tests.Services.GenreServiceTests
 {
     [TestClass]
     public class GetGenre_Should
@@ -44,20 +44,21 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
                 arrangeContext.SaveChanges();
             }
 
-            GenreViewModel result;
 
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unitOfWork = new UnitOfWork(actContext);
-                var service = new GenreServices(unitOfWork, validationMock.Object);
+                var service = new GenreServices(actContext, validationMock.Object);
 
-                result = service.GetGenre(genreName);
+                service.GetGenre(genreName);
             }
 
             // Assert
-            Assert.AreEqual(genreName, result.GenreName);
-            Assert.AreEqual(2, result.BooksByGenre.Count);
+            using (var assertContext = new LibrarySystemContext(contexInMemory))
+            {
+                Assert.AreEqual(genreName, assertContext.Genres.FirstOrDefault().GenreName);
+                Assert.AreEqual(2, assertContext.Books.Where(b => b.Genre.GenreName == genreName).Count());
+            }
         }
 
         [TestMethod]
@@ -75,8 +76,7 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unitOfWork = new UnitOfWork(actContext);
-                var service = new GenreServices(unitOfWork, validationMock.Object);
+                var service = new GenreServices(actContext, validationMock.Object);
 
                 service.GetGenre(genreName);
             }

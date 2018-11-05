@@ -3,7 +3,6 @@ using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract.Contracts;
 using LibrarySystem.Services.Exceptions.AuthorServices;
 using LibrarySystem.Services.Services;
-using LibrarySystem.Services.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -33,7 +32,6 @@ namespace LibrarySystem.Tests.Services.AuthorServiceTests
 
             var author = new Author()
             {
-                Id = 1,
                 Name = authorName,
                 Books = authorBooks
             };
@@ -44,20 +42,19 @@ namespace LibrarySystem.Tests.Services.AuthorServiceTests
                 arrangeContext.SaveChanges();
             }
 
-            AuthorViewModel result;
+            Author result;
 
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unitOfWork = new UnitOfWork(actContext);
-                var service = new AuthorServices(unitOfWork, validationMock.Object);
+                var service = new AuthorServices(actContext, validationMock.Object);
 
                 result = service.GetAuthor(authorName);
             }
 
             // Assert
-            Assert.AreEqual(authorName, result.AuthorName);
-            Assert.AreEqual(2, result.AuthorBooks.Count);
+            Assert.AreEqual(authorName, result.Name);
+            Assert.AreEqual(2, result.Books.Count);
         }
 
         [TestMethod]
@@ -75,8 +72,7 @@ namespace LibrarySystem.Tests.Services.AuthorServiceTests
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unitOfWork = new UnitOfWork(actContext);
-                var service = new AuthorServices(unitOfWork, validationMock.Object);
+                var service = new AuthorServices(actContext, validationMock.Object);
 
                 service.GetAuthor(authorName);
             }

@@ -28,24 +28,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             };
             validator.UserValidation(user.FirstName, user.MiddleName, user.LastName);
         }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Throw_When_MiddleName_IsNull()
-        {
-            var validator = new CommonValidations();
-            var user = new User()
-            {
-                FirstName = "Ivan",
-                MiddleName = null,
-                LastName = "Ivanov",
-                PhoneNumber = "1234567899",
-                AddOnDate = DateTime.Now,
-                IsDeleted = false,
-                AddressId = 1
-            };
-            validator.UserValidation(user.FirstName, user.MiddleName, user.LastName);
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Throw_When_LastName_IsNull()

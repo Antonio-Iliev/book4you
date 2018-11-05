@@ -18,7 +18,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation(null, 1);
+            validator.AddressValidation(null, town);
         }
         
         [TestMethod]
@@ -28,7 +28,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation("", 1);
+            validator.AddressValidation("", town);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace LibrarySystem.Tests.Services.ValidationsTests
             var validator = new CommonValidations();
             var town = new Town();
 
-            validator.AddressValidation(new string('a', 51), 1);
+            validator.AddressValidation(new string('a', 51), town);
         }
     }
 }

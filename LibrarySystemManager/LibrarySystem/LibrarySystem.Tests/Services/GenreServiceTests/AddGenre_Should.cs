@@ -30,9 +30,7 @@ namespace LibrarySystem.Tests.Services.GenreServiceTests
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unit = new UnitOfWork(actContext);
-
-                var service = new GenreServices(unit, validationMock.Object);
+                var service = new GenreServices(actContext, validationMock.Object);
                 var result = service.AddGenre(genre);
             }
 
@@ -58,20 +56,17 @@ namespace LibrarySystem.Tests.Services.GenreServiceTests
 
             var existingGenre= new Genre()
             {
-                Id = 1,
                 GenreName = genre
             };
-            int result;
 
             // Act
             using (var actContext = new LibrarySystemContext(contexInMemory))
             {
-                var unit = new UnitOfWork(actContext);
                 var test = actContext.Genres.Add(existingGenre).Entity;
                 actContext.SaveChanges();
 
-                var service = new GenreServices(unit, validationMock.Object);
-                result = service.AddGenre(genre);
+                var service = new GenreServices(actContext, validationMock.Object);
+                service.AddGenre(genre);
             }
 
             // Assert
@@ -83,7 +78,6 @@ namespace LibrarySystem.Tests.Services.GenreServiceTests
                 int count = assertContext.Genres.Count();
 
                 Assert.AreEqual(1, count);
-                Assert.AreEqual(toAssert.Id, result);
             }
         }
     }

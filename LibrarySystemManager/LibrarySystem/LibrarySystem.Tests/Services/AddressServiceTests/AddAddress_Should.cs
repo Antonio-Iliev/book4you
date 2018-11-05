@@ -27,26 +27,21 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
             
             string streetAddress1 = "str test 1";
             string streetAddress2 = "str test 2";
+            var town = new Mock<Town>();
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                var unit = new UnitOfWork(actContext);
-                var repo = unit.GetRepo<Address>();
+                var service = new AddressService(actContext, validationMock.Object);
 
-                var service = new AddressService(unit, validationMock.Object);
-
-                service.AddAddress(streetAddress1, 1);
-                service.AddAddress(streetAddress2, 2);
+                service.AddAddress(streetAddress1, town.Object);
+                service.AddAddress(streetAddress2, town.Object);
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                var unit = new UnitOfWork(assertContext);
-                var repo = unit.GetRepo<Address>();
-
-                var service = new AddressService(unit, validationMock.Object);
+                var service = new AddressService(assertContext, validationMock.Object);
 
                 int count = assertContext.Addresses.Count();
                 Assert.AreEqual(2, count);
@@ -64,26 +59,21 @@ namespace LibrarySystem.Tests.Services.AddressServiceTests
 
             string streetAddress1 = "str test 1";
             string streetAddress2 = "str test 1";
+            var town = new Mock<Town>();
 
             // Act
             using (var actContext = new LibrarySystemContext(contextOptions))
             {
-                var unit = new UnitOfWork(actContext);
-                var repo = unit.GetRepo<Address>();
+                var service = new AddressService(actContext, validationMock.Object);
 
-                var service = new AddressService(unit, validationMock.Object);
-
-                service.AddAddress(streetAddress1, 1);
-                service.AddAddress(streetAddress2, 1);
+                service.AddAddress(streetAddress1, town.Object);
+                service.AddAddress(streetAddress2, town.Object);
             }
 
             // Assert
             using (var assertContext = new LibrarySystemContext(contextOptions))
             {
-                var unit = new UnitOfWork(assertContext);
-                var repo = unit.GetRepo<Address>();
-
-                var service = new AddressService(unit, validationMock.Object);
+                var service = new AddressService(assertContext, validationMock.Object);
 
                 int count = assertContext.Addresses.Count();
                 Assert.AreEqual(1, count);
