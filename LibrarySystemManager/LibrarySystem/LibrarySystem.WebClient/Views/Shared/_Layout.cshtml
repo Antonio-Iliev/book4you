@@ -87,6 +87,31 @@
 
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav" style="margin: 7px;">
+                        <li>
+                            @(Html.Kendo().AutoComplete()
+                            .Name("booksAutoComplete")
+                            .DataTextField("Title")
+                            .DataSource(source =>
+                            {
+                                source.Custom()
+                                .ServerFiltering(true)
+                                .Type("aspnetmvc-ajax")
+                                .Transport(c =>
+                                {
+                                    c.Read("ReadGridBooks", "Home");
+                                })
+                                .Schema(schema =>
+                                {
+                                    schema.Data("Data")
+                                          .Total("Total");
+                                });
+                            })
+                            )
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -115,3 +140,4 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
