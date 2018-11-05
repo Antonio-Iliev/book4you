@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
 using LibrarySystem.WebClient.Models;
+using LibrarySystem.WebClient.Models.BooksViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,21 +29,34 @@ namespace LibrarySystem.WebClient.Controllers
         }
 
         [Authorize(Roles = "Admin, User")]
-        [HttpPost]
-        public IActionResult AddBook(string title)
+        public IActionResult Index()
         {
-            // TODO take user Id
-            var user = this._userManager.GetUserAsync(HttpContext.User).Result;
+            var userId = this._userManager.GetUserId(HttpContext.User);
 
-            // TODO BorrowBook(userID, bookID)
-            this._usersServices.BorrowBook(user.FirstName, user.MiddleName, user.LastName, title);
+            var user = this._usersServices.GetUserById(userId);
 
-            return RedirectToAction("Index", "User");
+            // TODO Take 5 random books.
+            var booksOfTheDay = this._booksServices.ListBooks().Take(5);
+
+            var model = booksOfTheDay.Select(b => new BookViewModel(b, user));
+
+            return View(model);
         }
 
-        public IActionResult Details(string title)
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        public IActionResult AddBook(Guid bookId)
         {
-            var book = _booksServices.GetBook(title);
+            var user = this._userManager.GetUserId(HttpContext.User);
+
+            this._usersServices.BorrowBook(user, bookId);
+
+            return RedirectToAction("Index", "Books");
+        }
+
+        public IActionResult Details(Guid bookId)
+        {
+            var book = _booksServices.GetBookById(bookId);
 
             var model = new BookViewModel(book);
 

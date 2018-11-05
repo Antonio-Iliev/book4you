@@ -9,6 +9,7 @@ using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using LibrarySystem.Services;
 using LibrarySystem.Data.Context;
+using LibrarySystem.WebClient.Models.BooksViewModels;
 
 namespace LibrarySystem.WebClient.Controllers
 {

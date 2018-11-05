@@ -71,7 +71,7 @@ namespace LibrarySystem.Services
             return book;
         }
 
-        public Book GetBook(string bookTitle)
+        public Book GetBookByTitle(string bookTitle)
         {
             this.validations.BookTitleValidation(bookTitle);
 
@@ -88,12 +88,12 @@ namespace LibrarySystem.Services
             return book;
         }
 
-        public Book GetBookById(string bookId)
+        public Book GetBookById(Guid bookId)
         {
             var book = this.context.Books
                 .Include(b => b.Author)
                 .Include(b => b.Genre)
-                .FirstOrDefault(b => b.Id == Guid.Parse(bookId));
+                .FirstOrDefault(b => b.Id == bookId);
 
             if (book == null)
             {

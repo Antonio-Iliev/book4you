@@ -194,20 +194,12 @@ namespace LibrarySystem.Services
 
             return user;
         }
-        // TODO userId, bookId, if book is returned, borrow it again
-        public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
+
+        public User BorrowBook(string userId, Guid bookId)
         {
-            this.validations.UserValidation(firstName, middleName, lastName);
-            this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
-                  .Include(u => u.Address)
-                  .ThenInclude(a => a.Town)
-                  .Include(u => u.UsersBooks)
-                  .ThenInclude(ub => ub.Book)
-                  .FirstOrDefault(u => u.FirstName == firstName
-                  && u.MiddleName == middleName
-                  && u.LastName == lastName);
+                  .SingleOrDefault(u => u.Id == userId);
 
             if (user == null)
             {
@@ -215,9 +207,7 @@ namespace LibrarySystem.Services
             }
 
             var bookForBorrow = this.context.Books
-                .Include(a => a.Author)
-                .Include(g => g.Genre)
-                .FirstOrDefault(b => b.Title == bookTitle);
+                .SingleOrDefault(b => b.Id == bookId);
 
             if (bookForBorrow == null)
             {
@@ -230,22 +220,22 @@ namespace LibrarySystem.Services
 
             var isBorrow = this.context.UsersBooks
                 .Select(b => b)
-                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == user.Id).ToList();
+                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == user.Id)
+                .ToList();
 
             if (isBorrow.Count != 0)
             {
-                throw new AddBookNullableExeption($"User {firstName} already borrow this book '{bookTitle}'.");
+                throw new AddBookNullableExeption($"User {user.FirstName} already borrow this book '{bookForBorrow.Title}'.");
             }
-
-            bookForBorrow.BooksInStore--;
 
             var usersBooks = new UsersBooks
             {
-                User = user,
-                Book = bookForBorrow
+                UserId = user.Id,
+                BookId = bookForBorrow.Id
             };
 
             user.UsersBooks.Add(usersBooks);
+            bookForBorrow.BooksInStore--;
             this.context.SaveChanges();
 
             return user;

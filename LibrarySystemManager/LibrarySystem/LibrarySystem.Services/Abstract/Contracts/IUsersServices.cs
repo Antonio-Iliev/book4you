@@ -19,7 +19,7 @@ namespace LibrarySystem.Services
         
         IEnumerable<User> ListUsers(bool userIsDeleted);
 
-        User BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
+        User BorrowBook(string userId, Guid bookId);
 
         Book ReturnBook(string userId, Guid bookId);
 

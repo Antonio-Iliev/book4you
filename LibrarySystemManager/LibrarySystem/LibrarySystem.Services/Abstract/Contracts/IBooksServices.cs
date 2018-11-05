@@ -1,4 +1,5 @@
 ﻿using LibrarySystem.Data.Models;
+using System;
 using System.Collections.Generic;
 
 namespace LibrarySystem.Services
@@ -7,9 +8,9 @@ namespace LibrarySystem.Services
     {
         Book AddBook(string title, Genre genre, Author author, string bookInStore);
 
-        Book GetBook(string bookTitel);
+        Book GetBookByTitle(string bookTitel);
 
-        Book GetBookById(string bookId);
+        Book GetBookById(Guid bookId);
 
         IEnumerable<Book> ListOfBooksByGenre(string byGenre);
 

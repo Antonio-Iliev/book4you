@@ -30,16 +30,7 @@ namespace LibrarySystem.WebClient.Controllers
             this._userManager = userManager;
         }
 
-        public IActionResult Index()
-        {
-            // TODO Take 5 random books.
-            var booksOfTheDay = this._booksServices.ListBooks().Take(5);
-
-            var model = booksOfTheDay.Select(b => new BookViewModel(b));
-
-            return View(model);
-        }
-
+        [Authorize(Roles = "Admin, User")]
         public IActionResult MyLibrary()
         {
             var userId = this._userManager.GetUserId(HttpContext.User);

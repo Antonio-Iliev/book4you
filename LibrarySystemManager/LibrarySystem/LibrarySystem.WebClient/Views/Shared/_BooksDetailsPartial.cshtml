@@ -8,27 +8,32 @@
         <td>@Model.Genre</td>
         <th>
             <div>
-                <form asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
+                <form asp-controller="Books" asp-action="Details" asp-route-bookId="@Model.Id">
                     <button type="submit" class="btn btn-info">details</button>
                 </form>
             </div>
         </th>
         <td valign="middle">
-            @if (Model.BooksInStore > 0)
+            @if (Model.IsBorrowed)
             {
-
-                <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-title="@Model.Title">
+                <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@Model.Id" method="post">
+                    <button type="submit" class="btn bg-danger">Return book</button>
+                </form>
+            }
+            else if (Model.BooksInStore > 0)
+            {
+                <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-bookId="@Model.Id">
                     <button type="submit" class="btn btn-success">Add book</button>
                 </form>
             }
-            else
+            else if (Model.BooksInStore == 0)
             {
                 <div style="font-size: smaller">
-
                     <p>Not available</p>
                     <p>in this moment</p>
                 </div>
             }
+
         </td>
     </tr>
 </table>

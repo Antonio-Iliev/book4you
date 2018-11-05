@@ -5,18 +5,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibrarySystem.WebClient.Models
+namespace LibrarySystem.WebClient.Models.BooksViewModels
 {
     public class BookViewModel
     {
         public BookViewModel(Book book)
         {
-            Id = book.Id.ToString();
-            Title = book.Title;
-            BooksInStore = book.BooksInStore;
-            Genre = book.Genre.GenreName;
-            Author = book.Author.Name;
-            ImageName = book.ImageName;
+            this.Id = book.Id.ToString();
+            this.Title = book.Title;
+            this.BooksInStore = book.BooksInStore;
+            this.Genre = book.Genre.GenreName;
+            this.Author = book.Author.Name;
+            this.ImageName = book.ImageName;
+        }
+
+        public BookViewModel(Book book, User user) :this(book)
+        {
+            this.IsBorrowed = user.UsersBooks
+                .SingleOrDefault(b => b.BookId.ToString() == this.Id) == null ? false : true;
         }
 
         public string Id { get; set; }
@@ -40,5 +46,7 @@ namespace LibrarySystem.WebClient.Models
         public string Author { get; set; }
 
         public string ImageName { get; set; }
+
+        public bool IsBorrowed { get; set; }
     }
 }
