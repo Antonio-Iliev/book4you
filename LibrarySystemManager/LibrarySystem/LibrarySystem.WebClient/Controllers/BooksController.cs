@@ -28,13 +28,15 @@ namespace LibrarySystem.WebClient.Controllers
         }
 
         [Authorize(Roles = "Admin, User")]
+        [HttpPost]
         public IActionResult AddBook(string title)
         {
             // TODO take user Id
             var user = this._userManager.GetUserAsync(HttpContext.User).Result;
 
             // TODO BorrowBook(userID, bookID)
-            var addbook = this._usersServices.BorrowBook(user.FirstName, user.MiddleName, user.LastName, title);
+            this._usersServices.BorrowBook(user.FirstName, user.MiddleName, user.LastName, title);
+
             return RedirectToAction("Index", "User");
         }
 

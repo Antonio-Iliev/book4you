@@ -40,15 +40,27 @@ namespace LibrarySystem.WebClient.Controllers
             return View(model);
         }
 
-        public IActionResult Details()
+        public IActionResult MyLibrary()
         {
             var userId = this._userManager.GetUserId(HttpContext.User);
 
             var user = this._usersServices.GetUserById(userId);
 
-            var model = new UserViewModel(user);
+            var model = new MyLibraryViewModel(new UserViewModel(user));
 
             return View(model);
         }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        public IActionResult ReturnBook(Guid bookId)
+        {
+            var userId = this._userManager.GetUserId(HttpContext.User);
+
+            var book = this._usersServices.ReturnBook(userId, bookId);
+
+            return RedirectToAction("MyLibrary");
+        }
+
     }
 }

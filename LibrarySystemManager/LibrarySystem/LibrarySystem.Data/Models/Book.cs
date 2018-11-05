@@ -25,6 +25,8 @@ namespace LibrarySystem.Data.Models
         public int AuthorId { get; set; }
         public Author Author { get; set; }
         
+        public string ImageName { get; set; }
+
         public ICollection<UsersBooks> UsersBooks { get; set; }
 
     }

@@ -194,7 +194,7 @@ namespace LibrarySystem.Services
 
             return user;
         }
-
+        // TODO userId, bookId, if book is returned, borrow it again
         public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);
@@ -251,36 +251,32 @@ namespace LibrarySystem.Services
             return user;
         }
 
-        public User ReturnBook(string firstName, string middleName, string lastName, string bookTitle)
+        public Book ReturnBook(string userId, Guid bookId)
         {
-            this.validations.UserValidation(firstName, middleName, lastName);
-            this.validations.BookTitleValidation(bookTitle);
-
-            var user = this.context.Users
-               .Include(u => u.Address)
-               .ThenInclude(a => a.Town)
-               .Include(u => u.UsersBooks)
-               .ThenInclude(ub => ub.Book)
-               .SingleOrDefault(u => u.FirstName == firstName
-               && u.MiddleName == middleName
-               && u.LastName == lastName);
-
-            if (user == null)
-            {
-                throw new UserNullableException("There is no such user in this Library.");
-            }
-
-            var bookToReturn = this.context.Books.FirstOrDefault(b => b.Title == bookTitle);
+            var bookToReturn = this.context.Books
+                .Include(b => b.Author)
+                .Include(b => b.Genre)
+                .SingleOrDefault(b => b.Id == bookId);
 
             if (bookToReturn == null)
             {
                 throw new AddBookNullableExeption("There is no such book in this Library");
             }
 
+            var userBook = this.context.UsersBooks
+                .SingleOrDefault(ub => ub.UserId == userId && ub.BookId == bookId);
+
+            if (userBook == null)
+            {
+                throw new UserNullableException("This user never borrowed this book.");
+            }
+
+            userBook.IsReturn = true;
             bookToReturn.BooksInStore++;
+
             this.context.SaveChanges();
 
-            return user;
+            return bookToReturn;
         }
 
         public User GetUserById(string id)
@@ -317,6 +313,7 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
+<<<<<<< HEAD
                 .SingleOrDefault(u => u.Id == id);
             if (user == null)
             {
@@ -365,6 +362,8 @@ namespace LibrarySystem.Services
             var user = this.context.Users
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
+=======
+>>>>>>> 955f0bc09e27fa9698337f713e63d2586ef15798
                 .SingleOrDefault(u => u.Id == id);
 
             if (user == null)

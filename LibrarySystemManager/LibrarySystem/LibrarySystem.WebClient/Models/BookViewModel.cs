@@ -16,8 +16,7 @@ namespace LibrarySystem.WebClient.Models
             BooksInStore = book.BooksInStore;
             Genre = book.Genre.GenreName;
             Author = book.Author.Name;
-            // TDOD add ImageUrl in db.Book model
-            ImageUrl = "Default_image.png";
+            ImageName = book.ImageName;
         }
 
         public string Id { get; set; }
@@ -40,6 +39,6 @@ namespace LibrarySystem.WebClient.Models
         [MaxLength(50)]
         public string Author { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string ImageName { get; set; }
     }
 }

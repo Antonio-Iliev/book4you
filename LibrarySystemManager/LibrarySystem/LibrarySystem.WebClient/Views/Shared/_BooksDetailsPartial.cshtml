@@ -1,30 +1,34 @@
 ﻿@model BookViewModel
 
-    <table class="table table-striped">
-        <tr>
-            <td><img src="~/images/Books/@(Model.ImageUrl ?? "Default_image.png")"alt="Book Cover" class="img-responsive" /></td>
-            <td>@Model.Title</td>
-            <td>@Model.Author</td>
-            <td>@Model.Genre</td>
-            <td>
-                <div>
-                    <a class="btn btn-info" asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
-                        details
-                    </a>
+<table class="table table-striped">
+    <tr>
+        <th><img src="~/images/Books/@(Model.ImageName ?? "Default_image.png")" alt="Book Cover" class="img-responsive" /></th>
+        <td>@Model.Title</td>
+        <td>@Model.Author</td>
+        <td>@Model.Genre</td>
+        <th>
+            <div>
+                <form asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
+                    <button type="submit" class="btn btn-info">details</button>
+                </form>
+            </div>
+        </th>
+        <td valign="middle">
+            @if (Model.BooksInStore > 0)
+            {
+
+                <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-title="@Model.Title">
+                    <button type="submit" class="btn btn-success">Add book</button>
+                </form>
+            }
+            else
+            {
+                <div style="font-size: smaller">
+
+                    <p>Not available</p>
+                    <p>in this moment</p>
                 </div>
-            </td>
-            <td valign="middle">
-                @if (Model.BooksInStore > 0)
-                {
-                    <a class="btn btn-success" asp-controller="Books" asp-action="AddBook" asp-route-title="@Model.Title">
-                        Available
-                    </a>
-                }
-                else
-                {
-                    <div>Not available</div>
-                    <div>in this moment</div>
-                }
-            </td>
-        </tr>
-    </table>
+            }
+        </td>
+    </tr>
+</table>

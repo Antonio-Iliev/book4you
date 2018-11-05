@@ -1,0 +1,71 @@
+﻿@model MyLibraryViewModel
+
+<h2>@Model.userView.FirstName's library</h2>
+<div class="clearfix">
+    <div class="col-md-4">
+        <h4>My borrowed books:</h4>
+        <table class="table table-striped">
+            <tbody>
+
+                @if (Model.borrowBooks.Count() == 0)
+                {
+                    <tr>
+                        <td>There are no borrowed books.</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                    </tr>
+                    @foreach (var userBook in Model.borrowBooks)
+                    {
+                        <tr>
+                            @if (!userBook.IsReturn)
+                            {
+                                <td>@userBook.Book.Title</td>
+                                <td>
+                                    <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@userBook.Book.Id" method="post">
+                                        <button type="submit" class="btn bg-danger">Return book</button>
+                                    </form>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+        <h4>The books I read:</h4>
+        <table class="table table-striped">
+            <tbody>
+                @if (Model.returnedBooks.Count() == 0)
+                {
+                    <tr>
+                        <td>You haven't returned a book yet.</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                    </tr>
+                    @foreach (var userBook in Model.returnedBooks)
+                    {
+                        <tr>
+                            @if (userBook.IsReturn)
+                            {
+                                <td>@userBook.Book.Title</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

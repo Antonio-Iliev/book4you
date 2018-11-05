@@ -4,14 +4,16 @@ using LibrarySystem.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrarySystemContext))]
-    partial class LibrarySystemContextModelSnapshot : ModelSnapshot
+    [Migration("20181105083520_Add_Book_imageName_UserBooks_isReturn")]
+    partial class Add_Book_imageName_UserBooks_isReturn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
