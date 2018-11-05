@@ -16,7 +16,7 @@ namespace LibrarySystem.Services
         User RemoveUser(string firstName, string middleName, string lastName);
 
         User GetUser(string firstName, string middleName, string lastName);
-        
+
         IEnumerable<User> ListUsers(bool userIsDeleted);
 
         User BorrowBook(string firstName, string middleName, string lastName, string bookTitle);
@@ -26,5 +26,10 @@ namespace LibrarySystem.Services
         User GetUserById(string id);
 
         User RemoveUserById(string id);
+
+        User BorrowBook(string id, string bookTitle);
+        User ReturnBook(string id, string bookTitle);
+        User UpdateUser(string id, string firstName, string middleName, string lastName,
+            string phone, Address address);
     }
 }

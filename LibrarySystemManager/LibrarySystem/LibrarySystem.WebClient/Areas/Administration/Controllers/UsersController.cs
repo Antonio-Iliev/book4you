@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Services;
 using LibrarySystem.WebClient.Areas.Administration.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,11 +19,15 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly IUsersServices _usersServices;
+        private readonly IAddressService _addressService;
+        private readonly ITownService _townService;
 
-        public UsersController(UserManager<User> userManager, IUsersServices usersServices)
+        public UsersController(UserManager<User> userManager, IUsersServices usersServices, IAddressService addressService, ITownService townService)
         {
             _userManager = userManager;
             _usersServices = usersServices;
+            _addressService = addressService;
+            _townService = townService;
         }
 
         public IActionResult Index()
@@ -32,7 +37,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)               
+                    .ThenInclude(ub => ub.Book)
                 .Select(u => new UserViewModel(u))
                 .ToList();
 
@@ -51,12 +56,73 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         {
             var user = this._usersServices.GetUserById(id);
             var model = new UserViewModel(user);
-            return View(model);           
+            return View(model);
         }
         public IActionResult Delete(string id)
         {
             this._usersServices.RemoveUserById(id);
             return this.RedirectToAction("ActiveUsers", "Users");
+        }
+
+        [HttpGet]
+        public IActionResult AddBook()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddBook(string id, string title)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this._usersServices.BorrowBook(id, title);
+            }
+            return this.RedirectToAction("Details", "Users", new { id });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveBook()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveBook(string id, string title)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this._usersServices.ReturnBook(id, title);
+            }
+            return this.RedirectToAction("Details", "Users", new { id });
+        }
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(UserViewModel model)
+        {
+            var town = this._townService.AddTown(model.Town);
+            var address = this._addressService.AddAddress(model.Address, town);
+
+            if (this.ModelState.IsValid)
+            {
+                this._usersServices.UpdateUser(model.Id, model.FirstName, model.MiddleName, model.LastName, model.Phone, address);
+            }
+            return this.RedirectToAction("Details", "Users", new { model.Id });
+        }
+
+        public async Task<IActionResult> MakeAdmin(string id)
+        {
+            var user = this._usersServices.GetUserById(id);
+            if (!User.IsInRole("Admin"))
+            {
+                var result=await this._userManager.AddToRoleAsync(user, "ADMIN");
+            }
+            return this.RedirectToAction("Login", "Account", new { id });
         }
     }
 }

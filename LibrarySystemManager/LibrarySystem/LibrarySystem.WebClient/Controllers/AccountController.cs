@@ -112,6 +112,7 @@ namespace LibrarySystem.WebClient.Controllers
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    PhoneNumber=model.Phone,
                     AddressId = address.Id
                 };
 

@@ -91,7 +91,7 @@ namespace LibrarySystem.Services
                     .ThenInclude(ub => ub.Book)
                 .SingleOrDefault(
                 u => u.FirstName == firstName
-              //  && u.MiddleName == middleName
+                //  && u.MiddleName == middleName
                 && u.LastName == lastName
                 );
 
@@ -295,19 +295,13 @@ namespace LibrarySystem.Services
             if (user == null)
             {
                throw new UserNullableException("There is no such user in this Library.");
-            }
-
+            }        
             return user;
         }
         public User RemoveUserById(string id)
         {
-            var user = this.context.Users
-                //.Include(u => u.Address)
-                //    .ThenInclude(a => a.Town)
-                //.Include(u => u.UsersBooks)
-                //    .ThenInclude(ub => ub.Book)
+            var user = this.context.Users               
                 .SingleOrDefault(u => u.Id == id);
-
             if (user == null)
             {
                 throw new UserNullableException("There is no such user in this Library.");
@@ -317,6 +311,110 @@ namespace LibrarySystem.Services
             this.context.SaveChanges();
 
             return user;
+        }
+        public User BorrowBook(string id, string bookTitle)
+        {          
+            this.validations.BookTitleValidation(bookTitle);
+
+            var user = this.context.Users
+                .SingleOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
+            var bookForBorrow = this.context.Books
+                .Include(a => a.Author)
+                .Include(g => g.Genre)
+                .FirstOrDefault(b => b.Title == bookTitle);
+
+            if (bookForBorrow == null)
+            {
+                throw new AddBookNullableExeption("There is no such book in this Library");
+            }
+            if (bookForBorrow.BooksInStore - 1 < 0)
+            {
+                throw new AddBookNullableExeption("There is no enough books in store");
+            }
+
+            var isBorrow = this.context.UsersBooks
+                .Select(b => b)
+                .Where(b => b.BookId == bookForBorrow.Id && b.UserId == user.Id).ToList();
+
+            if (isBorrow.Count != 0)
+            {
+                throw new AddBookNullableExeption($"User {user.FirstName} already borrow this book '{bookTitle}'.");
+            }
+
+            bookForBorrow.BooksInStore--;
+
+            var usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = bookForBorrow
+            };
+
+            user.UsersBooks.Add(usersBooks);
+            this.context.SaveChanges();
+
+            return user;
+        }
+        public User ReturnBook(string id, string bookTitle)
+        {            
+            this.validations.BookTitleValidation(bookTitle);
+
+            var user = this.context.Users
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
+
+            var bookToReturn = this.context.Books.FirstOrDefault(b => b.Title == bookTitle);
+
+            if (bookToReturn == null)
+            {
+                throw new AddBookNullableExeption("There is no such book in this Library");
+            }
+
+            bookToReturn.BooksInStore++;
+
+            var usersBooks = new UsersBooks
+            {
+                User = user,
+                Book = bookToReturn
+            };
+
+            user.UsersBooks.Remove(usersBooks);
+            this.context.SaveChanges();
+
+            return user;
+        }
+        public User UpdateUser(string id, string firstName, string middleName, string lastName,
+            string phone, Address address)
+        {
+            var currentUser = this.context.Users
+                .Include(u => u.Address)
+                    .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                    .ThenInclude(ub => ub.Book)
+                .SingleOrDefault(u => u.Id == id);
+
+            if (currentUser == null)
+            {
+                throw new UserNullableException("This user does not exist.");
+            }
+            currentUser.FirstName = firstName;
+            currentUser.MiddleName = middleName;
+            currentUser.LastName = lastName;
+            currentUser.PhoneNumber = phone;       
+            currentUser.Address=address;
+            currentUser.AddressId = address.Id;
+           
+            this.context.SaveChanges();
+            return currentUser;
         }
     }
 }
