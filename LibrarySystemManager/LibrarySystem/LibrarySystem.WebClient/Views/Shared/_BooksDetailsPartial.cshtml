@@ -2,23 +2,24 @@
 
 <table class="table table-striped">
     <tr>
-        <th><img src="~/images/Books/@(Model.ImageUrl ?? "Default_image.png")" alt="Book Cover" class="img-responsive" /></th>
-        <th>@Model.Title</th>
-        <th>@Model.Author</th>
-        <th>@Model.Genre</th>
+        <th><img src="~/images/Books/@(Model.ImageName ?? "Default_image.png")" alt="Book Cover" class="img-responsive" /></th>
+        <td>@Model.Title</td>
+        <td>@Model.Author</td>
+        <td>@Model.Genre</td>
         <th>
             <div>
-                <a class="btn btn-info" asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
-                    details
-                </a>
+                <form asp-controller="Books" asp-action="Details" asp-route-title="@Model.Title">
+                    <button type="submit" class="btn btn-info">details</button>
+                </form>
             </div>
         </th>
-        <th valign="middle">
+        <td valign="middle">
             @if (Model.BooksInStore > 0)
             {
-                <a class="btn btn-success" asp-controller="Books" asp-action="AddBook" asp-route-title="@Model.Title">
-                    Available
-                </a>
+
+                <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-title="@Model.Title">
+                    <button type="submit" class="btn btn-success">Add book</button>
+                </form>
             }
             else
             {
@@ -28,6 +29,6 @@
                     <p>in this moment</p>
                 </div>
             }
-        </th>
+        </td>
     </tr>
 </table>

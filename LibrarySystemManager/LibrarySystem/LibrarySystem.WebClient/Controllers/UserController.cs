@@ -50,5 +50,17 @@ namespace LibrarySystem.WebClient.Controllers
 
             return View(model);
         }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        public IActionResult ReturnBook(Guid bookId)
+        {
+            var userId = this._userManager.GetUserId(HttpContext.User);
+
+            var book = this._usersServices.ReturnBook(userId, bookId);
+
+            return RedirectToAction("Details");
+        }
+
     }
 }
