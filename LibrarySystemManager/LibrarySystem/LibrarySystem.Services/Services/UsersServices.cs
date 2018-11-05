@@ -194,7 +194,7 @@ namespace LibrarySystem.Services
 
             return user;
         }
-
+        // TODO userId, bookId, if book is returned, borrow it again
         public User BorrowBook(string firstName, string middleName, string lastName, string bookTitle)
         {
             this.validations.UserValidation(firstName, middleName, lastName);

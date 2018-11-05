@@ -75,7 +75,7 @@
                     @if (User.IsInRole("User") || User.IsInRole("Admin"))
                     {
                         <li><a asp-area="" asp-controller="User" asp-action="Index">Books</a></li>
-                        <li><a asp-area="" asp-controller="User" asp-action="Details">My library</a></li>
+                        <li><a asp-area="" asp-controller="User" asp-action="MyLibrary">My library</a></li>
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
