@@ -26,12 +26,11 @@ namespace LibrarySystem.ConsoleClient.Commands
                 throw new InvalidBookServiceParametersExeption("Invalid numbers of parameters");
             }
 
-            string firstName = args[0];
-            string middName = args[1];
-            string lastName = args[2];
-            string book = args[3];
+            string id = args[0];
+           
+            string book = args[1];
 
-            var user = usersServices.ReturnBook(firstName, middName, lastName, book);
+            var user = usersServices.ReturnBook(id, book);
 
             return $"User {user.FirstName} return the book {book}";
         }

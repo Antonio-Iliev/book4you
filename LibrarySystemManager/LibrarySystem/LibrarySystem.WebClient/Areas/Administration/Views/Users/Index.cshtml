@@ -15,10 +15,11 @@
                 <tr>
                     <th>Full Name</th>
                     <th>Add Book</th>
+                    <th>Remove Book</th>
                     <th>View Details</th>
                     <th>Edit</th>
                     <th>Make Admin</th>
-                    <th>Delete</th>                   
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,13 +27,26 @@
                 {
                 <tr>
                     <td>@(user.FirstName + " " + user.LastName)</td>
-                    <td><button class="btn btn-sm btn-lg active" role="button">Add Book</button></td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="AddBook" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Add Book</a>
+                    </td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="RemoveBook" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Remove Book</a>
+                    </td>
                     <td>
                         <a asp-area="administration" asp-controller="Users" asp-action="Details" asp-route-id="@user.Id"
                            class="btn btn-sm btn-lg active" role="button">Details</a>
                     </td>
-                    <td><button class="btn btn-sm btn-lg active" role="button">Edit</button></td>
-                    <td><button class="btn btn-sm btn-lg active" role="button">Make Admin</button></td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Edit</a>
+                    </td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="MakeAdmin" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Make Admin</a>
+                    </td>      
 
                     @if (!user.IsDeleted)
                     {

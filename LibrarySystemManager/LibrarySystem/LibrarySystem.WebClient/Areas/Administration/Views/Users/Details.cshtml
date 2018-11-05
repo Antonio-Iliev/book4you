@@ -5,7 +5,7 @@
 
 <h2>Details</h2>
 <div class="clearfix">
-<div class="col-md-4">
+<div class="col-md-6">
 <table class="table table-striped">
     <tbody>
         <tr>
@@ -29,12 +29,12 @@
             <td>@Model.AddOnDate</td>
         </tr>
         <tr>
-            <th>Address</th>
-            <td>@Model.Address</td>
+            <th>Phone</th>
+            <td>@Model.Phone</td>
         </tr>
         <tr>
-            <th>Town</th>
-            <td>@Model.Town</td>
+            <th>Address</th>
+            <td>@(Model.Address + ", " + Model.Town)</td>
         </tr>
         <tr>
             <th>Books</th>
@@ -44,7 +44,7 @@
                     <p> @book.Book.Title</p>
                 }
             </td>
-        </tr>
+        </tr>        
     </tbody>
 </table>
     </div>

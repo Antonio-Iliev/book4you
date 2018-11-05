@@ -3,7 +3,7 @@
 namespace LibrarySystem.Data.Models
 {
     public class UsersBooks
-    {
+    {   
         public string UserId { get; set; }
 
         public Guid BookId { get; set; }

@@ -9,6 +9,10 @@ namespace LibrarySystem.WebClient.Areas.Administration.Models
 {
     public class UserViewModel
     {
+        public UserViewModel()
+        {
+        }
+
         public UserViewModel(User user)
         {
             Id = user.Id;
@@ -18,6 +22,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Models
             Email = user.Email;
             AddOnDate = user.AddOnDate;
             IsDeleted = user.IsDeleted;
+            Phone = user.PhoneNumber;
             Address = user.Address.StreetAddress;
             Town = user.Address.Town.TownName;
             UsersBooks = user.UsersBooks;
@@ -48,7 +53,8 @@ namespace LibrarySystem.WebClient.Areas.Administration.Models
         public DateTime AddOnDate { get; set; }
 
         public bool IsDeleted { get; set; }
-      
+
+        public string Phone { get; set; }
         public string Address { get; set; }
         public string Town { get; set; }
 

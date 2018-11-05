@@ -17,6 +17,7 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
             Email = user.Email;
             AddOnDate = user.AddOnDate;
             IsDeleted = user.IsDeleted;
+            Phone = user.PhoneNumber;
             Address = user.Address.StreetAddress;
             Town = user.Address.Town.TownName;
             UsersBooks = user.UsersBooks;
@@ -48,6 +49,7 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
 
         public bool IsDeleted { get; set; }
 
+        public string Phone { get; set; }
         public string Address { get; set; }
         public string Town { get; set; }
 
