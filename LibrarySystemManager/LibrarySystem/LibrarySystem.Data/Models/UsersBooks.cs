@@ -11,5 +11,7 @@ namespace LibrarySystem.Data.Models
         public User User { get; set; }
 
         public Book Book { get; set; }
+
+        public bool IsReturn { get; set; }
     }
 }
