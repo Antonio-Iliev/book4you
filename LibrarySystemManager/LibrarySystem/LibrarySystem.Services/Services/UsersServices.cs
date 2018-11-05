@@ -313,7 +313,6 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
-<<<<<<< HEAD
                 .SingleOrDefault(u => u.Id == id);
             if (user == null)
             {
@@ -362,8 +361,6 @@ namespace LibrarySystem.Services
             var user = this.context.Users
                 .Include(u => u.UsersBooks)
                     .ThenInclude(ub => ub.Book)
-=======
->>>>>>> 955f0bc09e27fa9698337f713e63d2586ef15798
                 .SingleOrDefault(u => u.Id == id);
 
             if (user == null)
