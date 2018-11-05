@@ -86,10 +86,6 @@ namespace LibrarySystem.WebClient
                 );
 
                 routes.MapRoute(
-                    name: "default2",
-                    template: "{controller=Home}/{action=Index}/{title}");
-
-                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
