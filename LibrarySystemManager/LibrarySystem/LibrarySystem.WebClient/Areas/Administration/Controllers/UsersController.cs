@@ -115,14 +115,5 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
             return this.RedirectToAction("Details", "Users", new { model.Id });
         }
 
-        public async Task<IActionResult> MakeAdmin(string id)
-        {
-            var user = this._usersServices.GetUserById(id);
-            if (!User.IsInRole("Admin"))
-            {
-                var result=await this._userManager.AddToRoleAsync(user, "ADMIN");
-            }
-            return this.RedirectToAction("Login", "Account", new { id });
-        }
     }
 }
