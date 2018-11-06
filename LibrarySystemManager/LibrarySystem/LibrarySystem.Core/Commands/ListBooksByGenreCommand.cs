@@ -28,14 +28,14 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             string genre = args[0];
 
-            var listOfBooks = this.booksServices.ListOfBooksByGenre(genre);
+            //var listOfBooks = this.booksServices.ListOfBooksByGenre(genre);
 
             StringBuilder str = new StringBuilder();
 
-            foreach (var book in listOfBooks)
-            {
-                str.AppendLine($"Title '{book.Title}' by {book.Author.Name} - {book.Genre.GenreName}");
-            }
+            //foreach (var book in listOfBooks)
+            //{
+            //    str.AppendLine($"Title '{book.Title}' by {book.Author.Name} - {book.Genre.GenreName}");
+            //}
 
             return str.ToString().Trim();
         }

@@ -31,14 +31,14 @@ namespace LibrarySystem.WebClient.Controllers
         [Authorize(Roles = "Admin, User")]
         public IActionResult Index()
         {
-            var userId = this._userManager.GetUserId(HttpContext.User);
-
-            var user = this._usersServices.GetUserById(userId);
+            var user = GetUser();
 
             // TODO Take 5 random books.
             var booksOfTheDay = this._booksServices.ListBooks().Take(5);
 
-            var model = booksOfTheDay.Select(b => new BookViewModel(b, user));
+            var bookModel = booksOfTheDay.Select(b => new BookViewModel(b, user));
+
+            var model = new BookIndexViewModel(bookModel);
 
             return View(model);
         }
@@ -47,9 +47,9 @@ namespace LibrarySystem.WebClient.Controllers
         [HttpPost]
         public IActionResult AddBook(Guid bookId)
         {
-            var user = this._userManager.GetUserId(HttpContext.User);
+            var userId = this._userManager.GetUserId(HttpContext.User);
 
-            this._usersServices.BorrowBook(user, bookId);
+            this._usersServices.BorrowBook(userId, bookId);
 
             return RedirectToAction("Index", "Books");
         }
@@ -61,6 +61,46 @@ namespace LibrarySystem.WebClient.Controllers
             var model = new BookViewModel(book);
 
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpGet]
+        public IActionResult ListBooks(string searchBy, string parameters)
+        {
+            var books = this._booksServices.ListBooks(searchBy, parameters);
+
+            var user = GetUser();
+
+            var bookModel = books.Select(b => new BookViewModel(b, user));
+
+            var model = new BookIndexViewModel(bookModel);
+
+            model.SearchBy = searchBy;
+            model.Parameters = parameters;
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Admin, User")]
+        [HttpPost]
+        public IActionResult ListBooks(BookIndexViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction
+                ("ListBooks", new { searchBy = model.SearchBy, parameters = model.Parameters });
+        }
+
+        private User GetUser()
+        {
+            var userId = this._userManager.GetUserId(HttpContext.User);
+
+            var user = this._usersServices.GetUserById(userId);
+
+            return user;
         }
     }
 }

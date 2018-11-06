@@ -27,9 +27,9 @@ namespace LibrarySystem.ConsoleClient.Commands
 
             string bookTitle = args[0];
 
-            var book = this.booksServices.GetBookByTitle(bookTitle);
-           
-            return $"Title '{book.Title}' by {book.Author.Name} - {book.Genre.GenreName}";
+            //var book = this.booksServices.GetBookByTitle(bookTitle);
+
+            return ""; // $"Title '{book.Title}' by {book.Author.Name} - {book.Genre.GenreName}";
         }
     }
 }

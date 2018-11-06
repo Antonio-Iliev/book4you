@@ -1,0 +1,24 @@
+﻿@model BookIndexViewModel
+
+<h4>Search for @Model.Parameters by @Model.SearchBy</h4>
+<br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Cover</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>more info</th>
+            <th>booking</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var book in Model.Books)
+        {
+            <partial name="_BooksDetailsPartial" model="book" />
+        }
+
+    </tbody>
+</table>

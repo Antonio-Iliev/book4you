@@ -10,6 +10,7 @@ using LibrarySystem.Services.Abstract.Contracts;
 using System;
 using Microsoft.EntityFrameworkCore;
 using LibrarySystem.Data.Context;
+using LibrarySystem.Services.Constants.Enumeration;
 
 namespace LibrarySystem.Services
 {
@@ -71,23 +72,6 @@ namespace LibrarySystem.Services
             return book;
         }
 
-        public Book GetBookByTitle(string bookTitle)
-        {
-            this.validations.BookTitleValidation(bookTitle);
-
-            var book = this.context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Genre)
-                .FirstOrDefault(b => b.Title == bookTitle);
-
-            if (book == null)
-            {
-                throw new AddBookNullableExeption("There is no such book in this Library.");
-            }
-
-            return book;
-        }
-
         public Book GetBookById(Guid bookId)
         {
             var book = this.context.Books
@@ -103,40 +87,6 @@ namespace LibrarySystem.Services
             return book;
         }
 
-        public IEnumerable<Book> ListOfBooksByGenre(string byGenre)
-        {
-            this.validations.GenreValidation(byGenre);
-
-            var booksByGenre = this.context.Books
-                .Include(b => b.Author)
-                .Include(g => g.Genre)
-                .Where(b => b.Genre.GenreName == byGenre).ToList();
-
-            if (!booksByGenre.Any())
-            {
-                throw new AddGenreNullableExeption("There is no such genre in this Library.");
-            }
-
-            return booksByGenre;
-        }
-
-        public IEnumerable<Book> ListOfBooksByAuthor(string byAuthor)
-        {
-            this.validations.AuthorValidation(byAuthor);
-
-            var booksByAuthor = this.context.Books
-                .Include(b => b.Author)
-                .Include(g => g.Genre)
-                .Where(a => a.Author.Name == byAuthor).ToList();
-
-            if (!booksByAuthor.Any())
-            {
-                throw new AddAuthorNullableExeption("There is no such author in this Library.");
-            }
-
-            return booksByAuthor;
-        }
-
         public IEnumerable<Book> ListBooks()
         {
             IEnumerable<Book> books = this.context.Books
@@ -146,5 +96,85 @@ namespace LibrarySystem.Services
 
             return books;
         }
+
+        public IEnumerable<Book> ListBooks(string searchBy, string parameters)
+        {
+            if (!Enum.TryParse(searchBy.ToLower(), out SearchCategory key))
+            {
+                throw new InvalidBookServiceParametersExeption("Invalid input parameters");
+            }
+
+            IQueryable<Book> books = this.context.Books
+                .Include(b => b.Author)
+                .Include(g => g.Genre);
+
+            // TODO is there better way?
+            switch (key)
+            {
+                case SearchCategory.title:
+                    books.Where(b => b.Title == parameters);
+                    break;
+                case SearchCategory.author:
+                    books.Where(a => a.Author.Name == parameters);
+                    break;
+                case SearchCategory.genre:
+                    books.Where(g => g.Genre.GenreName == parameters);
+                    break;
+            }
+
+            return books.ToList();
+        }
+
+
+        //public Book GetBookByTitle(string bookTitle)
+        //{
+        //    this.validations.BookTitleValidation(bookTitle);
+
+        //    var book = this.context.Books
+        //        .Include(b => b.Author)
+        //        .Include(b => b.Genre)
+        //        .FirstOrDefault(b => b.Title == bookTitle);
+
+        //    if (book == null)
+        //    {
+        //        throw new AddBookNullableExeption("There is no such book in this Library.");
+        //    }
+
+        //    return book;
+        //}
+
+        //public IEnumerable<Book> ListOfBooksByGenre(string byGenre)
+        //{
+        //    this.validations.GenreValidation(byGenre);
+
+        //    var booksByGenre = this.context.Books
+        //        .Include(b => b.Author)
+        //        .Include(g => g.Genre)
+        //        .Where(b => b.Genre.GenreName == byGenre).ToList();
+
+        //    if (!booksByGenre.Any())
+        //    {
+        //        throw new AddGenreNullableExeption("There is no such genre in this Library.");
+        //    }
+
+        //    return booksByGenre;
+        //}
+
+        //public IEnumerable<Book> ListOfBooksByAuthor(string byAuthor)
+        //{
+        //    this.validations.AuthorValidation(byAuthor);
+
+        //    var booksByAuthor = this.context.Books
+        //        .Include(b => b.Author)
+        //        .Include(g => g.Genre)
+        //        .Where(a => a.Author.Name == byAuthor).ToList();
+
+        //    if (!booksByAuthor.Any())
+        //    {
+        //        throw new AddAuthorNullableExeption("There is no such author in this Library.");
+        //    }
+
+        //    return booksByAuthor;
+        //}
     }
 }

@@ -1,7 +1,30 @@
-﻿@model IEnumerable<BookViewModel>
+﻿@model BookIndexViewModel
 
-<h2>Today's book suggestions</h2>
-
+<h4>Today's book suggestions</h4>
+<br>
+<form asp-controller="Books" asp-action="ListBooks" method="post">
+    <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
+    <div class="radio">
+        <label class="radio-inline">
+            <input type="radio" value="all" asp-for="@Model.SearchBy" checked />
+            All books
+        </label>
+        <label class="radio-inline">
+            <input type="radio" value="title" asp-for="@Model.SearchBy" />
+            by title
+        </label>
+        <label class="radio-inline">
+            <input type="radio" value="author" asp-for="@Model.SearchBy" />
+            By author
+        </label>
+        <label class="radio-inline">
+            <input type="radio" value="genre" asp-for="@Model.SearchBy" />
+            By genre
+        </label>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+<br>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -15,7 +38,7 @@
     </thead>
     <tbody>
 
-        @foreach (var book in Model)
+        @foreach (var book in Model.Books)
         {
             <partial name="_BooksDetailsPartial" model="book" />
         }

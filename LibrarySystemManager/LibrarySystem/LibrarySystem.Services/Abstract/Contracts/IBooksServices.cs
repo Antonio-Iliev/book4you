@@ -8,14 +8,16 @@ namespace LibrarySystem.Services
     {
         Book AddBook(string title, Genre genre, Author author, string bookInStore);
 
-        Book GetBookByTitle(string bookTitel);
-
         Book GetBookById(Guid bookId);
 
-        IEnumerable<Book> ListOfBooksByGenre(string byGenre);
-
-        IEnumerable<Book> ListOfBooksByAuthor(string byAuthor);
-
         IEnumerable<Book> ListBooks();
+
+        IEnumerable<Book> ListBooks(string searchBy, string parameters);
+
+        //Book GetBookByTitle(string bookTitel);
+
+        //IEnumerable<Book> ListOfBooksByGenre(string byGenre);
+
+        //IEnumerable<Book> ListOfBooksByAuthor(string byAuthor);
     }
 }
