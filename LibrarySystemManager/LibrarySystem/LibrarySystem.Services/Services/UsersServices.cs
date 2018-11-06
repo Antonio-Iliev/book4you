@@ -348,32 +348,14 @@ namespace LibrarySystem.Services
         {            
             this.validations.BookTitleValidation(bookTitle);
 
-            var user = this.context.Users
-                .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(u => u.Id == id);
+            var user = GetUserById(id);
+            var book = user.UsersBooks.SingleOrDefault(b => b.Book.Title == bookTitle);
+            var bookId = book.BookId;
+            var bookInStore = this.context.Books.Find(bookId);
+            bookInStore.BooksInStore++;
 
-            if (user == null)
-            {
-                throw new UserNullableException("There is no such user in this Library.");
-            }
-
-            var bookToReturn = this.context.Books.FirstOrDefault(b => b.Title == bookTitle);
-
-            if (bookToReturn == null)
-            {
-                throw new AddBookNullableExeption("There is no such book in this Library");
-            }
-
-            bookToReturn.BooksInStore++;
-
-            var usersBooks = new UsersBooks
-            {
-                User = user,
-                Book = bookToReturn
-            };
-
-            user.UsersBooks.Remove(usersBooks);
+            user.UsersBooks.Remove(book);
+          
             this.context.SaveChanges();
 
             return user;
