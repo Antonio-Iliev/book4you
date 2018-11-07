@@ -18,90 +18,90 @@ namespace LibrarySystem.Services
         {
         }
 
-        public User AddUser
-            (string firstName, string middleName, string lastName,
-            string phoneNumber,
-            DateTime addedOn,
-            bool IsDeleted,
-            Address address)
-        {
-            this.validations.UserValidation(firstName, middleName, lastName);
-            this.validations.PhoneValidation(phoneNumber);
+        //public User AddUser
+        //    (string firstName, string middleName, string lastName,
+        //    string phoneNumber,
+        //    DateTime addedOn,
+        //    bool IsDeleted,
+        //    Address address)
+        //{
+        //    this.validations.UserValidation(firstName, middleName, lastName);
+        //    this.validations.PhoneValidation(phoneNumber);
 
-            var user = this.context.Users
-               .Include(u => u.Address).ThenInclude(a => a.Town)
-               .Include(u => u.UsersBooks).ThenInclude(ub => ub.Book)
-               .SingleOrDefault(u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName);
+        //    var user = this.context.Users
+        //       .Include(u => u.Address).ThenInclude(a => a.Town)
+        //       .Include(u => u.UsersBooks).ThenInclude(ub => ub.Book)
+        //       .SingleOrDefault(u => u.FirstName == firstName
+        //        && u.MiddleName == middleName
+        //        && u.LastName == lastName);
 
-            if (user != null)
-            {
-                if (user.IsDeleted == true)
-                {
-                    user.IsDeleted = false;
-                    if (user.PhoneNumber != phoneNumber)
-                    {
-                        UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
-                    }
-                    if (user.AddressId != address.Id)
-                    {
-                        UpdateUserAddress(firstName, middleName, lastName, address);
-                    }
+        //    if (user != null)
+        //    {
+        //        if (user.IsDeleted == true)
+        //        {
+        //            user.IsDeleted = false;
+        //            if (user.PhoneNumber != phoneNumber)
+        //            {
+        //                UpdateUserPhone(firstName, middleName, lastName, phoneNumber);
+        //            }
+        //            if (user.AddressId != address.Id)
+        //            {
+        //                UpdateUserAddress(firstName, middleName, lastName, address);
+        //            }
 
-                    this.context.SaveChanges();
-                }
-                else
-                {
-                    throw new UserNullableException("User already exists.");
-                }
-            }
-            else
-            {
-                var newUser = new User
-                {
-                    FirstName = firstName,
-                    MiddleName = middleName,
-                    LastName = lastName,
-                    PhoneNumber = phoneNumber,
-                    AddOnDate = DateTime.Now,
-                    IsDeleted = false,
-                    AddressId = address.Id,
-                    Address = address
-                };
+        //            this.context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            throw new UserNullableException("User already exists.");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var newUser = new User
+        //        {
+        //            FirstName = firstName,
+        //            MiddleName = middleName,
+        //            LastName = lastName,
+        //            PhoneNumber = phoneNumber,
+        //            AddOnDate = DateTime.Now,
+        //            IsDeleted = false,
+        //            AddressId = address.Id,
+        //            Address = address
+        //        };
 
-                this.context.Users.Add(newUser);
-                this.context.SaveChanges();
-                user = newUser;
-            }
+        //        this.context.Users.Add(newUser);
+        //        this.context.SaveChanges();
+        //        user = newUser;
+        //    }
 
-            user.Address = address;
+        //    user.Address = address;
 
-            return user;
-        }
+        //    return user;
+        //}
 
-        public User GetUser(string firstName, string middleName, string lastName)
-        {
-            this.validations.UserValidation(firstName, middleName, lastName);
+        //public User GetUser(string firstName, string middleName, string lastName)
+        //{
+        //    this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
-                .Include(u => u.Address)
-                    .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(
-                u => u.FirstName == firstName
-                //  && u.MiddleName == middleName
-                && u.LastName == lastName
-                );
+        //    var user = this.context.Users
+        //        .Include(u => u.Address)
+        //            .ThenInclude(a => a.Town)
+        //        .Include(u => u.UsersBooks)
+        //            .ThenInclude(ub => ub.Book)
+        //        .SingleOrDefault(
+        //        u => u.FirstName == firstName
+        //        //  && u.MiddleName == middleName
+        //        && u.LastName == lastName
+        //        );
 
-            if (user == null || user.IsDeleted)
-            {
-                throw new UserNullableException("This user does not exists.");
-            }
+        //    if (user == null || user.IsDeleted)
+        //    {
+        //        throw new UserNullableException("This user does not exists.");
+        //    }
 
-            return user;
-        }
+        //    return user;
+        //}
 
         public IEnumerable<User> ListUsers(bool userIsDeleted)
         {
@@ -120,80 +120,80 @@ namespace LibrarySystem.Services
             return user;
         }
 
-        public User RemoveUser(string firstName, string middleName, string lastName)
-        {
-            this.validations.UserValidation(firstName, middleName, lastName);
+        //public User RemoveUser(string firstName, string middleName, string lastName)
+        //{
+        //    this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
-                .Include(u => u.Address)
-                .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName);
+        //    var user = this.context.Users
+        //        .Include(u => u.Address)
+        //        .ThenInclude(a => a.Town)
+        //        .Include(u => u.UsersBooks)
+        //        .ThenInclude(ub => ub.Book)
+        //        .SingleOrDefault(u => u.FirstName == firstName
+        //        && u.MiddleName == middleName
+        //        && u.LastName == lastName);
 
-            if (user == null)
-            {
-                throw new UserNullableException("This user does not exist.");
-            }
+        //    if (user == null)
+        //    {
+        //        throw new UserNullableException("This user does not exist.");
+        //    }
 
-            user.IsDeleted = true;
-            this.context.SaveChanges();
+        //    user.IsDeleted = true;
+        //    this.context.SaveChanges();
 
-            return user;
-        }
+        //    return user;
+        //}
 
-        public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
-        {
-            this.validations.UserValidation(firstName, middleName, lastName);
+        //public User UpdateUserAddress(string firstName, string middleName, string lastName, Address address)
+        //{
+        //    this.validations.UserValidation(firstName, middleName, lastName);
 
-            var user = this.context.Users
-                .Include(u => u.Address)
-                .ThenInclude(a => a.Town)
-                .SingleOrDefault(u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName);
+        //    var user = this.context.Users
+        //        .Include(u => u.Address)
+        //        .ThenInclude(a => a.Town)
+        //        .SingleOrDefault(u => u.FirstName == firstName
+        //        && u.MiddleName == middleName
+        //        && u.LastName == lastName);
 
-            if (user == null || user.IsDeleted)
-            {
-                throw new UserNullableException("This user does not exist.");
-            }
+        //    if (user == null || user.IsDeleted)
+        //    {
+        //        throw new UserNullableException("This user does not exist.");
+        //    }
 
-            user.AddressId = address.Id;
-            user.Address = address;
-            this.context.Users.Update(user);
+        //    user.AddressId = address.Id;
+        //    user.Address = address;
+        //    this.context.Users.Update(user);
 
-            this.context.SaveChanges();
+        //    this.context.SaveChanges();
 
-            return user;
-        }
+        //    return user;
+        //}
 
-        public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
-        {
-            this.validations.UserValidation(firstName, middleName, lastName);
-            this.validations.PhoneValidation(phone);
+        //public User UpdateUserPhone(string firstName, string middleName, string lastName, string phone)
+        //{
+        //    this.validations.UserValidation(firstName, middleName, lastName);
+        //    this.validations.PhoneValidation(phone);
 
-            var user = this.context.Users
-                .Include(u => u.Address)
-                .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                .ThenInclude(ub => ub.Book)
-                .SingleOrDefault(
-                u => u.FirstName == firstName
-                && u.MiddleName == middleName
-                && u.LastName == lastName);
+        //    var user = this.context.Users
+        //        .Include(u => u.Address)
+        //        .ThenInclude(a => a.Town)
+        //        .Include(u => u.UsersBooks)
+        //        .ThenInclude(ub => ub.Book)
+        //        .SingleOrDefault(
+        //        u => u.FirstName == firstName
+        //        && u.MiddleName == middleName
+        //        && u.LastName == lastName);
 
-            if (user == null || user.IsDeleted)
-            {
-                throw new UserNullableException("This user does not exist.");
-            }
+        //    if (user == null || user.IsDeleted)
+        //    {
+        //        throw new UserNullableException("This user does not exist.");
+        //    }
 
-            user.PhoneNumber = phone.ToString();
-            this.context.SaveChanges();
+        //    user.PhoneNumber = phone.ToString();
+        //    this.context.SaveChanges();
 
-            return user;
-        }
+        //    return user;
+        //}
 
         public User BorrowBook(string userId, Guid bookId)
         {
@@ -363,7 +363,15 @@ namespace LibrarySystem.Services
             this.validations.BookTitleValidation(bookTitle);
 
             var user = GetUserById(id);
+            if (user == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
             var book = user.UsersBooks.SingleOrDefault(b => b.Book.Title == bookTitle);
+            if (book == null)
+            {
+                throw new UserNullableException("This user never borrowed this book.");
+            }
             var bookId = book.BookId;
             var bookInStore = this.context.Books.Find(bookId);
             bookInStore.BooksInStore++;

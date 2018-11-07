@@ -36,11 +36,12 @@ namespace LibrarySystem.ConsoleClient.Commands
             bool isDeleted = false;
 
             var town = townService.AddTown(args[5]);
-            var address = addressService.AddAddress(args[4], town);           
-                     
-            var user=usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
+            var address = addressService.AddAddress(args[4], town);
 
-            return $"New user {user.FirstName} was added successfully on {user.AddOnDate}.";
+            //var user=usersServices.AddUser(firstName, middleName, lastName, phone, addedOn, isDeleted, address);
+
+            return "Hi";
+               // $"New user {user.FirstName} was added successfully on {user.AddOnDate}.";
         }
     }
 }

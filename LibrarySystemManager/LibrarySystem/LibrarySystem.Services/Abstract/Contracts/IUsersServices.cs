@@ -6,16 +6,16 @@ namespace LibrarySystem.Services
 {
     public interface IUsersServices
     {
-        User AddUser(string firstName, string middleName, string lastName,
-            string phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
+        //User AddUser(string firstName, string middleName, string lastName,
+        //    string phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
 
-        User UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
+        //User UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
 
-        User UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
+        //User UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
 
-        User RemoveUser(string firstName, string middleName, string lastName);
+        //User RemoveUser(string firstName, string middleName, string lastName);
 
-        User GetUser(string firstName, string middleName, string lastName);
+        //User GetUser(string firstName, string middleName, string lastName);
 
         IEnumerable<User> ListUsers(bool userIsDeleted);
 
@@ -28,9 +28,12 @@ namespace LibrarySystem.Services
         User RemoveUserById(string id);
 
         User BorrowBook(string id, string bookTitle);
+
         User ReturnBook(string id, string bookTitle);
+
         User UpdateUser(string id, string firstName, string middleName, string lastName,
             string phone, Address address);
+
         User RestoreUserById(string id);
     }
 }

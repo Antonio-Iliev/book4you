@@ -27,9 +27,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             var lastName = args[2];
             var newPhone = args[3];
 
-            var user = this.usersServices.UpdateUserPhone(firstName, middleName, lastName, newPhone);
+            // var user = this.usersServices.UpdateUserPhone(firstName, middleName, lastName, newPhone);
 
-            return $"The phone of user: {user.FirstName} was successfully updated to {user.PhoneNumber}";
+            return "";
         }
     }
 }
