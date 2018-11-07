@@ -298,6 +298,20 @@ namespace LibrarySystem.Services
 
             return user;
         }
+        public User RestoreUserById(string id)
+        {
+            var user = this.context.Users
+                .SingleOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                throw new UserNullableException("There is no such user in this Library.");
+            }
+
+            user.IsDeleted = false;
+            this.context.SaveChanges();
+
+            return user;
+        }
         public User BorrowBook(string id, string bookTitle)
         {          
             this.validations.BookTitleValidation(bookTitle);
