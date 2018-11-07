@@ -31,5 +31,6 @@ namespace LibrarySystem.Services
         User ReturnBook(string id, string bookTitle);
         User UpdateUser(string id, string firstName, string middleName, string lastName,
             string phone, Address address);
+        User RestoreUserById(string id);
     }
 }

@@ -32,6 +32,15 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
 
         public IActionResult Index()
         {
+            var users = this._usersServices
+                   .ListUsers(false)
+                   .Select(u => new UserViewModel(u))
+                   .ToList();
+            return View(users);
+
+        }
+        public IActionResult AllUsers()
+        {
             var users = this._userManager
                 .Users
                 .Include(u => u.Address)
@@ -41,14 +50,6 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
                 .Select(u => new UserViewModel(u))
                 .ToList();
 
-            return View(users);
-        }
-        public IActionResult ActiveUsers()
-        {
-            var users = this._usersServices
-                .ListUsers(false)
-                .Select(u => new UserViewModel(u))
-                .ToList();
             return View(users);
         }
 
@@ -61,7 +62,12 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         public IActionResult Delete(string id)
         {
             this._usersServices.RemoveUserById(id);
-            return this.RedirectToAction("ActiveUsers", "Users");
+            return this.RedirectToAction("Index", "Users");
+        }
+        public IActionResult Restore(string id)
+        {
+            this._usersServices.RestoreUserById(id);
+            return this.RedirectToAction("Index", "Users");
         }
 
         [HttpGet]
@@ -99,11 +105,20 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            var user = this._usersServices.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(new UserViewModel(user));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(UserViewModel model)
+        public IActionResult Edit([Bind(include:"Id, FirstName, MiddleName, LastName, Email, Phone, Address, Town")]UserViewModel model)
         {
             var town = this._townService.AddTown(model.Town);
             var address = this._addressService.AddAddress(model.Address, town);
