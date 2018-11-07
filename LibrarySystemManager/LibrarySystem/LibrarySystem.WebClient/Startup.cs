@@ -21,29 +21,26 @@ namespace LibrarySystem.WebClient
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LibrarySystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            this.RegisterData(services);
+            this.RegisterAuthentication(services);
+            this.RegisterServices(services);
+            this.RegisterInfrastructure(services);           
+        }
 
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<LibrarySystemContext>()
-                .AddDefaultTokenProviders();
-
-
-            // Add Kendo UI services to the services container
-            services.AddKendo();
-
-            // Add application services.
-
+        private void RegisterServices(IServiceCollection services)
+        {
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IAuthorServices, AuthorServices>();
             services.AddScoped<IBooksServices, BooksServices>();
@@ -51,6 +48,36 @@ namespace LibrarySystem.WebClient
             services.AddScoped<ITownService, TownService>();
             services.AddScoped<IUsersServices, UsersServices>();
             services.AddScoped<IValidations, CommonValidations>();
+        }
+        private void RegisterData(IServiceCollection services)
+        {
+            services.AddDbContext<LibrarySystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+        }
+        private void RegisterAuthentication(IServiceCollection services)
+        {
+            services.AddIdentity<User, IdentityRole>()
+                            .AddEntityFrameworkStores<LibrarySystemContext>()
+                            .AddDefaultTokenProviders();
+
+            if (this.Environment.IsDevelopment())
+            {
+                services.Configure<IdentityOptions>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 3;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequiredUniqueChars = 0;
+
+                });
+            }
+        }
+        private void RegisterInfrastructure(IServiceCollection services)
+        {
+            services.AddKendo();
 
             // Maintain property names during serialization. See:
             // https://github.com/aspnet/Announcements/issues/194
@@ -58,12 +85,12 @@ namespace LibrarySystem.WebClient
                 .AddMvc()
                 .AddJsonOptions(options =>
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-        }
 
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (this.Environment.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -88,7 +115,6 @@ namespace LibrarySystem.WebClient
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
             });
         }
     }
