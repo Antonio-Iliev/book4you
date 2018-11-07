@@ -25,7 +25,7 @@ namespace LibrarySystem.WebClient.Controllers
         public IActionResult Index()
         {
             var books = this.bookService.ListBooks().Select(b => new BookViewModel(b));
-            return View(books);
+            return View("Index", books);
         }
 
         public IActionResult ReadGridBooks([DataSourceRequest] DataSourceRequest request)
@@ -39,14 +39,14 @@ namespace LibrarySystem.WebClient.Controllers
         {
             ViewData["Message"] = "Your application description page.";
 
-            return View();
+            return View("About");
         }
 
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
 
-            return View();
+            return View("Contact");
         }
 
         public IActionResult Error()

@@ -60,7 +60,7 @@ namespace LibrarySystem.WebClient.Controllers
 
             var model = new BookViewModel(book);
 
-            return View(model);
+            return View("Details", model);
         }
 
         [Authorize(Roles = "Admin, User")]
