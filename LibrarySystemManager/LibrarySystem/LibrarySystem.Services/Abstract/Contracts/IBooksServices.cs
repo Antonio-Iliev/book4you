@@ -13,11 +13,5 @@ namespace LibrarySystem.Services
         IEnumerable<Book> ListBooks();
 
         IEnumerable<Book> ListBooks(string searchBy, string parameters);
-
-        //Book GetBookByTitle(string bookTitel);
-
-        //IEnumerable<Book> ListOfBooksByGenre(string byGenre);
-
-        //IEnumerable<Book> ListOfBooksByAuthor(string byAuthor);
     }
 }
