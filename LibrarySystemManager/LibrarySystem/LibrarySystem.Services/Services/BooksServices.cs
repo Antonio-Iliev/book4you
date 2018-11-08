@@ -133,6 +133,12 @@ namespace LibrarySystem.Services
 
             return books;
         }
+
+        public IEnumerable<Book> ListBooks(string searchBy, string parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public Book RemoveBook(Guid id)
         {
             var book = GetBookById(id);
