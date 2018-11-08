@@ -54,6 +54,7 @@ namespace LibrarySystem.WebClient.Controllers
             return RedirectToAction("Index", "Books");
         }
 
+        [Authorize(Roles = "Admin, User")]
         public IActionResult Details(Guid bookId)
         {
             var book = _booksServices.GetBookById(bookId);

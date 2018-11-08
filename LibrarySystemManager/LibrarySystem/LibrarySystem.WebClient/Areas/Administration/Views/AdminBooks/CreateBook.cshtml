@@ -1,0 +1,51 @@
+﻿@model BookViewModel
+
+@{
+    ViewData["Title"] = "CreateBook";
+}
+
+<h2>Add New Book</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-area="administration" asp-controller="AdminBooks" asp-action="CreateBook" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genre"></label>
+                <textarea asp-for="Genre" class="form-control"></textarea>
+                <span asp-validation-for="Genre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Author"></label>
+                <textarea asp-for="Author" class="form-control"></textarea>
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BooksInStore">Books In Store</label>
+                <textarea asp-for="BooksInStore" class="form-control"></textarea>
+                <span asp-validation-for="BooksInStore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageName">Image Name</label>
+                <textarea asp-for="ImageName" class="form-control"></textarea>
+                <span asp-validation-for="ImageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

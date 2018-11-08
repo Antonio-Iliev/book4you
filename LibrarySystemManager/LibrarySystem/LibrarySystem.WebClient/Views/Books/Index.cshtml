@@ -2,46 +2,56 @@
 
 <h4>Today's book suggestions</h4>
 <br>
-<form asp-controller="Books" asp-action="ListBooks" method="post">
-    <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
-    <div class="radio">
-        <label class="radio-inline">
-            <input type="radio" value="all" asp-for="@Model.SearchBy" checked />
-            All books
-        </label>
-        <label class="radio-inline">
-            <input type="radio" value="title" asp-for="@Model.SearchBy" />
-            by title
-        </label>
-        <label class="radio-inline">
-            <input type="radio" value="author" asp-for="@Model.SearchBy" />
-            By author
-        </label>
-        <label class="radio-inline">
-            <input type="radio" value="genre" asp-for="@Model.SearchBy" />
-            By genre
-        </label>
-        <button type="submit" class="btn btn-primary">Search</button>
+<div class="clearfix">
+    <div class="col-md-9">
+        <form asp-controller="Books" asp-action="ListBooks" method="post">
+            <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
+            <div class="radio">
+                <label class="radio-inline">
+                    <input type="radio" value="all" asp-for="@Model.SearchBy" checked />
+                    All books
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" value="title" asp-for="@Model.SearchBy" />
+                    by title
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" value="author" asp-for="@Model.SearchBy" />
+                    By author
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" value="genre" asp-for="@Model.SearchBy" />
+                    By genre
+                </label>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
     </div>
-</form>
+    @if (User.IsInRole("Admin"))
+    {
+    <div class="col-md-3">
+        <a asp-area="administration" asp-controller="AdminBooks" asp-action="CreateBook"
+           class="btn btn-danger btn-lg active" role="button">Add New Book</a>
+    </div>
+    }
+</div>
 <br>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>more info</th>
-            <th>booking</th>
-        </tr>
-    </thead>
-    <tbody>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>more info</th>
+                    <th>booking</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model.Books)
+                {
+                    <partial name="_BooksDetailsPartial" model="book" />
+                }
 
-        @foreach (var book in Model.Books)
-        {
-            <partial name="_BooksDetailsPartial" model="book" />
-        }
-
-    </tbody>
-</table>
+            </tbody>
+        </table>

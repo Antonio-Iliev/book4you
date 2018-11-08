@@ -124,5 +124,13 @@ namespace LibrarySystem.Services
 
             return books.ToList();
         }
+        public Book RemoveBook(Guid id)
+        {
+            var book = GetBookById(id);
+            book.BooksInStore = 0;
+            this.context.SaveChanges();
+
+            return book;
+        }
     }
 }

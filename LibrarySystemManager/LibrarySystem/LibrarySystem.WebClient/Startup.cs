@@ -36,7 +36,7 @@ namespace LibrarySystem.WebClient
             this.RegisterData(services);
             this.RegisterAuthentication(services);
             this.RegisterServices(services);
-            this.RegisterInfrastructure(services);           
+            this.RegisterInfrastructure(services);        
         }
 
         private void RegisterServices(IServiceCollection services)
