@@ -5,6 +5,7 @@ using LibrarySystem.Data.Context;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services.Abstract;
 using LibrarySystem.Services.Abstract.Contracts;
+using LibrarySystem.Services.Constants.Enumeration;
 using LibrarySystem.Services.Exceptions.BookServices;
 using LibrarySystem.Services.Exceptions.UserServices;
 using Microsoft.EntityFrameworkCore;
@@ -103,22 +104,43 @@ namespace LibrarySystem.Services
         //    return user;
         //}
 
-        public IEnumerable<User> ListUsers(bool userIsDeleted)
+        public IEnumerable<User> ListUsers(string listUsersBy, int pageSize, int page)
         {
-            var user = this.context.Users
-                  .Include(u => u.Address)
-                  .ThenInclude(a => a.Town)
-                  .Include(u => u.UsersBooks)
-                  .ThenInclude(ub => ub.Book)
-                  .Where(u => u.IsDeleted == userIsDeleted).ToList();
+            if (!Enum.TryParse(listUsersBy.ToLower(), out ListUsersCategory filter))
+            {
+                throw new InvalidUserServiceParametersExeption("Invalid input parameters");
+            }
 
-            if (user.Count == 0)
+            IQueryable<User> user = this.context.Users
+                .Include(u => u.Address)
+                .ThenInclude(a => a.Town)
+                .Include(u => u.UsersBooks)
+                .ThenInclude(ub => ub.Book);
+
+            switch (filter)
+            {
+                case ListUsersCategory.deleted:
+                    user = user.Where(u => u.IsDeleted == true);
+                    break;
+                case ListUsersCategory.active:
+                    user = user.Where(u => u.IsDeleted == false);
+                    break;
+            }
+
+            if (user.Count() == 0)
             {
                 throw new UserNullableException("No users were found.");
             }
 
+            user = user
+                .OrderBy(u => u.FirstName)
+                .ThenBy(u => u.LastName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
             return user;
         }
+
 
         //public User RemoveUser(string firstName, string middleName, string lastName)
         //{
@@ -271,7 +293,7 @@ namespace LibrarySystem.Services
 
         public User GetUserById(string id)
         {
-            var user=this.context.Users
+            var user = this.context.Users
                 .Include(u => u.Address)
                     .ThenInclude(a => a.Town)
                 .Include(u => u.UsersBooks)
@@ -280,13 +302,13 @@ namespace LibrarySystem.Services
 
             if (user == null)
             {
-               throw new UserNullableException("There is no such user in this Library.");
-            }        
+                throw new UserNullableException("There is no such user in this Library.");
+            }
             return user;
         }
         public User RemoveUserById(string id)
         {
-            var user = this.context.Users               
+            var user = this.context.Users
                 .SingleOrDefault(u => u.Id == id);
             if (user == null)
             {
@@ -312,8 +334,9 @@ namespace LibrarySystem.Services
 
             return user;
         }
+
         public User BorrowBook(string id, string bookTitle)
-        {          
+        {
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
@@ -358,8 +381,9 @@ namespace LibrarySystem.Services
 
             return user;
         }
+
         public User ReturnBook(string id, string bookTitle)
-        {            
+        {
             this.validations.BookTitleValidation(bookTitle);
 
             var user = GetUserById(id);
@@ -377,11 +401,12 @@ namespace LibrarySystem.Services
             bookInStore.BooksInStore++;
 
             user.UsersBooks.Remove(book);
-          
+
             this.context.SaveChanges();
 
             return user;
         }
+
         public User UpdateUser(string id, string firstName, string middleName, string lastName,
             string phone, Address address)
         {
@@ -399,10 +424,10 @@ namespace LibrarySystem.Services
             currentUser.FirstName = firstName;
             currentUser.MiddleName = middleName;
             currentUser.LastName = lastName;
-            currentUser.PhoneNumber = phone;       
-            currentUser.Address=address;
+            currentUser.PhoneNumber = phone;
+            currentUser.Address = address;
             currentUser.AddressId = address.Id;
-           
+
             this.context.SaveChanges();
             return currentUser;
         }

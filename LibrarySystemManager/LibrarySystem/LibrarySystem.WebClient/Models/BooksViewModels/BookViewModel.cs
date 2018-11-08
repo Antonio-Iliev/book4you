@@ -9,6 +9,11 @@ namespace LibrarySystem.WebClient.Models.BooksViewModels
 {
     public class BookViewModel
     {
+        public BookViewModel()
+        {
+        }
+  
+
         public BookViewModel(Book book)
         {
             this.Id = book.Id.ToString();

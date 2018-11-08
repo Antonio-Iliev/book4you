@@ -1,30 +1,44 @@
 ﻿@model BookIndexViewModel
 
-<h4>Today's book suggestions</h4>
-<br>
+<h3>Today's book suggestions</h3>
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="text-right">
+        <a asp-area="administration" asp-controller="AdminBooks" asp-action="CreateBook"
+           class="btn btn-info btn-lg active" role="button">Add New Book</a>
+    </div>
+    <br/>
+}
+
 <form asp-controller="Books" asp-action="ListBooks" method="post">
     <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
     <div class="radio">
         <label class="radio-inline">
-            <input type="radio" value="all" asp-for="@Model.SearchBy" checked />
+            <input type="radio" value="all" asp-for="SearchBy" checked />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             All books
         </label>
         <label class="radio-inline">
             <input type="radio" value="title" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             by title
         </label>
         <label class="radio-inline">
             <input type="radio" value="author" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             By author
         </label>
         <label class="radio-inline">
             <input type="radio" value="genre" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             By genre
         </label>
         <button type="submit" class="btn btn-primary">Search</button>
     </div>
 </form>
 <br>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -32,12 +46,11 @@
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
-            <th>more info</th>
-            <th>booking</th>
+            <th>More info</th>
+            <th>Booking</th>
         </tr>
     </thead>
     <tbody>
-
         @foreach (var book in Model.Books)
         {
             <partial name="_BooksDetailsPartial" model="book" />

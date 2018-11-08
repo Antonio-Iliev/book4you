@@ -21,53 +21,24 @@ namespace LibrarySystem.Services
         {
         }
 
-        public Book AddBook(string title, Genre genre, Author author, string bookInStore)
+        public Book AddBook(Book newBook)
         {
-            this.validations.BookTitleValidation(title);
-
-            int numberOfBook;
-
-            try
-            {
-                numberOfBook = int.Parse(bookInStore);
-            }
-            catch (FormatException)
-            {
-                throw new InvalidBookServiceParametersExeption
-                    ("This is not a number. You need a count of books");
-            }
-
-            if (numberOfBook < 1)
-            {
-                throw new InvalidBookServiceParametersExeption
-                    ("The count of books cannot be negative number");
-            }
-            this.validations.BookInStoreValidation(numberOfBook);
-
             var book = this.context.Books
-                .FirstOrDefault(b => b.Title == title);
+                .SingleOrDefault(b =>
+                b.Title == newBook.Title 
+                && b.AuthorId == newBook.AuthorId);
 
             if (book == null)
             {
-                book = new Book
-                {
-                    Title = title,
-                    GenreId = genre.Id,
-                    AuthorId = author.Id,
-                    BooksInStore = numberOfBook
-                };
-
-                this.context.Books.Add(book);
+                this.context.Books.Add(newBook);
+                this.context.SaveChanges();
             }
             else
             {
-                book.BooksInStore += numberOfBook;
+                // TODO if any books left, should return number to user
+                int newQuantity = book.BooksInStore + newBook.BooksInStore;
+                book.BooksInStore = newQuantity == 20 ? 20 : newQuantity;
             }
-
-            this.context.SaveChanges();
-
-            book.Author = author;
-            book.Genre = genre;
 
             return book;
         }
@@ -87,6 +58,7 @@ namespace LibrarySystem.Services
             return book;
         }
 
+        // (int page = 1) for paging
         public IEnumerable<Book> ListBooks()
         {
             IEnumerable<Book> books = this.context.Books
@@ -97,7 +69,8 @@ namespace LibrarySystem.Services
             return books;
         }
 
-        public IEnumerable<Book> ListBooks(string searchBy, string parameters)
+        public IEnumerable<Book> ListBooks
+            (string searchBy, string parameters, int pageSize, int page)
         {
             if (!Enum.TryParse(searchBy.ToLower(), out SearchCategory key))
             {
@@ -122,7 +95,28 @@ namespace LibrarySystem.Services
                     break;
             }
 
-            return books.ToList();
+            int pageCount = (int)Math.Ceiling((double)books.Count() / pageSize);
+
+            books = books
+                .OrderBy(b => b.Title)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
+            return books;
+        }
+
+        public IEnumerable<Book> ListBooks(string searchBy, string parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Book RemoveBook(Guid id)
+        {
+            var book = GetBookById(id);
+            book.BooksInStore = 0;
+            this.context.SaveChanges();
+
+            return book;
         }
     }
 }

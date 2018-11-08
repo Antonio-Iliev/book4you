@@ -9,16 +9,50 @@
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
-            <th>more info</th>
-            <th>booking</th>
+            <th>More info</th>
+            <th>Booking</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach (var book in Model.Books)
         {
-            <partial name="_BooksDetailsPartial" model="book" />
+            <partial name="_BooksDetailsPartial" model="book" />            
         }
 
     </tbody>
 </table>
+
+<div>
+    <table class="table-condensed">
+        <tr>
+            <td>
+                @if (Model.CurrentPage > 1)
+                {
+                    <form asp-controller="Books" asp-action="ListBooks" method="post">
+                        <input type="hidden" value="@Model.Parameters" asp-for="Parameters">
+                        <input type="hidden" value="@Model.SearchBy" asp-for="SearchBy">
+                        <input type="hidden" value="@Model.PreviusPage" asp-for="CurrentPage">
+                        <button type="submit" class="page-link">Previous Page</button>
+                    </form>
+                }
+                else
+                {
+                    <div class="page-link disabled">Previous Page</div>
+                }
+            </td>
+            <td>
+                <form asp-controller="Books" asp-action="ListBooks" method="post">
+                    <input type="hidden" value="@Model.Parameters" asp-for="Parameters">
+                    <input type="hidden" value="@Model.SearchBy" asp-for="SearchBy">
+                    <input type="hidden" value="@Model.NextPage" asp-for="CurrentPage">
+                    <button type="submit" class="page-link">Next Page</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <a asp-controller="Books" asp-action="Index">Back to Books</a>
+</div>
