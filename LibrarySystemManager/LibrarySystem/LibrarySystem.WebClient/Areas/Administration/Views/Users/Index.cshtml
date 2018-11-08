@@ -55,7 +55,7 @@
 @{
     int previusPage = Model.CurrentPage - 1;
     int NextPage = Model.CurrentPage + 1;
-}}
+}
 
 <nav aria-label="...">
     <ul class="pagination">
@@ -70,3 +70,13 @@
         </li>
     </ul>
 </nav>
+
+<h2>Available Books</h2>
+<div>
+    <div class="clearfix">
+        <div class="col-md-4">
+            <a asp-area="" asp-controller="Books" asp-action="Index"
+               class="btn btn-block btn-lg active" role="button">Books</a>
+        </div>
+    </div>
+</div>
