@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LibrarySystem.WebClient.Models.BooksViewModels
@@ -28,6 +29,8 @@ namespace LibrarySystem.WebClient.Models.BooksViewModels
 
         public string SearchBy { get; set; }
 
+        [Display(Name = "Search")]
+        [StringLength(50, ErrorMessage = "The {0} must be at max {1} characters long.")]
         public string Parameters { get; set; }
 
         public int PreviusPage { get; set; }

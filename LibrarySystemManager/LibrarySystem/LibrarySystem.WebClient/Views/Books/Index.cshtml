@@ -3,7 +3,10 @@
 <h4>Today's book suggestions</h4>
 <br>
 <form asp-controller="Books" asp-action="ListBooks" method="post">
-    <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
+    <div class="form-group">
+        <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
+        <span asp-validation-for="Parameters" class="text-danger"></span>
+    </div>
     <div class="radio">
         <label class="radio-inline">
             <input type="radio" value="all" asp-for="SearchBy" checked />
@@ -49,3 +52,7 @@
 
     </tbody>
 </table>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
