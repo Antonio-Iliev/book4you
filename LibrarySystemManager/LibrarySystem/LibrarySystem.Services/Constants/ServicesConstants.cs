@@ -23,7 +23,7 @@
         internal const int MinAddressNameLength = 1;
         internal const int MaxAddressNameLength = 50;
         internal const int MinBookInStore = 1;
-        internal const int MaxBookInStore = 150;
+        internal const int MaxBookInStore = 20;
         internal const int MinPhoneLength = 5;
         internal const int MaxPhoneLength = 20;
     }

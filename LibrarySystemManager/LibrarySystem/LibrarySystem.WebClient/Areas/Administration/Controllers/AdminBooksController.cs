@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Services;
 using LibrarySystem.WebClient.Areas.Administration.Models;
@@ -31,7 +32,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
             return View();
         }
 
-        [HttpGet] 
+        [HttpGet]
         public IActionResult CreateBook()
         {
             return this.View();
@@ -47,7 +48,10 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
             var newGenre = this._genreServices.AddGenre(model.Genre);
             var newAuthor = this._authorServices.AddAuthor(model.Author);
             var bookQnty = model.BooksInStore;
-            var newBook = this._booksService.AddBook(model.Title, newGenre, newAuthor, model.BooksInStore.ToString());
+
+            var bookDbModel = new Book(model.Title, bookQnty, newGenre, newAuthor, model.ImageName);
+
+            var newBook = this._booksService.AddBook(bookDbModel);
 
             //TO DO
             //return RedirectToAction("Details", "Books", new { id = newBook.Id });
