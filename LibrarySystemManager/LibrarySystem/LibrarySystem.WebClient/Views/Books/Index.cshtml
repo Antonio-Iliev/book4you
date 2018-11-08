@@ -7,19 +7,22 @@
     <div class="radio">
         <label class="radio-inline">
             <input type="radio" value="all" asp-for="SearchBy" checked />
-            <input type="number" value="1" asp-for="CurrentPage" checked hidden />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             All books
         </label>
         <label class="radio-inline">
             <input type="radio" value="title" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             by title
         </label>
         <label class="radio-inline">
             <input type="radio" value="author" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             By author
         </label>
         <label class="radio-inline">
             <input type="radio" value="genre" asp-for="@Model.SearchBy" />
+            <input type="number" value="1" asp-for="CurrentPage" hidden />
             By genre
         </label>
         <button type="submit" class="btn btn-primary">Search</button>

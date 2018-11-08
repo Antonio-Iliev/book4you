@@ -2,6 +2,6 @@
 {
     public class WebConstants
     {
-        public const int numOfElementInPage = 10;
+        public const int numOfElementInPage = 5;
     }
 }
