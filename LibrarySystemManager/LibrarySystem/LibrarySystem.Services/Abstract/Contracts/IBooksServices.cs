@@ -12,6 +12,11 @@ namespace LibrarySystem.Services
 
         IEnumerable<Book> ListBooks();
 
+        IEnumerable<Book> ListBooks(string searchBy, string parameters);
+
+        Book RemoveBook(Guid id);
+
         IEnumerable<Book> ListBooks(string searchBy, string parameters, int pageSize, int page = 1);
+
     }
 }
