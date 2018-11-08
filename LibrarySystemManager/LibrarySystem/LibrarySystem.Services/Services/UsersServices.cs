@@ -110,7 +110,10 @@ namespace LibrarySystem.Services
                   .ThenInclude(a => a.Town)
                   .Include(u => u.UsersBooks)
                   .ThenInclude(ub => ub.Book)
-                  .Where(u => u.IsDeleted == userIsDeleted).ToList();
+                  .Where(u => u.IsDeleted == userIsDeleted)
+                  .OrderBy(u => u.FirstName)
+                  .ThenBy(u => u.LastName)
+                  .ToList();
 
             if (user.Count == 0)
             {
@@ -312,8 +315,9 @@ namespace LibrarySystem.Services
 
             return user;
         }
+
         public User BorrowBook(string id, string bookTitle)
-        {          
+        {
             this.validations.BookTitleValidation(bookTitle);
 
             var user = this.context.Users
@@ -358,8 +362,9 @@ namespace LibrarySystem.Services
 
             return user;
         }
+
         public User ReturnBook(string id, string bookTitle)
-        {            
+        {
             this.validations.BookTitleValidation(bookTitle);
 
             var user = GetUserById(id);
@@ -377,11 +382,12 @@ namespace LibrarySystem.Services
             bookInStore.BooksInStore++;
 
             user.UsersBooks.Remove(book);
-          
+
             this.context.SaveChanges();
 
             return user;
         }
+
         public User UpdateUser(string id, string firstName, string middleName, string lastName,
             string phone, Address address)
         {

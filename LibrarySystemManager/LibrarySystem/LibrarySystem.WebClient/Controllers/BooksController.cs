@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
-using LibrarySystem.WebClient.Models;
 using LibrarySystem.WebClient.Models.BooksViewModels;
+using LibrarySystem.WebClient.WebClientGlobalConstants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +12,8 @@ namespace LibrarySystem.WebClient.Controllers
 {
     public class BooksController : Controller
     {
+       
+
         private readonly IBooksServices _booksServices;
         private readonly UserManager<User> _userManager;
         private readonly IUsersServices _usersServices;
@@ -66,18 +66,26 @@ namespace LibrarySystem.WebClient.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpGet]
-        public IActionResult ListBooks(string searchBy, string parameters)
+        public IActionResult ListBooks(string searchBy, string parameters, int page)
         {
-            var books = this._booksServices.ListBooks(searchBy, parameters);
+            var books = this._booksServices
+                .ListBooks(searchBy, parameters, WebConstants.numOfElementInPage, page);
+
+            if (books.Count() == 0)
+            {
+                return RedirectToAction("ListBooks", new
+                {
+                    searchBy,
+                    parameters,
+                    page = page - 1
+                });
+            }
 
             var user = GetUser();
 
             var bookModel = books.Select(b => new BookViewModel(b, user));
 
-            var model = new BookIndexViewModel(bookModel);
-
-            model.SearchBy = searchBy;
-            model.Parameters = parameters;
+            var model = new BookIndexViewModel(bookModel, searchBy, parameters, page);
 
             return View(model);
         }
@@ -91,8 +99,12 @@ namespace LibrarySystem.WebClient.Controllers
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction
-                ("ListBooks", new { searchBy = model.SearchBy, parameters = model.Parameters });
+            return RedirectToAction("ListBooks", new
+            {
+                searchBy = model.SearchBy,
+                parameters = model.Parameters,
+                page = model.CurrentPage
+            });
         }
 
         private User GetUser()

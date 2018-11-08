@@ -87,6 +87,7 @@ namespace LibrarySystem.Services
             return book;
         }
 
+        // (int page = 1) for paging, return ServiceModel
         public IEnumerable<Book> ListBooks()
         {
             IEnumerable<Book> books = this.context.Books
@@ -97,7 +98,8 @@ namespace LibrarySystem.Services
             return books;
         }
 
-        public IEnumerable<Book> ListBooks(string searchBy, string parameters)
+        public IEnumerable<Book> ListBooks
+            (string searchBy, string parameters, int pageSize, int page)
         {
             if (!Enum.TryParse(searchBy.ToLower(), out SearchCategory key))
             {
@@ -122,7 +124,14 @@ namespace LibrarySystem.Services
                     break;
             }
 
-            return books.ToList();
+            int pageCount = (int)Math.Ceiling((double)books.Count() / pageSize);
+
+            books = books
+                .OrderBy(b => b.Title)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);
+
+            return books;
         }
         public Book RemoveBook(Guid id)
         {
