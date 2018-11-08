@@ -41,22 +41,22 @@ namespace LibrarySystem.ConsoleClient.Commands
                     throw new InvalidUserServiceParametersExeption("Invalid parameter. It should be 'active' or 'deleted'");
             }
 
-            var users = this.usersServices.ListUsers(userIsDeleted);
+          //  var users = this.usersServices.ListUsers(userIsDeleted);
 
             var result = new StringBuilder();
 
-            foreach (var user in users)
-            {
-                var books = user.UsersBooks.Select(x => x.Book.Title).ToList();
+            //foreach (var user in users)
+            //{
+            //    var books = user.UsersBooks.Select(x => x.Book.Title).ToList();
 
-                result.AppendLine($"Name: {user.FirstName} Phone: {user.PhoneNumber}");
-                result.AppendLine($"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName}");
-                if (books.Count > 0)
-                {
-                    result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, books)}");
-                }
-                result.AppendLine("-------");
-            }
+            //    result.AppendLine($"Name: {user.FirstName} Phone: {user.PhoneNumber}");
+            //    result.AppendLine($"Added On: {user.AddOnDate} Address: {user.Address.StreetAddress}, {user.Address.Town.TownName}");
+            //    if (books.Count > 0)
+            //    {
+            //        result.AppendLine($"Read Books:{Environment.NewLine}{string.Join(Environment.NewLine, books)}");
+            //    }
+            //    result.AppendLine("-------");
+            //}
             return result.ToString().Trim();
         }
     }
