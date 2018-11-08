@@ -9,15 +9,15 @@
             <th>Title</th>
             <th>Author</th>
             <th>Genre</th>
-            <th>more info</th>
-            <th>booking</th>
+            <th>More info</th>
+            <th>Booking</th>
         </tr>
     </thead>
     <tbody>
 
         @foreach (var book in Model.Books)
         {
-            <partial name="_BooksDetailsPartial" model="book" />
+            <partial name="_BooksDetailsPartial" model="book" />            
         }
 
     </tbody>
