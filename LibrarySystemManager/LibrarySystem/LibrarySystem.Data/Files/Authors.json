@@ -1,18 +1,1 @@
-[
-  {
-    "Id" : "1",
-    "Name": "George R. R. Martin"
-  },
-  {
-    "Id": "2",
-    "Name": "Jorge Bucay"
-  },
-  {
-    "Id": "3",
-    "Name": "Paulo Coelho"
-  },
-  {
-    "Id": "4",
-    "Name": "Dr Radeva"
-  }
-]
+[{"Id":1,"Name":"Stephen King","Books":null},{"Id":2,"Name":"Stephen King ","Books":null},{"Id":3,"Name":"Scott Snyder ","Books":null},{"Id":4,"Name":"Scott Snyder","Books":null},{"Id":5,"Name":"George R R Martin","Books":null},{"Id":6,"Name":"edited  George R R Martin ","Books":null},{"Id":7,"Name":"Paulo Coelho","Books":null},{"Id":8,"Name":"JK Rowling","Books":null},{"Id":9,"Name":"Orson Scott Card","Books":null},{"Id":10,"Name":"Orson Scott Card ","Books":null},{"Id":11,"Name":"Suzanne Collins","Books":null},{"Id":12,"Name":"Stephenie Meyer","Books":null},{"Id":13,"Name":"Stephenie Meyer ","Books":null},{"Id":14,"Name":"John Green","Books":null},{"Id":15,"Name":"John Green ","Books":null},{"Id":16,"Name":"Arthur Golden","Books":null},{"Id":17,"Name":"Yann Martel","Books":null},{"Id":18,"Name":"Charles Dickens","Books":null},{"Id":19,"Name":"Dan Brown","Books":null},{"Id":20,"Name":"Victor Hugo","Books":null},{"Id":21,"Name":"Veronica Roth","Books":null},{"Id":22,"Name":"JRR Tolkien","Books":null},{"Id":23,"Name":"Arthur Hertzberg","Books":null},{"Id":24,"Name":"Arthur Krystal","Books":null},{"Id":25,"Name":"Arthur B Laffer","Books":null},{"Id":26,"Name":"Arthur Phillips","Books":null},{"Id":27,"Name":"Arthur Flowers","Books":null},{"Id":28,"Name":"Elizabeth Arthur","Books":null},{"Id":29,"Name":"Arthur Kempton","Books":null},{"Id":30,"Name":"Keri Arthur","Books":null},{"Id":31,"Name":"Arthur Gelb","Books":null},{"Id":32,"Name":"Arthur Miller","Books":null},{"Id":33,"Name":"Arthur Schnitzler","Books":null},{"Id":34,"Name":"Arthur Hailey","Books":null},{"Id":35,"Name":"Arthur Lubow","Books":null},{"Id":36,"Name":"Arthur Bradford","Books":null},{"Id":37,"Name":"Arthur R. Block","Books":null},{"Id":38,"Name":"Arthur Herman","Books":null},{"Id":39,"Name":"John Richardson","Books":null},{"Id":40,"Name":"Karen Tack ","Books":null},{"Id":41,"Name":"Anne Richardson Roiphe","Books":null},{"Id":42,"Name":"Lady Gaga ","Books":null},{"Id":43,"Name":"Linda Richardson","Books":null},{"Id":44,"Name":"Joel Richardson","Books":null},{"Id":45,"Name":"Joan Richardson","Books":null},{"Id":46,"Name":"Louise Richardson","Books":null}]

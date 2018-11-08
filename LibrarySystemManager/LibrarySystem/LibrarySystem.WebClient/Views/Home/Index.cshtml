@@ -20,6 +20,10 @@
     })
     .ColumnMenu()
     .Sortable()
+    .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
     .Filterable(c =>
     {
         c.Mode(GridFilterMode.Menu);
@@ -28,9 +32,10 @@
     {
         source.Ajax().Read(c =>
         {
-            c.Action("ReadGridBooks", "Home");
-
+            c.Action("ReadGridBooks", "Home");            
         });
+        
+        
     })
 
     )

@@ -37,14 +37,19 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var authorsNames = ReadLinesTextFile("AuthorNames.txt");
+            GetApiData(authorsNames);
+
             var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
             var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
-            var authorsNames = ReadLinesTextFile("AuthorNames.json");
+            var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
+            var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
 
             modelBuilder.Entity<Town>().HasData(towns);
             modelBuilder.Entity<Genre>().HasData(genres);
+            modelBuilder.Entity<Author>().HasData(authors);
+            modelBuilder.Entity<Book>().HasData(books);
 
-            SeedApiData(modelBuilder, authorsNames);
             SeedAdminUser(modelBuilder);
 
             modelBuilder.Entity<UsersBooks>()
@@ -92,57 +97,56 @@ namespace LibrarySystem.Data.Context
             });
         }
 
-        private void SeedAuthors(ModelBuilder modelBuilder, Author[] authors)
-        {
-            modelBuilder.Entity<Author>().HasData(authors);
-        }
 
-        private void SeedBooks(ModelBuilder modelBuilder, Book[] books)
+        private void GetApiData(string[] authorsNames)
         {
-            modelBuilder.Entity<Book>().HasData(books);
-        }
-
-        private void SeedApiData(ModelBuilder modelBuilder, string[] authorsNames)
-        {
-            var books = new List<Book>();
-            var authors = new List<Author>();
+            List<Author> authors = JsonConvert.DeserializeObject<List<Author>>(ReadJsonFile("Authors.json"));
+            List<Book> books = JsonConvert.DeserializeObject<List<Book>>(ReadJsonFile("Books.json"));
 
             var client = new WebClient();
             foreach (var authorName in authorsNames)
             {
-                HashSet<int> ids = new HashSet<int>();
-                int authorId = 0;
                 string name = authorName.Replace(" ", "%20");
                 string response = client.DownloadString("https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=f8e19acc6ac940daa7ae7456e943da68&author=" + name);
 
                 JObject json = JObject.Parse(response);
                 foreach (var item in json["results"])
                 {
-                    Author author = new Author();
-                    author.Name = item["author"].ToString();
-                    author.Id = authorId;
+                    string itemAuthorName = item["author"]
+                        .ToString()
+                        .Split(new string[] { ",", "and" }, StringSplitOptions.RemoveEmptyEntries).First();
+                    Author author = authors.FirstOrDefault(a => a.Name.ToLower() == itemAuthorName.ToLower());
+
+                    if (author == null)
+                    {
+                        author = new Author()
+                        {
+                            Name = itemAuthorName,
+                            Id = authors.Count + 1
+                        };
+                          
+                        authors.Add(author);
+                    }
 
                     Book book = new Book();
-                    book.Id = Guid.NewGuid();
                     book.Title = item["title"].ToString().Length < 500 ? item["title"].ToString() : item["title"].ToString().Substring(0, 50);
                     book.Description = item["description"].ToString().Length < 500 ? item["description"].ToString() : string.Empty;
                     book.BooksInStore = 10;
                     book.GenreId = new Random().Next(1, 10);
                     book.AuthorId = author.Id;
-
-                    if (!ids.Contains(author.Id))
+                    if (books.Count(b => b.Title.ToLower() == book.Title.ToLower()) == 0)
                     {
-                        authors.Add(author);
-                        ids.Add(author.Id);
+                        book.Id = Guid.NewGuid();
+                        books.Add(book);
                     }
-
-                    books.Add(book);
-                    authorId++;
                 }
             }
 
-            SeedAuthors(modelBuilder, authors.ToArray());
-            SeedBooks(modelBuilder, books.ToArray());
+            string jsonAuthors = JsonConvert.SerializeObject(authors);
+            string jsonBooks = JsonConvert.SerializeObject(books);
+
+            WriteJsonFile("Authors.json", jsonAuthors);
+            WriteJsonFile("Books.json", jsonBooks);
         }
 
 
@@ -155,6 +159,18 @@ namespace LibrarySystem.Data.Context
             else
             {
                 return File.ReadAllText("../../../../LibrarySystem.Data/Files/" + fileName);
+            }
+        }
+
+        private void WriteJsonFile(string fileName, string data)
+        {
+            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            {
+                File.WriteAllText("../LibrarySystem.Data/Files/" + fileName, data);
+            }
+            else
+            {
+                File.WriteAllText("../../../../LibrarySystem.Data/Files/" + fileName, data);
             }
         }
 
