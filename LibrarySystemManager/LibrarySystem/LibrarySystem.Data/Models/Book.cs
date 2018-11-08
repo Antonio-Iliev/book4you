@@ -25,8 +25,11 @@ namespace LibrarySystem.Data.Models
 
         [Required]
         [MinLength(2)]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Title { get; set; }
+
+        [MaxLength(500)]
+        public string Description { get; set; }
 
         [Range(0, 20)]
         public int BooksInStore { get; set; }
