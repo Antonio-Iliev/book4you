@@ -41,9 +41,9 @@ namespace LibrarySystem.ConsoleClient.Commands
             var newGenre = genreServices.AddGenre(genre);
             var newAuthor = authorServices.AddAuthor(author);
 
-            var addedBook = booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
+            //var addedBook = booksServices.AddBook(title, newGenre, newAuthor, bookInStore);
 
-            return $"New book {addedBook.Title} was added.";
+            return ""; /* $"New book {addedBook.Title} was added.";*/
         }
     }
 }
