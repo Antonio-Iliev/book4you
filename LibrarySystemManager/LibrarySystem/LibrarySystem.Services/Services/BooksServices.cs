@@ -87,7 +87,7 @@ namespace LibrarySystem.Services
             return book;
         }
 
-        // (int page = 1) for paging, return ServiceModel
+        // (int page = 1) for paging
         public IEnumerable<Book> ListBooks()
         {
             IEnumerable<Book> books = this.context.Books

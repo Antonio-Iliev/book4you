@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UserViewModel>
+﻿@model ListUsersModel
 
 @{
     ViewData["Title"] = "AllUsers";
@@ -17,44 +17,65 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model)
+            @foreach (var user in Model.Users)
             {
-            <tr>
-                <td>@(user.FirstName + " " + user.LastName)</td>
-                <td>
-                    <a asp-area="administration" asp-controller="Users" asp-action="Details" asp-route-id="@user.Id"
-                       class="btn btn-sm btn-lg active" role="button">Details</a>
-                </td>
+                <tr>
+                    <td>@(user.FirstName + " " + user.LastName)</td>
+                    <td>
+                        <a asp-area="administration" asp-controller="Users" asp-action="Details" asp-route-id="@user.Id"
+                           class="btn btn-sm btn-lg active" role="button">Details</a>
+                    </td>
 
 
-                @if (!user.IsDeleted)
-                {
-                    <td>
-                        <a asp-area="administration" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
-                           class="btn btn-sm btn-lg active" role="button">Edit</a>
-                    </td>
-                    <td>
-                        <a asp-area="administration" asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id"
-                           class="btn btn-sm btn-lg active" role="button">Delete</a>
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        <a asp-area="administration" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
-                           class="btn btn-sm btn-lg disabled" role="button">Edit</a>
-                    </td>
-                    <td>
-                        <a asp-area="administration" asp-controller="Users" asp-action="Restore" asp-route-id="@user.Id"
-                           class="btn btn-sm btn-lg active" role="button">Restore</a>
-                    </td>
-                }
+                    @if (!user.IsDeleted)
+                    {
+                        <td>
+                            <a asp-area="administration" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
+                               class="btn btn-sm btn-lg active" role="button">Edit</a>
+                        </td>
+                        <td>
+                            <a asp-area="administration" asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id"
+                               class="btn btn-sm btn-lg active" role="button">Delete</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a asp-area="administration" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id"
+                               class="btn btn-sm btn-lg disabled" role="button">Edit</a>
+                        </td>
+                        <td>
+                            <a asp-area="administration" asp-controller="Users" asp-action="Restore" asp-route-id="@user.Id"
+                               class="btn btn-sm btn-lg active" role="button">Restore</a>
+                        </td>
+                    }
 
-            </tr>
+                </tr>
             }
         </tbody>
     </table>
 </div>
+
+
+@{
+    int previusPage = Model.CurrentPage - 1;
+    int NextPage = Model.CurrentPage + 1;
+}}
+
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item">
+            @if (Model.CurrentPage > 1)
+            {
+                <a class="page-link" href="/administration/users/AllUsers?page=@previusPage">Previous</a>
+            }
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="/administration/users/AllUsers?page=@NextPage">Next</a>
+        </li>
+    </ul>
+</nav>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
+using LibrarySystem.Services.Constants.Enumeration;
 using LibrarySystem.Services.Services;
 using LibrarySystem.WebClient.Areas.Administration.Models;
+using LibrarySystem.WebClient.WebClientGlobalConstants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,27 +32,43 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
             _townService = townService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             var users = this._usersServices
-                   .ListUsers(false)
-                   .Select(u => new UserViewModel(u))
-                   .ToList();
-            return View(users);
+                   .ListUsers(ListUsersCategory.all.ToString(), WebConstants.numOfElementInPage, page)
+                   .Select(u => new UserViewModel(u));
 
+            if (users.Count() == 0)
+            {
+                return RedirectToAction("Index", new
+                {
+                    page = page - 1
+                });
+            }
+
+            var model = new ListUsersModel(users, page);
+
+            return View(model);
         }
-        public IActionResult AllUsers()
-        {
-            var users = this._userManager
-                .Users
-                .Include(u => u.Address)
-                    .ThenInclude(a => a.Town)
-                .Include(u => u.UsersBooks)
-                    .ThenInclude(ub => ub.Book)
-                .Select(u => new UserViewModel(u))
-                .ToList();
 
-            return View(users);
+
+        public IActionResult AllUsers(int page = 1)
+        {
+            var users = this._usersServices
+                .ListUsers(ListUsersCategory.all.ToString(), WebConstants.numOfElementInPage, page)
+                .Select(u => new UserViewModel(u));
+
+            if (users.Count() == 0)
+            {
+                return RedirectToAction("AllUsers", new
+                {
+                    page = page - 1
+                });
+            }
+
+            var model = new ListUsersModel(users, page);
+
+            return View(model);
         }
 
         public IActionResult Details(string id)
@@ -118,7 +136,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind(include:"Id, FirstName, MiddleName, LastName, Email, Phone, Address, Town")]UserViewModel model)
+        public IActionResult Edit([Bind(include: "Id, FirstName, MiddleName, LastName, Email, Phone, Address, Town")]UserViewModel model)
         {
             var town = this._townService.AddTown(model.Town);
             var address = this._addressService.AddAddress(model.Address, town);

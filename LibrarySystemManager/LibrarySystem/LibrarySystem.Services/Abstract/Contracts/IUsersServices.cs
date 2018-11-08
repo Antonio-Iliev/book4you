@@ -17,7 +17,7 @@ namespace LibrarySystem.Services
 
         //User GetUser(string firstName, string middleName, string lastName);
 
-        IEnumerable<User> ListUsers(bool userIsDeleted);
+        IEnumerable<User> ListUsers(string listUsersBy, int pageSize, int page);
 
         User BorrowBook(string userId, Guid bookId);
 
