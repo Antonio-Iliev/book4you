@@ -1,51 +1,56 @@
 ﻿@model BookViewModel
 
-<table class="table table-striped">
-    <tr>
-        <th>
-            <img src="~/images/Books/@(Model.ImageName ?? "Default_image.png")"
-                 alt="Book Cover" class="img-thumbnail" height="100" width="100"/>
-        </th>
-        <td>@Model.Title</td>
-        <td>@Model.Author</td>
-        <td>@Model.Genre</td>
-        <th>
-            <div>
-                <form asp-controller="Books" asp-action="Details" asp-route-bookId="@Model.Id">
-                    <button type="submit" class="btn btn-info">Details</button>
-                </form>
-            </div>
-        </th>
-        <td valign="middle">
+    <table class="table table-striped">
+        <thead>
+            <tr></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <img src="~/images/Books/@(Model.ImageName ?? "Default_image.png")"
+                         alt="Book Cover" class="img-thumbnail" height="100" width="100" />
+                </td>
+                <td>@Model.Title</td>
+                <td>@Model.Author</td>
+                <td>@Model.Genre</td>
+                <td>
+                    <div>
+                        <form asp-controller="Books" asp-action="Details" asp-route-bookId="@Model.Id">
+                            <button type="submit" class="btn btn-info">Details</button>
+                        </form>
+                    </div>
+                </td>
+                <td valign="middle" >
 
-            @if (Model.BooksInStore == 0)
-            {
-                <div style="font-size: smaller">
-                    <div class="btn btn-info disabled">Not Available</div>
-                </div>
-            }
-            @if (User.IsInRole("Admin") && Model.BooksInStore > 0)
-            {
-                <form asp-area="administration" asp-controller="AdminBooks" asp-action="RemoveFromLibrary" asp-route-bookId="@Model.Id">
-                    <button type="submit" class="btn btn-danger">Remove</button>
-                </form>
-            }
-            else
-            {
-                if (Model.IsBorrowed)
-                {
-                    <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@Model.Id" method="post">
-                        <button type="submit" class="btn bg-danger">Return book</button>
-                    </form>
-                }
-                else if (Model.BooksInStore > 0)
-                {
-                    <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-bookId="@Model.Id">
-                        <button type="submit" class="btn btn-success">Add book</button>
-                    </form>
-                }
-            }
+                    @if (Model.BooksInStore == 0)
+                    {
+                        <div style="font-size: smaller">
+                            <p>Not Available</p>
+                        </div>
+                    }
+                    @if (User.IsInRole("Admin") && Model.BooksInStore > 0)
+                    {
+                        <form asp-area="administration" asp-controller="AdminBooks" asp-action="RemoveFromLibrary" asp-route-bookId="@Model.Id">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    }
+                    else
+                    {
+                        if (Model.IsBorrowed)
+                        {
+                            <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@Model.Id" method="post">
+                                <button type="submit" class="btn bg-danger">Return book</button>
+                            </form>
+                        }
+                        else if (Model.BooksInStore > 0)
+                        {
+                            <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-bookId="@Model.Id">
+                                <button type="submit" class="btn btn-success">Add book</button>
+                            </form>
+                        }
+                    }
 
-        </td>
-    </tr>
-</table>
+                </td>
+            </tr>
+        </tbody>
+    </table>

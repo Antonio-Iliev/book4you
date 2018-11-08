@@ -35,7 +35,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         public IActionResult Index(int page = 1)
         {
             var users = this._usersServices
-                   .ListUsers(ListUsersCategory.all.ToString(), WebConstants.numOfElementInPage, page)
+                   .ListUsers(ListUsersCategory.active.ToString(), WebConstants.numOfElementInPage, page)
                    .Select(u => new UserViewModel(u));
 
             if (users.Count() == 0)
