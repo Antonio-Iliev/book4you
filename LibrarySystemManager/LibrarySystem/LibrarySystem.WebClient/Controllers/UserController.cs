@@ -44,6 +44,7 @@ namespace LibrarySystem.WebClient.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ReturnBook(Guid bookId)
         {
             var userId = this._userManager.GetUserId(HttpContext.User);

@@ -45,6 +45,7 @@ namespace LibrarySystem.WebClient.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddBook(Guid bookId)
         {
             var userId = this._userManager.GetUserId(HttpContext.User);
@@ -92,6 +93,7 @@ namespace LibrarySystem.WebClient.Controllers
 
         [Authorize(Roles = "Admin, User")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ListBooks(BookIndexViewModel model)
         {
             if (!ModelState.IsValid)

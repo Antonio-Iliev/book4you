@@ -15,6 +15,7 @@
     <div class="col-md-4">
         <form asp-controller="Books" asp-action="ListBooks" method="post">
             <input type="text" class="form-control" asp-for="Parameters" placeholder="Type here ...">
+            <span asp-validation-for="Parameters" class="text-danger"></span>
             <div class="radio">
                 <label class="radio-inline">
                     <input type="radio" value="all" asp-for="SearchBy" checked />
@@ -62,3 +63,7 @@
 
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
