@@ -53,16 +53,13 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
 
             var newBook = this._booksService.AddBook(bookDbModel);
 
-            //TO DO
-            //return RedirectToAction("Details", "Books", new { id = newBook.Id });
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index", "Home", new { area=""});
         }
         public IActionResult RemoveFromLibrary(Guid bookId)
         {
             var book = this._booksService.RemoveBook(bookId);
 
-            //To Do return RedirectToAction("Index", "Books");
-            return RedirectToAction("Index", "Users");
+            return RedirectToAction("Index", "Home", new {area=""});
         }
     }
 }
