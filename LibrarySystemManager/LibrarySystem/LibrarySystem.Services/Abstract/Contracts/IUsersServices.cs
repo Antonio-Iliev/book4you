@@ -6,17 +6,6 @@ namespace LibrarySystem.Services
 {
     public interface IUsersServices
     {
-        //User AddUser(string firstName, string middleName, string lastName,
-        //    string phoneNumber, DateTime addedOn, bool IsDeleted, Address address);
-
-        //User UpdateUserAddress(string firstName, string middleName, string lastName, Address address);
-
-        //User UpdateUserPhone(string firstName, string middleName, string lastName, string phone);
-
-        //User RemoveUser(string firstName, string middleName, string lastName);
-
-        //User GetUser(string firstName, string middleName, string lastName);
-
         IEnumerable<User> ListUsers(string listUsersBy, int pageSize, int page);
 
         User BorrowBook(string userId, Guid bookId);

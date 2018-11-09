@@ -43,5 +43,7 @@ namespace LibrarySystem.Data.Models
         public Address Address { get; set; }
 
         public ICollection<UsersBooks> UsersBooks { get; set; }
+
+        public ICollection<UsersReadBooks> UsersReadBooks { get; set; }
     }
 }

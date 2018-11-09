@@ -38,9 +38,18 @@
                     <td>@Model.Town</td>
                 </tr>
                 <tr>
-                    <th>Books</th>
+                    <th>Borrowed Books</th>
                     <td>
-                        @foreach (var book in Model.UsersBooks)
+                        @foreach (var book in Model.BorrowBooks)
+                        {
+                            <p> @book.Book.Title</p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Read Books</th>
+                    <td>
+                        @foreach (var book in Model.ReadBooks)
                         {
                             <p> @book.Book.Title</p>
                         }

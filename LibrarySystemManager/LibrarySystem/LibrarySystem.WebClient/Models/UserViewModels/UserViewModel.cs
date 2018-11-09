@@ -20,7 +20,8 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
             Phone = user.PhoneNumber;
             Address = user.Address.StreetAddress;
             Town = user.Address.Town.TownName;
-            UsersBooks = user.UsersBooks;
+            BorrowBooks = user.UsersBooks;
+            ReadBooks = user.UsersReadBooks;
         }
 
         public string Id { get; set; }
@@ -53,6 +54,8 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
         public string Address { get; set; }
         public string Town { get; set; }
 
-        public IEnumerable<UsersBooks> UsersBooks { get; set; }
+        public IEnumerable<UsersBooks> BorrowBooks { get; set; }
+
+        public IEnumerable<UsersReadBooks> ReadBooks { get; set; }
     }
 }

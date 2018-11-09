@@ -1,13 +1,13 @@
-﻿@model MyLibraryViewModel
+﻿@model UserViewModel
 
-<h2>@Model.userView.FirstName's library</h2>
+<h2>@Model.FirstName's library</h2>
 <div class="clearfix">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <h4>My borrowed books:</h4>
         <table class="table table-striped">
             <tbody>
 
-                @if (Model.borrowBooks.Count() == 0)
+                @if (Model.BorrowBooks.Count() == 0)
                 {
                     <tr>
                         <td>There are no borrowed books.</td>
@@ -20,15 +20,15 @@
                             Title
                         </th>
                     </tr>
-                    @foreach (var userBook in Model.borrowBooks)
+                    @foreach (var userBook in Model.BorrowBooks)
                     {
                         <tr>
-                                <td>@userBook.Book.Title</td>
-                                <td>
-                                    <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@userBook.Book.Id" method="post">
-                                        <button type="submit" class="btn bg-danger">Return book</button>
-                                    </form>
-                                </td>
+                            <td>@userBook.Book.Title - borrowed on @userBook.BorrowDate.ToString("d")</td>
+                            <td>
+                                <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@userBook.Book.Id" method="post">
+                                    <button type="submit" class="btn bg-danger">Return book</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 }
@@ -38,7 +38,7 @@
         <h4>The books I read:</h4>
         <table class="table table-striped">
             <tbody>
-                @if (Model.returnedBooks.Count() == 0)
+                @if (Model.ReadBooks.Count() == 0)
                 {
                     <tr>
                         <td>You haven't returned a book yet.</td>
@@ -51,10 +51,10 @@
                             Title
                         </th>
                     </tr>
-                    @foreach (var userBook in Model.returnedBooks)
+                    @foreach (var userBook in Model.ReadBooks)
                     {
                         <tr>
-                                <td>@userBook.Book.Title</td>
+                            <td>@userBook.Book.Title - back-date @userBook.BackDate.ToString("d")</td>
                         </tr>
                     }
                 }

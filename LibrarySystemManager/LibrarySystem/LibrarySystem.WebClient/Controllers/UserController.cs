@@ -36,8 +36,8 @@ namespace LibrarySystem.WebClient.Controllers
             var userId = this._userManager.GetUserId(HttpContext.User);
 
             var user = this._usersServices.GetUserById(userId);
-
-            var model = new MyLibraryViewModel(new UserViewModel(user));
+            // pass only UserViewModel
+            var model = new UserViewModel(user);
 
             return View(model);
         }

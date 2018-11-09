@@ -28,6 +28,7 @@
                             <p>Not Available</p>
                         </div>
                     }
+
                     @if (User.IsInRole("Admin") && Model.BooksInStore > 0)
                     {
                         <form asp-area="administration" asp-controller="AdminBooks" asp-action="RemoveFromLibrary" asp-route-bookId="@Model.Id">
@@ -45,7 +46,7 @@
                         else if (Model.BooksInStore > 0)
                         {
                             <form asp-controller="Books" asp-action="AddBook" method="post" asp-route-bookId="@Model.Id">
-                                <button type="submit" class="btn btn-success">Add book</button>
+                                <button type="submit" class="btn btn-success">Borrow book</button>
                             </form>
                         }
                     }

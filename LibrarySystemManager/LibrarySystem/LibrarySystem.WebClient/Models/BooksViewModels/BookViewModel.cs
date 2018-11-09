@@ -1,9 +1,6 @@
 ﻿using LibrarySystem.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LibrarySystem.WebClient.Models.BooksViewModels
 {
@@ -24,7 +21,7 @@ namespace LibrarySystem.WebClient.Models.BooksViewModels
             this.ImageName = book.ImageName;
         }
 
-        public BookViewModel(Book book, User user) :this(book)
+        public BookViewModel(Book book, User user) : this(book)
         {
             this.IsBorrowed = user.UsersBooks
                 .SingleOrDefault(b => b.BookId.ToString() == this.Id) == null ? false : true;

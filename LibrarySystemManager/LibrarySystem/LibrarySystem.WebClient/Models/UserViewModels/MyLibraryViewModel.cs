@@ -1,6 +1,5 @@
 ﻿using LibrarySystem.Data.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LibrarySystem.WebClient.Models.UserViewModels
 {
@@ -8,14 +7,16 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
     {
         public MyLibraryViewModel(UserViewModel user)
         {
-            this.userView = user;
+            this.UserView = user;
+            this.BorrowBooks = user.BorrowBooks;
+            this.ReadBooks = user.ReadBooks;
         }
 
-        public UserViewModel userView { get; set; }
+        public UserViewModel UserView { get; set; }
 
-        public IEnumerable<UsersBooks> borrowBooks { get; set; }
+        public IEnumerable<UsersBooks> BorrowBooks { get; set; }
 
-        public IEnumerable<UsersBooks> returnedBooks { get; set; }
+        public IEnumerable<UsersReadBooks> ReadBooks { get; set; }
     }
 }
  
