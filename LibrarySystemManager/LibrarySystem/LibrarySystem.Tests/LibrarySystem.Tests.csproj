@@ -19,4 +19,8 @@
     <ProjectReference Include="..\LibrarySystem.WebClient\LibrarySystem.WebClient.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\AdminArea\UserActions\" />
+  </ItemGroup>
+
 </Project>

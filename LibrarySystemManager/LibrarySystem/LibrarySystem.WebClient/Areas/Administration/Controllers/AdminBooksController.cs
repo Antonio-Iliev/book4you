@@ -43,7 +43,7 @@ namespace LibrarySystem.WebClient.Areas.Administration.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View();
+                return this.View("CreateBook");
             }
             var newGenre = this._genreServices.AddGenre(model.Genre);
             var newAuthor = this._authorServices.AddAuthor(model.Author);
