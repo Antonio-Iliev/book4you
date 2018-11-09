@@ -2,8 +2,8 @@
 
 namespace LibrarySystem.Data.Models
 {
-    public class UsersBooks
-    {   
+    public class UsersReadBooks
+    {
         public string UserId { get; set; }
 
         public Guid BookId { get; set; }
@@ -12,6 +12,6 @@ namespace LibrarySystem.Data.Models
 
         public Book Book { get; set; }
 
-        public DateTime BorrowDate { get; set; }
+        public DateTime BackDate { get; set; }
     }
 }

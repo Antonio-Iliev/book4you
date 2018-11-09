@@ -26,6 +26,7 @@ namespace LibrarySystem.Data.Context
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Town> Towns { get; set; }
         public DbSet<UsersBooks> UsersBooks { get; set; }
+        public DbSet<UsersReadBooks> UsersReadBooks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,8 +38,8 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var authorsNames = ReadLinesTextFile("AuthorNames.txt");
-            GetApiData(authorsNames);
+           // var authorsNames = ReadLinesTextFile("AuthorNames.txt");
+          //  GetApiData(authorsNames);
 
             var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
             var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
@@ -52,10 +53,18 @@ namespace LibrarySystem.Data.Context
 
             SeedAdminUser(modelBuilder);
 
+            SetPrimeryKeys(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private static void SetPrimeryKeys(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<UsersBooks>()
                 .HasKey(p => new { p.UserId, p.BookId });
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UsersReadBooks>()
+                .HasKey(p => new { p.UserId, p.BookId });
         }
 
         private void SeedAdminUser(ModelBuilder modelBuilder)
@@ -124,7 +133,7 @@ namespace LibrarySystem.Data.Context
                             Name = itemAuthorName,
                             Id = authors.Count + 1
                         };
-                          
+
                         authors.Add(author);
                     }
 

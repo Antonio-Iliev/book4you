@@ -23,15 +23,12 @@
                     @foreach (var userBook in Model.borrowBooks)
                     {
                         <tr>
-                            @if (!userBook.IsReturn)
-                            {
                                 <td>@userBook.Book.Title</td>
                                 <td>
                                     <form asp-controller="User" asp-action="ReturnBook" asp-route-bookId="@userBook.Book.Id" method="post">
                                         <button type="submit" class="btn bg-danger">Return book</button>
                                     </form>
                                 </td>
-                            }
                         </tr>
                     }
                 }
@@ -57,10 +54,7 @@
                     @foreach (var userBook in Model.returnedBooks)
                     {
                         <tr>
-                            @if (userBook.IsReturn)
-                            {
                                 <td>@userBook.Book.Title</td>
-                            }
                         </tr>
                     }
                 }

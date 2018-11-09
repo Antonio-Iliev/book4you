@@ -9,8 +9,6 @@ namespace LibrarySystem.WebClient.Models.UserViewModels
         public MyLibraryViewModel(UserViewModel user)
         {
             this.userView = user;
-            this.borrowBooks = user.UsersBooks.Where(ub => ub.IsReturn == false);
-            this.returnedBooks = user.UsersBooks.Where(ub => ub.IsReturn == true);
         }
 
         public UserViewModel userView { get; set; }

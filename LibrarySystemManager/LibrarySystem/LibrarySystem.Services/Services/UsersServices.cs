@@ -283,7 +283,7 @@ namespace LibrarySystem.Services
                 throw new UserNullableException("This user never borrowed this book.");
             }
 
-            userBook.IsReturn = true;
+           // userBook.IsReturn = true;
             bookToReturn.BooksInStore++;
 
             this.context.SaveChanges();

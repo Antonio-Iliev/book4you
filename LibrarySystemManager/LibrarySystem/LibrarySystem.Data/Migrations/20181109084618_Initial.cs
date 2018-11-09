@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LibrarySystem.Data.Migrations
 {
-    public partial class Inital : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -259,7 +259,7 @@ namespace LibrarySystem.Data.Migrations
                 {
                     UserId = table.Column<string>(nullable: false),
                     BookId = table.Column<Guid>(nullable: false),
-                    IsReturn = table.Column<bool>(nullable: false)
+                    BorrowDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -278,13 +278,38 @@ namespace LibrarySystem.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UsersReadBooks",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    BookId = table.Column<Guid>(nullable: false),
+                    BackDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersReadBooks", x => new { x.UserId, x.BookId });
+                    table.ForeignKey(
+                        name: "FK_UsersReadBooks_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersReadBooks_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2", "d3155fa1-9088-485b-9040-20202548be4d", "User", "USER" },
-                    { "1", "67189037-e314-4e24-8d86-9c7acf94ce8b", "Admin", "ADMIN" }
+                    { "2", "becdeca8-21b8-4544-a602-3a6a4b2f777c", "User", "USER" },
+                    { "1", "0ab55774-3804-4173-8d0f-5d7c265b3609", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.InsertData(
@@ -411,7 +436,7 @@ namespace LibrarySystem.Data.Migrations
                     { new Guid("d348411d-be97-4e19-b801-b9bb4d428a0a"), 12, 10, "", 5, null, "THE  HOST" },
                     { new Guid("f66a46d0-eaae-4a85-9ed6-828d115c4947"), 9, 10, "Bean explores the stars with his genetically engineered children in this entry in the “Ender” science fiction series; a sequel to “Shadow of the Giant.”", 5, null, "SHADOWS IN FLIGHT" },
                     { new Guid("5c9a284d-2545-4319-bf8d-ab2b7f89afd8"), 7, 10, "", 5, null, "THE WINNER STANDS ALONE" },
-                    { new Guid("fd1263cd-7e67-40a3-8845-a7b4fb797199"), 7, 10, " A married journalist risks everything when she embarks on an affair; by the Brazilian writer, the author of “The Alchemist.”. ", 5, null, "ADULTERY" },
+                    { new Guid("fd1263cd-7e67-40a3-8845-a7b4fb797199"), 7, 10, " A married journalist risks everything when she embarks on an affair; by the Brazilian writer, the author of “The Alchemist.”.", 5, null, "ADULTERY" },
                     { new Guid("ca03cecc-bf28-4390-aa62-c5046ad5d8d0"), 5, 10, "The history of the Westeros and more about the world of \"Game of Thrones.\"", 5, null, "THE WORLD OF ICE AND FIRE" },
                     { new Guid("59af970d-9272-473a-a168-ab75528b7911"), 6, 10, "", 5, null, "DANGEROUS WOMEN" },
                     { new Guid("a2ac1436-ad8b-47ac-816f-0039f76e1806"), 5, 10, "The collected Song of Ice and Fire series.", 5, null, "A GAME OF THRONES: FIVE-BOOK SET" },
@@ -514,12 +539,12 @@ namespace LibrarySystem.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "AddOnDate", "AddressId", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "MiddleName", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "65052710-2b1c-493c-a7e8-1c5579452dce", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "bb49e484-b461-4bdf-ba95-cd44648cae22", "admin@mail.com", true, "Admin", false, "AdminLastName", false, null, null, "ADMIN@MAIL.COM", "ADMINMAIN", "AQAAAAEAACcQAAAAED24GiCzpYUdup1nemr9zt7sN2T7Y7HJOJ2PFhJMK5UdO/zh5wyfczMNLiiU1NwBHw==", "+111111111", true, "6406202b-f1ea-49ef-8674-fd7fa060f312", false, "adminMain" });
+                values: new object[] { "6dd79306-4615-4d65-8137-0800e2eee7bf", 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "12b64ac5-7d3e-4758-af49-2daa2189c4d2", "admin@mail.com", true, "Admin", false, "AdminLastName", false, null, null, "ADMIN@MAIL.COM", "ADMINMAIN", "AQAAAAEAACcQAAAAECGnSEpH+224s7a7m2pB/KmkWGxlZKzmgwn4zw/YS9I3WY+zA4tz9vy7wy7oaDXFaQ==", "+111111111", true, "29de4e75-8597-4c98-97d1-c39e9c6176ce", false, "adminMain" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "UserId", "RoleId" },
-                values: new object[] { "65052710-2b1c-493c-a7e8-1c5579452dce", "1" });
+                values: new object[] { "6dd79306-4615-4d65-8137-0800e2eee7bf", "1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_TownId",
@@ -584,6 +609,11 @@ namespace LibrarySystem.Data.Migrations
                 name: "IX_UsersBooks_BookId",
                 table: "UsersBooks",
                 column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersReadBooks_BookId",
+                table: "UsersReadBooks",
+                column: "BookId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -605,6 +635,9 @@ namespace LibrarySystem.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UsersBooks");
+
+            migrationBuilder.DropTable(
+                name: "UsersReadBooks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

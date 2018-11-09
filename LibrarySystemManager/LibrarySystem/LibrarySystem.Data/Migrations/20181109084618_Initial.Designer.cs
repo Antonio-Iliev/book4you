@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibrarySystem.Data.Migrations
 {
     [DbContext(typeof(LibrarySystemContext))]
-    [Migration("20181108193453_Inital")]
-    partial class Inital
+    [Migration("20181109084618_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,7 +168,7 @@ namespace LibrarySystem.Data.Migrations
                         new { Id = new Guid("66d296ce-46d7-4cae-841c-47c367155aa0"), AuthorId = 6, BooksInStore = 10, Description = "Twenty-one original stories from well-known writers, including a new “Game of Thrones” story.", GenreId = 2, Title = "ROGUES" },
                         new { Id = new Guid("b48a2ddf-48b0-41b5-b249-11ee112ea507"), AuthorId = 5, BooksInStore = 10, Description = "A girl tames a dragon and saves her farm.", GenreId = 4, Title = "THE ICE DRAGON" },
                         new { Id = new Guid("ca03cecc-bf28-4390-aa62-c5046ad5d8d0"), AuthorId = 5, BooksInStore = 10, Description = "The history of the Westeros and more about the world of \"Game of Thrones.\"", GenreId = 5, Title = "THE WORLD OF ICE AND FIRE" },
-                        new { Id = new Guid("fd1263cd-7e67-40a3-8845-a7b4fb797199"), AuthorId = 7, BooksInStore = 10, Description = " A married journalist risks everything when she embarks on an affair; by the Brazilian writer, the author of “The Alchemist.”. ", GenreId = 5, Title = "ADULTERY" },
+                        new { Id = new Guid("fd1263cd-7e67-40a3-8845-a7b4fb797199"), AuthorId = 7, BooksInStore = 10, Description = " A married journalist risks everything when she embarks on an affair; by the Brazilian writer, the author of “The Alchemist.”.", GenreId = 5, Title = "ADULTERY" },
                         new { Id = new Guid("da0576b1-5f4e-460f-b9fb-3a5de2af3c54"), AuthorId = 7, BooksInStore = 10, Description = "A crisis of faith is the impetus for a journey through time and space, on a path that teaches love, forgiveness and courage.", GenreId = 1, Title = "ALEPH" },
                         new { Id = new Guid("0ab10760-3a2e-4ee7-8720-29e76a683a75"), AuthorId = 7, BooksInStore = 10, Description = "A young Irish girl who desires to become a witch seeks wisdom from teachers of magic and spirituality.", GenreId = 1, Title = "BRIDA" },
                         new { Id = new Guid("2d592693-508b-4df8-b3ca-fa0165549eea"), AuthorId = 7, BooksInStore = 10, Description = "A young Brazillian man and a Dutch woman explore their relationship as they travel across Europe and Central Asia to Kathmandu.", GenreId = 9, Title = "HIPPIE" },
@@ -392,7 +392,7 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "65052710-2b1c-493c-a7e8-1c5579452dce", AccessFailedCount = 0, AddOnDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), AddressId = 1, ConcurrencyStamp = "bb49e484-b461-4bdf-ba95-cd44648cae22", Email = "admin@mail.com", EmailConfirmed = true, FirstName = "Admin", IsDeleted = false, LastName = "AdminLastName", LockoutEnabled = false, NormalizedEmail = "ADMIN@MAIL.COM", NormalizedUserName = "ADMINMAIN", PasswordHash = "AQAAAAEAACcQAAAAED24GiCzpYUdup1nemr9zt7sN2T7Y7HJOJ2PFhJMK5UdO/zh5wyfczMNLiiU1NwBHw==", PhoneNumber = "+111111111", PhoneNumberConfirmed = true, SecurityStamp = "6406202b-f1ea-49ef-8674-fd7fa060f312", TwoFactorEnabled = false, UserName = "adminMain" }
+                        new { Id = "6dd79306-4615-4d65-8137-0800e2eee7bf", AccessFailedCount = 0, AddOnDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), AddressId = 1, ConcurrencyStamp = "12b64ac5-7d3e-4758-af49-2daa2189c4d2", Email = "admin@mail.com", EmailConfirmed = true, FirstName = "Admin", IsDeleted = false, LastName = "AdminLastName", LockoutEnabled = false, NormalizedEmail = "ADMIN@MAIL.COM", NormalizedUserName = "ADMINMAIN", PasswordHash = "AQAAAAEAACcQAAAAECGnSEpH+224s7a7m2pB/KmkWGxlZKzmgwn4zw/YS9I3WY+zA4tz9vy7wy7oaDXFaQ==", PhoneNumber = "+111111111", PhoneNumberConfirmed = true, SecurityStamp = "29de4e75-8597-4c98-97d1-c39e9c6176ce", TwoFactorEnabled = false, UserName = "adminMain" }
                     );
                 });
 
@@ -402,13 +402,28 @@ namespace LibrarySystem.Data.Migrations
 
                     b.Property<Guid>("BookId");
 
-                    b.Property<bool>("IsReturn");
+                    b.Property<DateTime>("BorrowDate");
 
                     b.HasKey("UserId", "BookId");
 
                     b.HasIndex("BookId");
 
                     b.ToTable("UsersBooks");
+                });
+
+            modelBuilder.Entity("LibrarySystem.Data.Models.UsersReadBooks", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<Guid>("BookId");
+
+                    b.Property<DateTime>("BackDate");
+
+                    b.HasKey("UserId", "BookId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("UsersReadBooks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -435,8 +450,8 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "1", ConcurrencyStamp = "67189037-e314-4e24-8d86-9c7acf94ce8b", Name = "Admin", NormalizedName = "ADMIN" },
-                        new { Id = "2", ConcurrencyStamp = "d3155fa1-9088-485b-9040-20202548be4d", Name = "User", NormalizedName = "USER" }
+                        new { Id = "1", ConcurrencyStamp = "0ab55774-3804-4173-8d0f-5d7c265b3609", Name = "Admin", NormalizedName = "ADMIN" },
+                        new { Id = "2", ConcurrencyStamp = "becdeca8-21b8-4544-a602-3a6a4b2f777c", Name = "User", NormalizedName = "USER" }
                     );
                 });
 
@@ -511,7 +526,7 @@ namespace LibrarySystem.Data.Migrations
                     b.ToTable("AspNetUserRoles");
 
                     b.HasData(
-                        new { UserId = "65052710-2b1c-493c-a7e8-1c5579452dce", RoleId = "1" }
+                        new { UserId = "6dd79306-4615-4d65-8137-0800e2eee7bf", RoleId = "1" }
                     );
                 });
 
@@ -568,6 +583,19 @@ namespace LibrarySystem.Data.Migrations
 
                     b.HasOne("LibrarySystem.Data.Models.User", "User")
                         .WithMany("UsersBooks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("LibrarySystem.Data.Models.UsersReadBooks", b =>
+                {
+                    b.HasOne("LibrarySystem.Data.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("LibrarySystem.Data.Models.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
