@@ -18,7 +18,7 @@ namespace LibrarySystem.Tests.Controllers.HomeActions
         {
             var bookServiceMock = new Mock<IBooksServices>();
             var memoryCacheMock = new Mock<IMemoryCache>();
-            var controller = new HomeController(bookServiceMock.Object, memoryCacheMock.Object);
+            var controller = new HomeController(bookServiceMock.Object);
 
             var result = controller.About() as ViewResult;
 
