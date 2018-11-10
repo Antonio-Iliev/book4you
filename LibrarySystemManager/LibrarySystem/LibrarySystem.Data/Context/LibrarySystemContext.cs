@@ -40,15 +40,15 @@ namespace LibrarySystem.Data.Context
             //var authorsNames = ReadLinesTextFile("AuthorNames.txt");
             //GetApiData(authorsNames);
 
-            var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
-            var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
-            var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
-            var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
+            //var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
+            //var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
+            //var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
+            //var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
 
-            modelBuilder.Entity<Town>().HasData(towns);
-            modelBuilder.Entity<Genre>().HasData(genres);
-            modelBuilder.Entity<Author>().HasData(authors);
-            modelBuilder.Entity<Book>().HasData(books);
+            //modelBuilder.Entity<Town>().HasData(towns);
+            //modelBuilder.Entity<Genre>().HasData(genres);
+            //modelBuilder.Entity<Author>().HasData(authors);
+            //modelBuilder.Entity<Book>().HasData(books);
 
             SeedAdminUser(modelBuilder);
 
