@@ -38,8 +38,8 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           // var authorsNames = ReadLinesTextFile("AuthorNames.txt");
-          //  GetApiData(authorsNames);
+            //var authorsNames = ReadLinesTextFile("AuthorNames.txt");
+            //GetApiData(authorsNames);
 
             var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
             var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
