@@ -7,25 +7,29 @@ using LibrarySystem.WebClient.WebClientGlobalConstants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LibrarySystem.WebClient.Controllers
 {
     public class BooksController : Controller
     {
-       
+
 
         private readonly IBooksServices _booksServices;
         private readonly UserManager<User> _userManager;
         private readonly IUsersServices _usersServices;
+        private readonly IMemoryCache _memoryCache;
 
         public BooksController(
             IBooksServices booksServices,
             UserManager<User> userManager,
-            IUsersServices usersServices)
+            IUsersServices usersServices,
+            IMemoryCache memoryCache)
         {
             _booksServices = booksServices;
             _userManager = userManager;
             _usersServices = usersServices;
+            _memoryCache = memoryCache;
         }
 
         [Authorize(Roles = "Admin, User")]
@@ -33,8 +37,14 @@ namespace LibrarySystem.WebClient.Controllers
         {
             var user = GetUser();
 
-            // TODO Take 5 random books.
-            var booksOfTheDay = this._booksServices.ListBooks().Take(5);
+            var booksOfTheDay = this._memoryCache.GetOrCreate("BooksOfTheDay", e =>
+            {
+                e.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
+
+                // TODO Take 5 random books.
+                return this._booksServices.ListBooks().Take(5);
+            }
+            );
 
             var bookModel = booksOfTheDay.Select(b => new BookViewModel(b, user));
 

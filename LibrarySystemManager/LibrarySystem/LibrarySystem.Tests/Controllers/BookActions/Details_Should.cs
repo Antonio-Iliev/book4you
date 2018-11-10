@@ -4,6 +4,7 @@ using LibrarySystem.Tests.Mocks;
 using LibrarySystem.WebClient.Controllers;
 using LibrarySystem.WebClient.Models.BooksViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -32,8 +33,10 @@ namespace LibrarySystem.Tests.Controllers.BookActions
 
             var userServiceMock = new Mock<IUsersServices>();
             var userManagerMock = MockHelpers.MockUserManager<User>();
+            var memoryCacheMock = new Mock<IMemoryCache>();
 
-            var controller = new BooksController(bookServiceMock.Object, userManagerMock.Object, userServiceMock.Object);
+            var controller = new BooksController
+                (bookServiceMock.Object, userManagerMock.Object, userServiceMock.Object, memoryCacheMock.Object);
 
             var result = controller.Details(guid) as ViewResult;
             var bookViewModel = (BookViewModel)result.ViewData.Model;
@@ -57,8 +60,10 @@ namespace LibrarySystem.Tests.Controllers.BookActions
 
             var userServiceMock = new Mock<IUsersServices>();
             var userManagerMock = MockHelpers.MockUserManager<User>();
+            var memoryCacheMock = new Mock<IMemoryCache>();
 
-            var controller = new BooksController(bookServiceMock.Object, userManagerMock.Object, userServiceMock.Object);
+            var controller = new BooksController
+                (bookServiceMock.Object, userManagerMock.Object, userServiceMock.Object, memoryCacheMock.Object);
 
             var result = controller.Details(guid) as ViewResult;
 
