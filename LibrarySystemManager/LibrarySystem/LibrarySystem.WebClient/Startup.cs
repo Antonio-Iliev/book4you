@@ -47,6 +47,7 @@ namespace LibrarySystem.WebClient
             services.AddScoped<IGenreServices, GenreServices>();
             services.AddScoped<ITownService, TownService>();
             services.AddScoped<IUsersServices, UsersServices>();
+
             services.AddScoped<IValidations, CommonValidations>();
         }
         private void RegisterData(IServiceCollection services)
@@ -78,6 +79,7 @@ namespace LibrarySystem.WebClient
         private void RegisterInfrastructure(IServiceCollection services)
         {
             services.AddKendo();
+            services.AddMemoryCache();
 
             // Maintain property names during serialization. See:
             // https://github.com/aspnet/Announcements/issues/194
@@ -85,7 +87,6 @@ namespace LibrarySystem.WebClient
                 .AddMvc()
                 .AddJsonOptions(options =>
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
-
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)

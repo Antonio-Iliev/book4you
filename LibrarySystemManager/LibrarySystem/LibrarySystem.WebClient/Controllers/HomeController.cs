@@ -10,21 +10,30 @@ using Kendo.Mvc.Extensions;
 using LibrarySystem.Services;
 using LibrarySystem.Data.Context;
 using LibrarySystem.WebClient.Models.BooksViewModels;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LibrarySystem.WebClient.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IBooksServices bookService;
+        private readonly IMemoryCache memoryCache;
 
-        public HomeController(IBooksServices bookService)
+        public HomeController(IBooksServices bookService, IMemoryCache memoryCache)
         {
             this.bookService = bookService;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
-            var books = this.bookService.ListBooks().Select(b => new BookViewModel(b));
+            var listAllBooks = this.memoryCache.GetOrCreate("AllBooks", e => 
+            {
+                e.AbsoluteExpiration = DateTime.UtcNow.AddDays(7);
+                return this.bookService.ListBooks();
+            });
+
+            var books = listAllBooks.Select(b => new BookViewModel(b));
             return View("Index", books);
         }
 
