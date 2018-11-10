@@ -1,6 +1,7 @@
 ﻿using LibrarySystem.Services;
 using LibrarySystem.WebClient.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -16,7 +17,8 @@ namespace LibrarySystem.Tests.Controllers.HomeActions
         public void Return_AboutView()
         {
             var bookServiceMock = new Mock<IBooksServices>();
-            var controller = new HomeController(bookServiceMock.Object);
+            var memoryCacheMock = new Mock<IMemoryCache>();
+            var controller = new HomeController(bookServiceMock.Object, memoryCacheMock.Object);
 
             var result = controller.About() as ViewResult;
 
