@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using LibrarySystem.Data.Models;
 using LibrarySystem.Services;
 using LibrarySystem.Services.Constants.Enumeration;
@@ -11,7 +8,6 @@ using LibrarySystem.WebClient.WebClientGlobalConstants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LibrarySystem.WebClient.Areas.Administration.Controllers
 {
