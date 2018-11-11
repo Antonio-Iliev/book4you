@@ -5,6 +5,22 @@
     <UserSecretsId>aspnet-LibrarySystem.WebClient-669F979D-2BF6-4009-B384-4E07270AA4D3</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\Database-jason\AuthorNames.txt" />
+    <Content Remove="wwwroot\Database-jason\Authors.json" />
+    <Content Remove="wwwroot\Database-jason\Books.json" />
+    <Content Remove="wwwroot\Database-jason\Genres.json" />
+    <Content Remove="wwwroot\Database-jason\Towns.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Database-jason\AuthorNames.txt" />
+    <None Include="wwwroot\Database-jason\Authors.json" />
+    <None Include="wwwroot\Database-jason\Books.json" />
+    <None Include="wwwroot\Database-jason\Genres.json" />
+    <None Include="wwwroot\Database-jason\Towns.json" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.4" />
