@@ -53,7 +53,7 @@ namespace LibrarySystem.WebClient
         private void RegisterData(IServiceCollection services)
         {
             services.AddDbContext<LibrarySystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("Development")));
 
         }
         private void RegisterAuthentication(IServiceCollection services)
