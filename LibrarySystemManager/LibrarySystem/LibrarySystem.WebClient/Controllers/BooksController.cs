@@ -76,6 +76,18 @@ namespace LibrarySystem.WebClient.Controllers
         }
 
         [Authorize(Roles = "Admin, User")]
+        public IActionResult SearchBar(string title)
+        {
+            var bookId = _booksServices.ListBooks().Where(b => b.Title.Replace("%20", " ") == title).FirstOrDefault();
+            if (bookId == null)
+            {
+                return NoContent();
+            }
+
+            return RedirectToAction("Details","Books", new { bookId = bookId.Id });
+        }
+
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public IActionResult ListBooks(string searchBy, string parameters, int page)
         {
