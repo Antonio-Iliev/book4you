@@ -89,25 +89,29 @@
                 @await Html.PartialAsync("_LoginPartial")
                 <div class="navbar-right">
                     <ul class="nav navbar-nav" style="margin: 7px;">
-                        <li>
+                        <li class="input-sm ">
                             @(Html.Kendo().AutoComplete()
-                            .Name("booksAutoComplete")
-                            .DataTextField("Title")
-                            .DataSource(source =>
-                            {
-                                source.Custom()
-                                .ServerFiltering(true)
-                                .Type("aspnetmvc-ajax")
-                                .Transport(c =>
-                                {
-                                    c.Read("ReadGridBooks", "Home");
-                                })
-                                .Schema(schema =>
-                                {
-                                    schema.Data("Data")
-                                          .Total("Total");
-                                });
-                            })
+                                    .Name("booksAutoComplete")
+                                    .DataTextField("Title")
+                                    .DataSource(source =>
+                                    {
+                                        source.Custom()
+                                        .ServerFiltering(true)
+                                        .Type("aspnetmvc-ajax")
+                                        .Transport(c =>
+                                        {
+                                            c.Read("ReadGridBooks", "Home");
+                                        })
+                                        .Schema(schema =>
+                                        {
+                                            schema.Data("Data")
+                                                  .Total("Total");
+                                        });
+                                    })
+        .Events(e =>
+        {
+            e.Select("onSelect");
+        })
                             )
                         </li>
                     </ul>
@@ -136,6 +140,15 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    <script>
+        function onSelect(e) {
+            var dataItem = this.dataItem(e.item.index());
+            console.log(e.item[0].innerHTML);
+            $(location).attr("href", "/Books/SearchBar?title=" + e.item[0].innerHTML);
+            
+        }
+
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
