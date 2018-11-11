@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 
 namespace LibrarySystem.Data.Context
 {
@@ -37,18 +38,18 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //var authorsNames = ReadLinesTextFile("AuthorNames.txt");
-            //GetApiData(authorsNames);
+            var authorsNames = ReadLinesTextFile("AuthorNames.txt");
+            GetApiData(authorsNames);
 
-            //var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
-            //var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
-            //var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
-            //var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
+            var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
+            var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
+            var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
+            var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
 
-            //modelBuilder.Entity<Town>().HasData(towns);
-            //modelBuilder.Entity<Genre>().HasData(genres);
-            //modelBuilder.Entity<Author>().HasData(authors);
-            //modelBuilder.Entity<Book>().HasData(books);
+            modelBuilder.Entity<Town>().HasData(towns);
+            modelBuilder.Entity<Genre>().HasData(genres);
+            modelBuilder.Entity<Author>().HasData(authors);
+            modelBuilder.Entity<Book>().HasData(books);
 
             SeedAdminUser(modelBuilder);
 
@@ -153,21 +154,20 @@ namespace LibrarySystem.Data.Context
             string jsonAuthors = JsonConvert.SerializeObject(authors);
             string jsonBooks = JsonConvert.SerializeObject(books);
 
-            WriteJsonFile("Authors.json", jsonAuthors);
-            WriteJsonFile("Books.json", jsonBooks);
+            //WriteJsonFile("Authors.json", jsonAuthors);
+            //WriteJsonFile("Books.json", jsonBooks);
         }
 
 
         private string ReadJsonFile(string fileName)
         {
-            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            string resultURL;
+            using (var wClient = new WebClient())
             {
-                return File.ReadAllText("../LibrarySystem.Data/Files/" + fileName);
+                resultURL = wClient.DownloadString("https://gitlab.com/Antonio.Iliev/storage/raw/master/" + fileName);
             }
-            else
-            {
-                return File.ReadAllText("../../../../LibrarySystem.Data/Files/" + fileName);
-            }
+
+            return resultURL;
         }
 
         private void WriteJsonFile(string fileName, string data)
@@ -184,14 +184,15 @@ namespace LibrarySystem.Data.Context
 
         private string[] ReadLinesTextFile(string fileName)
         {
-            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            string contents;
+            using (var wClient = new WebClient())
             {
-                return File.ReadAllLines("../LibrarySystem.Data/Files/" + fileName);
+                contents = wClient.DownloadString("https://gitlab.com/Antonio.Iliev/storage/raw/master/AuthorNames.txt");
             }
-            else
-            {
-                return File.ReadAllLines("../../../../LibrarySystem.Data/Files/" + fileName);
-            }
+
+            var result = contents.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+            return result;
         }
     }
 }
