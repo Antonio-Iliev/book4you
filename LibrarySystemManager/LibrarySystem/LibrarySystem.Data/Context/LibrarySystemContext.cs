@@ -1,5 +1,4 @@
 ﻿using LibrarySystem.Data.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,15 +14,9 @@ namespace LibrarySystem.Data.Context
 {
     public class LibrarySystemContext : IdentityDbContext<User>
     {
-        private readonly IHostingEnvironment hostingEnvironment;
-        private string webRoot; 
-
-        public LibrarySystemContext
-            (DbContextOptions<LibrarySystemContext> options, IHostingEnvironment hostingEnvironment)
+        public LibrarySystemContext(DbContextOptions<LibrarySystemContext> options)
             : base(options)
         {
-            this.hostingEnvironment = hostingEnvironment;
-            this.webRoot = this.hostingEnvironment.WebRootPath;
         }
 
         public DbSet<Book> Books { get; set; }
@@ -44,18 +37,18 @@ namespace LibrarySystem.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var authorsNames = ReadLinesTextFile("AuthorNames.txt");
-            GetApiData(authorsNames);
+            //var authorsNames = ReadLinesTextFile("AuthorNames.txt");
+            //GetApiData(authorsNames);
 
-            var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
-            var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
-            var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
-            var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
+            //var genres = JsonConvert.DeserializeObject<Genre[]>(ReadJsonFile("Genres.json"));
+            //var towns = JsonConvert.DeserializeObject<Town[]>(ReadJsonFile("Towns.json"));
+            //var authors = JsonConvert.DeserializeObject<Author[]>(ReadJsonFile("Authors.json"));
+            //var books = JsonConvert.DeserializeObject<Book[]>(ReadJsonFile("Books.json"));
 
-            modelBuilder.Entity<Town>().HasData(towns);
-            modelBuilder.Entity<Genre>().HasData(genres);
-            modelBuilder.Entity<Author>().HasData(authors);
-            modelBuilder.Entity<Book>().HasData(books);
+            //modelBuilder.Entity<Town>().HasData(towns);
+            //modelBuilder.Entity<Genre>().HasData(genres);
+            //modelBuilder.Entity<Author>().HasData(authors);
+            //modelBuilder.Entity<Book>().HasData(books);
 
             SeedAdminUser(modelBuilder);
 
@@ -112,6 +105,7 @@ namespace LibrarySystem.Data.Context
             });
         }
 
+
         private void GetApiData(string[] authorsNames)
         {
             List<Author> authors = JsonConvert.DeserializeObject<List<Author>>(ReadJsonFile("Authors.json"));
@@ -166,17 +160,38 @@ namespace LibrarySystem.Data.Context
 
         private string ReadJsonFile(string fileName)
         {
-            return File.ReadAllText(this.webRoot + "/Database-jason/" + fileName);
+            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            {
+                return File.ReadAllText("../LibrarySystem.Data/Files/" + fileName);
+            }
+            else
+            {
+                return File.ReadAllText("../../../../LibrarySystem.Data/Files/" + fileName);
+            }
         }
 
         private void WriteJsonFile(string fileName, string data)
         {
-            File.WriteAllText(this.webRoot + "/Database-jason/" + fileName, data);
+            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            {
+                File.WriteAllText("../LibrarySystem.Data/Files/" + fileName, data);
+            }
+            else
+            {
+                File.WriteAllText("../../../../LibrarySystem.Data/Files/" + fileName, data);
+            }
         }
 
         private string[] ReadLinesTextFile(string fileName)
         {
-            return File.ReadAllLines(this.webRoot + "/Database-jason/" + fileName);
+            if (File.Exists("../LibrarySystem.Data/Files/" + fileName))
+            {
+                return File.ReadAllLines("../LibrarySystem.Data/Files/" + fileName);
+            }
+            else
+            {
+                return File.ReadAllLines("../../../../LibrarySystem.Data/Files/" + fileName);
+            }
         }
     }
 }
