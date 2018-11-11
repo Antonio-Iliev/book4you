@@ -52,18 +52,8 @@ namespace LibrarySystem.WebClient
         }
         private void RegisterData(IServiceCollection services)
         {
-            string connectionString;
-            if (Environment.IsDevelopment())
-            {
-                connectionString = "Development";
-            }
-            else
-            {
-                connectionString = "DefaultConnection";
-            }
-
             services.AddDbContext<LibrarySystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString(connectionString)));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
