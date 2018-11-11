@@ -2,12 +2,28 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+html, body {
+    margin: 0;
+    height: 100%;
+    background: #f2f2f2; /* fallback for old browsers */
+    background color: -webkit-linear-gradient(to top, #f5dede, #f2f2f2); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #f5dede, #f2f2f2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.navbar-brand > img{
+    max-width: 70px;
+
+}
+.navbar-brand {
+    height: 70px;
+    padding-top: 0px;
 }
 
 /* Carousel */
@@ -27,7 +43,7 @@
 }
 
 /* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 867px) {
     /* Hide captions */
     .carousel-caption {
         display: none;
