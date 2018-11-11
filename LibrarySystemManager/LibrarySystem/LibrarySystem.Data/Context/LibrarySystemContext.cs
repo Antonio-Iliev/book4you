@@ -166,17 +166,17 @@ namespace LibrarySystem.Data.Context
 
         private string ReadJsonFile(string fileName)
         {
-            return File.ReadAllText(this.webRoot + @"\Database-jason\" + fileName);
+            return File.ReadAllText(this.webRoot + "/Database-jason/" + fileName);
         }
 
         private void WriteJsonFile(string fileName, string data)
         {
-            File.WriteAllText(this.webRoot + @"\Database-jason\" + fileName, data);
+            File.WriteAllText(this.webRoot + "/Database-jason/" + fileName, data);
         }
 
         private string[] ReadLinesTextFile(string fileName)
         {
-            return File.ReadAllLines(this.webRoot + @"\Database-jason\" + fileName);
+            return File.ReadAllLines(this.webRoot + "/Database-jason/" + fileName);
         }
     }
 }
