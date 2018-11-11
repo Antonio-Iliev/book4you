@@ -36,7 +36,7 @@ namespace LibrarySystem.WebClient
             this.RegisterData(services);
             this.RegisterAuthentication(services);
             this.RegisterServices(services);
-            this.RegisterInfrastructure(services);        
+            this.RegisterInfrastructure(services);
         }
 
         private void RegisterServices(IServiceCollection services)
@@ -52,9 +52,18 @@ namespace LibrarySystem.WebClient
         }
         private void RegisterData(IServiceCollection services)
         {
-            services.AddDbContext<LibrarySystemContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("Development")));
+            string connectionString;
+            if (Environment.IsDevelopment())
+            {
+                connectionString = "Development";
+            }
+            else
+            {
+                connectionString = "DefaultConnection";
+            }
 
+            services.AddDbContext<LibrarySystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString(connectionString)));
         }
         private void RegisterAuthentication(IServiceCollection services)
         {
