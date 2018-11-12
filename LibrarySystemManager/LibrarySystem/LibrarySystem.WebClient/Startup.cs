@@ -93,9 +93,10 @@ namespace LibrarySystem.WebClient
             if (this.Environment.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            }
+                app.UseExceptionHandler("/Home/Error");
+            }           
             else
             {
                 app.UseExceptionHandler("/Home/Error");
